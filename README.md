@@ -1,2 +1,0 @@
-# duantotnghiep
-DUANTOTNGHIEP
