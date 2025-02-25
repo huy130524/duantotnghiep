@@ -11,8 +11,11 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('products', function (Blueprint $table) {
+        Schema::create('address_communes', function (Blueprint $table) {
             $table->id();
+            $table->string('name');  // Tên xã/phường
+            $table->string('type');  // Loại (ví dụ: Xã, Phường)
+            $table->foreignId('district_id')->constrained('address_districts')->onDelete('cascade');  // Liên kết với bảng address_districts
             $table->timestamps();
         });
     }
@@ -22,6 +25,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('products');
+        Schema::dropIfExists('address_communes');
     }
 };
