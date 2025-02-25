@@ -14,7 +14,7 @@ const Banner = () => {
               data-slice1-scale={2}
               data-slice2-scale={2}
             >
-              <div className="sl-slide-inner" data-bg-img="images/bg/01.jpg">
+              <div className="sl-slide-inner" data-bg-img="FE/images/bg/01.jpg">
                 <div className="align-center">
                   <div className="container">
                     <div className="row">
@@ -55,7 +55,7 @@ const Banner = () => {
               data-slice1-scale="1.5"
               data-slice2-scale="1.5"
             >
-              <div className="sl-slide-inner" data-bg-img="images/bg/02.jpg">
+              <div className="sl-slide-inner" data-bg-img="FE/images/bg/02.jpg">
                 <div className="align-center">
                   <div className="container">
                     <div className="row">
@@ -102,7 +102,7 @@ const Banner = () => {
             >
               <div
                 className="sl-slide-inner"
-                data-bg-img="images/bg/05.jpg"
+                data-bg-img="FE/images/bg/05.jpg"
                 style={{ backgroundPosition: "left" }}
               >
                 <div className="align-center">

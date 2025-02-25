@@ -1,11 +1,11 @@
 import React from "react";
 
-const Header = () => {
+const HeaderAdmin = () => {
   return (
     <>
       <div>
         {/* PAGE TITLE HERE */}
-        <title>Worldnic - Django Admin Dashboard Bootstrap Template</title>
+        <title>Admin</title>
         <meta charSet="utf-8" />
         <meta httpEquiv="X-UA-Compatible" content="IE=edge" />
         <meta name="author" content="DexignLab" />
@@ -18,7 +18,7 @@ const Header = () => {
         <meta
           name="description"
           content="WorldNIC is a versatile admin dashboard Bootstrap HTML template. It offers a clean design and robust features for effective management and
-			data visualization."
+            data visualization."
         />
         {/* OG:META TAGS */}
         <meta
@@ -45,7 +45,7 @@ const Header = () => {
         {/* MOBILE SPECIFIC */}
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         {/* FAVICONS ICON */}
-        <link rel="shortcut icon" href="images/favicon.png" />
+        <link rel="shortcut icon" href="imagesAdmin/favicon.png" />
         <link href="vendor/swiper/css/swiper-bundle.min.css" rel="stylesheet" />
         <link
           href="vendor/datatables/css/jquery.dataTables.min.css"
@@ -57,7 +57,7 @@ const Header = () => {
         />
         <link href="vendor/jqvmap/css/jqvmap.min.css" rel="stylesheet" />
         {/* STYLE CSS */}
-        <link className="main-css" href="css/style.css" rel="stylesheet" />
+        <link className="main-css" href="css/styleAdmin.css" rel="stylesheet" />
       </div>
 
       <div className="nav-header">
@@ -188,7 +188,7 @@ const Header = () => {
                               <img
                                 alt="image"
                                 width={50}
-                                src="images/avatar/1.jpg"
+                                src="imagesAdmin/avatar/1.jpg"
                               />
                             </div>
                             <div className="media-body">
@@ -235,7 +235,7 @@ const Header = () => {
                               <img
                                 alt="image"
                                 width={50}
-                                src="images/avatar/1.jpg"
+                                src="imagesAdmin/avatar/1.jpg"
                               />
                             </div>
                             <div className="media-body">
@@ -483,7 +483,7 @@ const Header = () => {
                     role="button"
                     data-bs-toggle="dropdown"
                   >
-                    <img src="images/user.jpg" width={20} alt />
+                    <img src="imagesAdmin/user.jpg" width={20} alt />
                     <div className="header-info ms-3">
                       <span className="fs-14 font-w600 mb-0">Franklin Jr.</span>
                     </div>
@@ -504,7 +504,7 @@ const Header = () => {
                     <div className="card-body p-0">
                       <div className="d-flex profile-media justify-content-between align-items-center">
                         <div className="d-flex align-items-center">
-                          <img src="images/profile-k.png" alt="img" />
+                          <img src="imagesAdmin/profile-k.png" alt="img" />
                           <div className="ms-3">
                             <h4 className="mb-0">Franklin Jr. </h4>
                             <p className="mb-0">demo@mail.com</p>
@@ -828,4 +828,4 @@ const Header = () => {
   );
 };
 
-export default Header;
+export default HeaderAdmin;

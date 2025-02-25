@@ -1,6 +1,6 @@
 import React from "react";
-import Header from "../Layout/Header";
-import Footer from "../Layout/Footer";
+import Header from "../LayoutWebsite/Header";
+import Footer from "../LayoutWebsite/Footer";
 
 const Login = () => {
   return (
