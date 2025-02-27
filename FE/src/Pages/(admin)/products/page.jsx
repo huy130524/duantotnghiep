@@ -1,0 +1,116 @@
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import {
+  Button,
+  Image,
+  message,
+  Popconfirm,
+  Skeleton,
+  Space,
+  Table,
+  Tag,
+} from "antd";
+import { Link } from "react-router-dom";
+
+const AdminProductsPage = () => {
+  const queryClient = useQueryClient();
+  const [messageApi, contextHolder] = message.useMessage();
+
+  const { data, isLoading } = useQuery({
+    queryKey: ["PRODUCTS_KEY"],
+    queryFn: async () => {
+      const response = await fetch(`http://localhost:3000/products`);
+      const data = await response.json();
+      return data.map((item) => ({
+        key: item.id,
+        ...item,
+      }));
+    },
+  });
+
+  const { mutate } = useMutation({
+    mutationFn: async (id) => {
+      await fetch(`http://localhost:3000/products/${id}`, { method: "DELETE" });
+    },
+    onSuccess: () => {
+      messageApi.success("Xóa sản phẩm thành công");
+      queryClient.invalidateQueries({
+        queryKey: ["PRODUCTS_KEY"],
+      });
+    },
+  });
+
+  const columns = [
+    {
+      title: "Ảnh",
+      dataIndex: "imageUrls",
+      key: "imageUrl",
+      width: 100,
+      render: (text) => <Image width={50} height={50} src={text} />,
+    },
+    {
+      title: "Tên sản phẩm",
+      dataIndex: "name",
+      key: "name",
+    },
+    {
+      title: "Giá",
+      dataIndex: "price",
+      key: "price",
+    },
+    {
+      title: "Tình trạng",
+      dataIndex: "inStock",
+      key: "inStock",
+      render: (inStock) =>
+        inStock ? (
+          <Tag color="green">Còn Hàng</Tag>
+        ) : (
+          <Tag color="red">Hết Hàng</Tag>
+        ),
+    },
+    {
+      title: "Danh mục",
+      dataIndex: "category",
+      key: "category",
+    },
+    {
+      key: "action",
+      width: 200,
+      render: (_, item) => (
+        <Space>
+          <Popconfirm
+            title="Xóa sản phẩm"
+            description="Bạn có chắc chắn muốn xóa không?"
+            onConfirm={() => mutate(item.id)}
+            okText="Có"
+            cancelText="Không"
+          >
+            <Button type="primary" danger>
+              Xóa
+            </Button>
+          </Popconfirm>
+          <Link to={`/admin/${item.id}/edit`}>
+            <Button type="primary">Cập nhật</Button>
+          </Link>
+        </Space>
+      ),
+    },
+  ];
+
+  return (
+    <div>
+      {contextHolder}
+      <div className="flex items-center justify-between mb-5">
+        <h1 className="text-3xl font-semibold">Quản lý sản phẩm</h1>
+        <Link to="/admin/products/add">
+          <Button type="default">Thêm sản phẩm</Button>
+        </Link>
+      </div>
+      <Skeleton loading={isLoading} active>
+        <Table dataSource={data} columns={columns} />
+      </Skeleton>
+    </div>
+  );
+};
+
+export default AdminProductsPage;

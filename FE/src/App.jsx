@@ -1,26 +1,15 @@
-import HomePage from "./Pages/HomePage";
-import { Route, Routes } from "react-router-dom";
-import Login from "./Pages/Login";
-import Register from "./Pages/Register";
-import Productdetails from "./Pages/ProductDetails";
-import Cart from "./Pages/Cart";
-import CheckOut from "./Pages/CheckOut";
+import { createRoot } from "react-dom/client";
+import { RouterProvider } from "react-router-dom";
+import { router } from "./routers";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 
-function App() {
-  return (
-    <>
-      <div className="App">
-        <Routes>
-          <Route index element={<HomePage />} />
-          <Route path="login" element={<Login />} />
-          <Route path="register" element={<Register />} />
-          <Route path="details" element={<Productdetails />} />
-          <Route path="cart" element={<Cart />} />
-          <Route path="checkout" element={<CheckOut />} />
-        </Routes>
-      </div>
-    </>
+const client = new QueryClient();
+const rootElement = document.getElementById("root");
+
+if (rootElement) {
+  createRoot(rootElement).render(
+    <QueryClientProvider client={client}>
+      <RouterProvider router={router} />
+    </QueryClientProvider>
   );
 }
-
-export default App;
