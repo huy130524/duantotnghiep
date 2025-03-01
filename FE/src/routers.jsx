@@ -7,6 +7,11 @@ import DashboardPage from "./Pages/(admin)/dashboard/page";
 import AdminProductsPage from "./Pages/(admin)/products/page";
 import AddProductPage from "./pages/(admin)/products-add/page";
 import EditProductPage from "./Pages/(admin)/products-edit/page";
+import Login from "./Pages/(website)/auth/page";
+import Register from "./Pages/(website)/auth/register";
+import Productdetaill from "./Pages/(website)/products/ProductDetails";
+import Cart from "./Pages/(website)/products/Cart";
+import CheckOut from "./Pages/(website)/products/CheckOut";
 
 export const router = createBrowserRouter([
   {
@@ -15,6 +20,11 @@ export const router = createBrowserRouter([
     children: [
       { index: true, element: <HomePage /> },
       { path: "about", element: <AboutPage /> },
+      { path: "details", element: <Productdetaill /> },
+      { path: "cart", element: <Cart /> },
+      { path: "checkout", element: <CheckOut /> },
+      { path: "login", element: <Login /> },
+      { path: "register", element: <Register /> },
     ],
   },
   {

@@ -1,16 +1,17 @@
 import React from "react";
 import Header from "../_components/HeaderWebsite";
-import Main from "../_components/Main";
 import Footer from "../_components/FooterWebsite";
+import DetailsPro from "../_components/DetailsPro";
 
-const HomePage = () => {
+const Productdetaill = () => {
   return (
     <div>
       <Header />
-      <Main />
+      <DetailsPro />
+
       <Footer />
     </div>
   );
 };
 
-export default HomePage;
+export default Productdetaill;

@@ -86,15 +86,6 @@
       "category": "Category 17"
     },
     {
-      "id": "19",
-      "name": "Product 19",
-      "price": 190.99,
-      "imageUrls": "https://picsum.photos/id/19/200/300",
-      "description": "Description for product 19",
-      "inStock": true,
-      "category": "Category 19"
-    },
-    {
       "id": "20",
       "name": "Product 20",
       "price": 200.99,

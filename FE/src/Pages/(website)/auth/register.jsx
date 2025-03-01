@@ -1,6 +1,6 @@
 import React from "react";
-import Header from "../Layout/Header";
-import Footer from "../Layout/Footer";
+import Header from "../_components/HeaderWebsite";
+import Footer from "../_components/FooterWebsite";
 
 const Register = () => {
   return (
