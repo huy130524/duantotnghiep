@@ -83,12 +83,7 @@ const Header = () => {
               <div className="col-lg-6 col-md-4">
                 <div className="topbar-link">
                   <ul className="list-inline">
-                    <li className="list-inline-item">
-                      <span>Email</span>
-                      <a href="mailto:themeht23@gmail.com">
-                        themeht23@gmail.com
-                      </a>
-                    </li>
+              
                     <li className="list-inline-item">
                       <span>Call Us</span>
                       <a href="tel:+912345678900">+91-234-567-8900</a>
