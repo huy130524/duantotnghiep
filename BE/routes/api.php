@@ -4,8 +4,11 @@ use App\Http\Controllers\CategoryController;
 use Illuminate\Support\Facades\Route;
 
 
+// Category
+
 Route::get('/categories', [CategoryController::class,'index']);
-Route::post('/create-category', [CategoryController::class,'create']);
-Route::get('/delete-category/{id}', [CategoryController::class,'deleteCategory']);
-Route::get('/edit-category/{id}', [CategoryController::class,'edit']);
-Route::put('/edit-category/{id}', [CategoryController::class,'update']);
+Route::post('/category/add', [CategoryController::class,'create']);
+Route::get('/category/delete/{id}', [CategoryController::class,'deleteCategory']);
+Route::get('/category/detail/{id}', [CategoryController::class,'edit']);
+Route::post('/category/update/{id}', [CategoryController::class,'update']);
+
