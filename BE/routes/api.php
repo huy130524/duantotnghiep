@@ -20,3 +20,9 @@ Route::post('/product/add', [ProductController::class, 'store']);
 Route::get('/product/detail/{id}', [ProductController::class, 'ProductDetail']);
 Route::post('/product/update/{id}', [ProductController::class, 'update']);
 
+// Brand 
+
+Route::get('/brands', [BrandController::class, 'index']);
+Route::post('/brand/add', [BrandController::class, 'store']);
+Route::get('/brand/detail/{id}', [BrandController::class, 'brandDetail']);
+Route::post('/brand/update/{id}', [BrandController::class, 'update']);
