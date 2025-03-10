@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\ColorController;
+use App\Http\Controllers\SizeController;
 use Illuminate\Support\Facades\Route;
 
 
@@ -18,3 +19,11 @@ Route::get('/colors', [ColorController::class, 'index']);
 Route::post('/color/add', [ColorController::class, 'store']);
 Route::get('/color/detail/{id}', [ColorController::class, 'detail']);
 Route::post('/color/update/{id}', [ColorController::class, 'update']);
+
+
+// Size 
+
+Route::get('/sizes', [SizeController::class, 'index']);
+Route::post('/size/add', [SizeController::class, 'store']);
+Route::get('/size/detail/{id}', [SizeController::class, 'detail']);
+Route::post('/size/update/{id}', [SizeController::class, 'update']);
