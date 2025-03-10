@@ -1,15 +1,21 @@
-import { createRoot } from "react-dom/client";
 import { RouterProvider } from "react-router-dom";
-import { router } from "./routers";
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import router from "./routers";
+import "@ant-design/v5-patch-for-react-19";
+import { unstableSetRender } from "antd";
+import { createRoot } from "react-dom/client";
 
-const client = new QueryClient();
-const rootElement = document.getElementById("root");
+unstableSetRender((node, container) => {
+  container._reactRoot ||= createRoot(container);
+  const root = container._reactRoot;
+  root.render(node);
+  return async () => {
+    await new Promise((resolve) => setTimeout(resolve, 0));
+    root.unmount();
+  };
+});
 
-if (rootElement) {
-  createRoot(rootElement).render(
-    <QueryClientProvider client={client}>
-      <RouterProvider router={router} />
-    </QueryClientProvider>
-  );
-}
+const App = () => {
+  return <RouterProvider router={router} />;
+};
+
+export default App;
