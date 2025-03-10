@@ -1,6 +1,22 @@
 import { Link } from "react-router-dom";
+import { useAuth } from "../../hooks/useAuth";
+import { Dropdown } from "antd";
+import { useMutation } from "@tanstack/react-query";
+import { api } from "../../api/api";
 
 const ClientHeader = () => {
+  const { isLogged, logout } = useAuth();
+
+  const logoutMutation = useMutation({
+    mutationKey: ["LOGOUT"],
+    mutationFn: () => api.post("/logout"),
+    onSuccess: logout,
+  });
+
+  const onLogout = () => {
+    logoutMutation.mutate();
+  };
+
   return (
     <>
       <header id="site-header" className="header">
@@ -47,12 +63,33 @@ const ClientHeader = () => {
                         </select>
                       </div>
                     </li>
-                    <li>
-                      <Link to="/login">Sign In</Link>
-                    </li>
-                    <li>
-                      <Link to="/register">Register</Link>
-                    </li>
+
+                    {isLogged ? (
+                      <li>
+                        <Dropdown
+                          menu={{
+                            items: [
+                              {
+                                label: "Đăng xuất",
+                                onClick: onLogout,
+                              },
+                            ],
+                          }}
+                          arrow
+                        >
+                          <Link to="/profile">Xin chào, Admin</Link>
+                        </Dropdown>
+                      </li>
+                    ) : (
+                      <>
+                        <li>
+                          <Link to="/login">Sign In</Link>
+                        </li>
+                        <li>
+                          <Link to="/register">Register</Link>
+                        </li>
+                      </>
+                    )}
                   </ul>
                 </div>
               </div>

@@ -1,6 +1,38 @@
+import { REG_EMAIL } from "../../../../constants/reg";
 import styles from "./index.module.scss";
 
+import { useForm } from "react-hook-form";
+import { useMutation } from "@tanstack/react-query";
+import { api } from "../../../../api/api";
+import { message } from "antd";
+import { useAuth } from "../../../../hooks/useAuth";
+
 const LoginPage = () => {
+  const { setAccessToken } = useAuth();
+
+  const {
+    handleSubmit,
+    register,
+    formState: { errors },
+  } = useForm();
+
+  const loginMutation = useMutation({
+    mutationKey: ["LOGIN"],
+    mutationFn: (data) => api.post("/login", data),
+    onSuccess: (r) => {
+      setAccessToken(r.token);
+
+      window.location.href = "/";
+    },
+    onError: (error) => {
+      message.error(error.response.data.message);
+    },
+  });
+
+  const onSubmit = (values) => {
+    loginMutation.mutate(values);
+  };
+
   return (
     <>
       {/*page title start*/}
@@ -45,12 +77,7 @@ const LoginPage = () => {
                   <h2 className="title mb-4">
                     Lo<span>gin</span>
                   </h2>
-                  <form
-                    id="contact-form"
-                    className="px-5"
-                    method="post"
-                    action="https://themeht.com/template/oveltyshop/html/ltr/php/contact.php"
-                  >
+                  <form className="px-5" onSubmit={handleSubmit(onSubmit)}>
                     <div className="messages" />
                     <div className="form-group">
                       {" "}
@@ -58,11 +85,21 @@ const LoginPage = () => {
                       <input
                         id="form_name"
                         type="text"
-                        name="name"
                         className="form-control"
-                        placeholder="User name"
+                        placeholder="Email"
+                        {...register("email", {
+                          required: "Vui lòng nhập email",
+                          pattern: {
+                            value: REG_EMAIL,
+                            message: "Email không đúng định dạng",
+                          },
+                        })}
                       />
-                      <div className="help-block with-errors" />
+                      {errors?.email?.message && (
+                        <div className="help-block with-errors">
+                          {errors.email.message}
+                        </div>
+                      )}
                     </div>
                     <div className="form-group">
                       {" "}
@@ -73,10 +110,15 @@ const LoginPage = () => {
                         name="password"
                         className="form-control"
                         placeholder="Password"
-                        required="required"
-                        data-error="password is required."
+                        {...register("password", {
+                          required: "Vui lòng nhập mật khẩu",
+                        })}
                       />
-                      <div className="help-block with-errors" />
+                      {errors?.password?.message && (
+                        <div className="help-block with-errors">
+                          {errors.password.message}
+                        </div>
+                      )}
                     </div>
                     <div className="form-group mt-4 mb-5">
                       <div className="remember-checkbox clearfix">
@@ -98,9 +140,9 @@ const LoginPage = () => {
                         </a>
                       </div>
                     </div>{" "}
-                    <a href="#" className="btn btn-theme btn-block">
-                      <span>Login Now</span>
-                    </a>
+                    <button className="btn btn-theme btn-block">
+                      <span>Đăng nhập</span>
+                    </button>
                     <h5 className="mb-0 mt-3 text-capitalize">
                       Don&apos;t Have An Account ?{" "}
                       <a href="#">
