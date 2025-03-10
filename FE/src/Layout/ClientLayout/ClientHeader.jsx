@@ -1,3 +1,5 @@
+import { Link } from "react-router-dom";
+
 const ClientHeader = () => {
   return (
     <>
@@ -46,10 +48,10 @@ const ClientHeader = () => {
                       </div>
                     </li>
                     <li>
-                      <a href="login.html">Sign In</a>
+                      <Link to="/login">Sign In</Link>
                     </li>
                     <li>
-                      <a href="register.html">Register</a>
+                      <Link to="/register">Register</Link>
                     </li>
                   </ul>
                 </div>
