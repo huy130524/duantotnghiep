@@ -37,4 +37,29 @@ class UserController extends Controller
         ], 201);
     }
 
+    public function login(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'email' => 'required|string|email',
+            'password' => 'required|string'
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json(['status' => 0, 'errors' => $validator->errors()], 422);
+        }
+
+        if (!Auth::attempt($request->only('email', 'password'))) {
+            return response()->json(['status' => 0, 'message' => 'Sai tài khoản hoặc mật khẩu!'], 401);
+        }
+
+        $user = Auth::user();
+        $token = $user->createToken('auth_token')->plainTextToken;
+
+        return response()->json([
+            'status' => 1,
+            'message' => 'Đăng nhập thành công!',
+            'user' => $user,
+            'token' => $token
+        ], 200);
+    }
 }
