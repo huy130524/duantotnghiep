@@ -90,5 +90,36 @@ class UserController extends Controller
     
         return response()->json(['message' => 'Đổi mật khẩu thành công']);
     }
-    
+    public function profile($id)
+    {
+        $user = User::find($id);
+        if (!$user) {
+            return response()->json(["message" => "Tài khoản không tồn tại"]);
+        }
+        return response()->json($user);
+    }
+
+    public function updateProfile(Request $request, $id)
+    {
+        $user = User::find($id);
+        if (!$user) {
+            return response()->json(['message' => 'User not found'], 404);
+        }
+
+        // Cập nhật thông tin người dùng
+        $user->fullname = $request->fullname;
+        $user->phone = $request->phone;
+        $user->email = $request->email;
+        $user->gender = $request->gender;
+        $user->address = $request->address;
+
+        if ($request->hasFile('avatar')) {
+            $avatarPath = $request->file('avatar')->store('avatars', 'public');
+            $user->avatar = $avatarPath;
+        }
+
+        $user->save();
+
+        return response()->json(['message' => 'Profile updated successfully']);
+    }
 }
