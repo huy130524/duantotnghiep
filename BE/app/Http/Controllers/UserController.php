@@ -62,4 +62,33 @@ class UserController extends Controller
             'token' => $token
         ], 200);
     }
+    public function logout(Request $request)
+    {
+        $request->user()->tokens()->delete();
+        return response()->json([
+            'status' => 1,
+            'message' => 'Đăng xuất thành công!'
+        ], 200);
+    }
+    public function changePassword(Request $request, $id)
+    {
+        $user = User::find($id);
+        if (!$user) {
+            return response()->json(['message' => 'Người dùng không tồn tại'], 404);
+        }
+        $request->validate([
+            'current_password' => 'required',
+            'new_password' => 'required|min:6|confirmed',
+        ]);
+    
+        if (!Hash::check($request->current_password, $user->password)) {
+            return response()->json(['message' => 'Mật khẩu hiện tại không đúng'], 400);
+        }
+    
+        $user->password = Hash::make($request->new_password);
+        $user->save();
+    
+        return response()->json(['message' => 'Đổi mật khẩu thành công']);
+    }
+    
 }
