@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\BlogController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\ColorController;
 use App\Http\Controllers\CouponController;
@@ -36,3 +37,10 @@ Route::get('/coupons', [CouponController::class, 'index']);
 Route::post('/coupon/add', [CouponController::class, 'store']);
 Route::get('/coupon/detail/{id}', [CouponController::class, 'detail']);
 Route::post('/coupon/update/{id}', [CouponController::class, 'update']);
+
+// Blog 
+
+Route::get('/blogs', [BlogController::class, 'index']);
+Route::post('/blog/add', [BlogController::class, 'store']);
+Route::get('/blog/detail/{id}', [BlogController::class, 'detail']);
+Route::post('/blog/update/{id}', [BlogController::class, 'update']);
