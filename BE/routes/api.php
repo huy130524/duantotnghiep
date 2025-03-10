@@ -26,3 +26,13 @@ Route::get('/brands', [BrandController::class, 'index']);
 Route::post('/brand/add', [BrandController::class, 'store']);
 Route::get('/brand/detail/{id}', [BrandController::class, 'brandDetail']);
 Route::post('/brand/update/{id}', [BrandController::class, 'update']);
+
+// Đăng ký đăng nhập
+Route::post('/change-password/{id}', [UserController::class, 'changePassword']);
+Route::post('/register', [UserController::class, 'register']);
+Route::post('/login', [UserController::class, 'login']);
+Route::middleware('auth:sanctum')->post('/logout', [UserController::class, 'logout']);
+
+
+Route::get('profile/{id}',[UserController::class,'profile']);
+Route::post('updateprofile/{id}',[UserController::class,'UpdateProfile']);
