@@ -5,6 +5,13 @@ import AppLayout from "./Layout/AppLayout/AppLayout";
 import AdminLayout from "./Layout/AdminLayout/AdminLayout";
 import LoginPage from "./Pages/client/Auth/LoginPage/LoginPage";
 import RegisterPage from "./Pages/client/Auth/RegisterPage/RegisterPage";
+import Dashboard from "./Pages/admin/Dashboard/Dashboard";
+import ListCategory from "./Pages/admin/Category/ListCategory";
+import AddCategory from "./Pages/admin/Category/AddCategory";
+import UpdateCategory from "./Pages/admin/Category/UpdateCategory";
+import ListBrand from "./Pages/admin/Brand/ListBand";
+import AddBrand from "./Pages/admin/Brand/AddBrand";
+import UpdateBrand from "./Pages/admin/Brand/UpdateBrand";
 
 const router = createBrowserRouter([
   {
@@ -34,6 +41,38 @@ const router = createBrowserRouter([
       {
         path: "admin",
         element: <AdminLayout />,
+        children: [
+          {
+            path: "",
+            element: <Dashboard />,
+          },
+          {
+            path: "category",
+            element: <ListCategory />,
+          },
+          {
+            path: "category/add",
+            element: <AddCategory />,
+          },
+          {
+            path: "category/:id/edit",
+            element: <UpdateCategory />,
+          },
+
+          // brand
+          {
+            path: "brand",
+            element: <ListBrand />,
+          },
+          {
+            path: "brand/add",
+            element: <AddBrand />,
+          },
+          {
+            path: "brand/:id/edit",
+            element: <UpdateBrand />,
+          },
+        ],
       },
     ],
   },
