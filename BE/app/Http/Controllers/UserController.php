@@ -80,14 +80,14 @@ class UserController extends Controller
             'current_password' => 'required',
             'new_password' => 'required|min:6|confirmed',
         ]);
-    
+
         if (!Hash::check($request->current_password, $user->password)) {
             return response()->json(['message' => 'Mật khẩu hiện tại không đúng'], 400);
         }
-    
+
         $user->password = Hash::make($request->new_password);
         $user->save();
-    
+
         return response()->json(['message' => 'Đổi mật khẩu thành công']);
     }
     public function profile(Request $request)
@@ -96,22 +96,22 @@ class UserController extends Controller
         if (!$user) {
             return response()->json(["message" => "Tài khoản không tồn tại"]);
         }
+        $user->avatar = $user->avatar ? asset('storage/' . $user->avatar) : null;
         return response()->json($user);
     }
-
-    public function updateProfile(Request $request, $id)
+    
+    public function updateProfile(Request $request)
     {
-        $user = User::find($id);
+        $user = $request->user();
+
         if (!$user) {
             return response()->json(['message' => 'User not found'], 404);
         }
-
-        // Cập nhật thông tin người dùng
-        $user->fullname = $request->fullname;
-        $user->phone = $request->phone;
-        $user->email = $request->email;
-        $user->gender = $request->gender;
-        $user->address = $request->address;
+        $user->fullname = $request->fullname ?? $user->fullname;
+        $user->phone = $request->phone ?? $user->phone;
+        $user->email = $request->email ?? $user->email;
+        $user->gender = $request->gender ?? $user->gender;
+        $user->address = $request->address ?? $user->address;
 
         if ($request->hasFile('avatar')) {
             $avatarPath = $request->file('avatar')->store('avatars', 'public');
@@ -120,6 +120,6 @@ class UserController extends Controller
 
         $user->save();
 
-        return response()->json(['message' => 'Profile updated successfully']);
+        return response()->json(['message' => 'Profile updated successfully', 'user' => $user]);
     }
 }
