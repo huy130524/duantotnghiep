@@ -90,9 +90,9 @@ class UserController extends Controller
     
         return response()->json(['message' => 'Đổi mật khẩu thành công']);
     }
-    public function profile($id)
+    public function profile(Request $request)
     {
-        $user = User::find($id);
+        $user = $request->user();
         if (!$user) {
             return response()->json(["message" => "Tài khoản không tồn tại"]);
         }
