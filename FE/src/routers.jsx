@@ -15,6 +15,9 @@ import UpdateBrand from "./Pages/admin/Brand/UpdateBrand";
 import ListColor from "./Pages/admin/Color/ListColor";
 import AddColor from "./Pages/admin/Color/AddColor";
 import UpdateColor from "./Pages/admin/Color/UpdateColor";
+import ListSize from "./Pages/admin/Size/ListSize";
+import AddSize from "./Pages/admin/Size/AddSize";
+import UpdateSize from "./Pages/admin/Size/UpdateSize";
 
 const router = createBrowserRouter([
   {
@@ -88,6 +91,20 @@ const router = createBrowserRouter([
           {
             path: "color/:id/edit",
             element: <UpdateColor />,
+          },
+
+          // kích thước
+          {
+            path: "size",
+            element: <ListSize />,
+          },
+          {
+            path: "size/add",
+            element: <AddSize />,
+          },
+          {
+            path: "size/:id/edit",
+            element: <UpdateSize />,
           },
         ],
       },
