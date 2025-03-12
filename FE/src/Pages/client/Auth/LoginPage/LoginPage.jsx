@@ -1,0 +1,223 @@
+import { REG_EMAIL } from "../../../../constants/reg";
+import styles from "./index.module.scss";
+
+import { useForm } from "react-hook-form";
+import { useMutation } from "@tanstack/react-query";
+import { api } from "../../../../api/api";
+import { message } from "antd";
+import { useAuth } from "../../../../hooks/useAuth";
+
+const LoginPage = () => {
+  const { setAccessToken } = useAuth();
+
+  const {
+    handleSubmit,
+    register,
+    formState: { errors },
+  } = useForm();
+
+  const loginMutation = useMutation({
+    mutationKey: ["LOGIN"],
+    mutationFn: (data) => api.post("/login", data),
+    onSuccess: (r) => {
+      setAccessToken(r.token);
+
+      window.location.href = "/";
+    },
+    onError: (error) => {
+      message.error(error.response.data.message);
+    },
+  });
+
+  const onSubmit = (values) => {
+    loginMutation.mutate(values);
+  };
+
+  return (
+    <>
+      {/*page title start*/}
+      <section
+        className={`page-title o-hidden ${styles.pageTitle}`}
+        data-bg-img="/images/bg/02.jpg"
+      >
+        <div className="container">
+          <div className="row align-items-center">
+            <div className="col-lg-12 col-md-12">
+              <h1 className="mb-3">
+                Login <span className="text-theme">Now</span>
+              </h1>
+              <nav aria-label="breadcrumb">
+                <ol className="breadcrumb breadcrumb-4 justify-content-end">
+                  <li className="breadcrumb-item">
+                    <a href="index.html">
+                      <i className="fas fa-home" />
+                    </a>
+                  </li>
+                  <li className="breadcrumb-item">
+                    <a href="#">Pages</a>
+                  </li>
+                  <li className="breadcrumb-item active" aria-current="page">
+                    Login
+                  </li>
+                </ol>
+              </nav>
+            </div>
+          </div>
+        </div>
+      </section>
+      {/*page title end*/}
+      {/*body content start*/}
+      <div className="page-content">
+        {/*login start*/}
+        <section className="login">
+          <div className="container">
+            <div className="row">
+              <div className="col-lg-6 col-md-10 ml-auto mr-auto">
+                <div className="login-form text-center box-shadow white-bg pt-5">
+                  <h2 className="title mb-4">
+                    Lo<span>gin</span>
+                  </h2>
+                  <form className="px-5" onSubmit={handleSubmit(onSubmit)}>
+                    <div className="messages" />
+                    <div className="form-group">
+                      {" "}
+                      <i className="far fa-user" />
+                      <input
+                        id="form_name"
+                        type="text"
+                        className="form-control"
+                        placeholder="Email"
+                        {...register("email", {
+                          required: "Vui lòng nhập email",
+                          pattern: {
+                            value: REG_EMAIL,
+                            message: "Email không đúng định dạng",
+                          },
+                        })}
+                      />
+                      {errors?.email?.message && (
+                        <div className="help-block with-errors">
+                          {errors.email.message}
+                        </div>
+                      )}
+                    </div>
+                    <div className="form-group">
+                      {" "}
+                      <i className="fas fa-unlock-alt" />
+                      <input
+                        id="form_password"
+                        type="password"
+                        name="password"
+                        className="form-control"
+                        placeholder="Password"
+                        {...register("password", {
+                          required: "Vui lòng nhập mật khẩu",
+                        })}
+                      />
+                      {errors?.password?.message && (
+                        <div className="help-block with-errors">
+                          {errors.password.message}
+                        </div>
+                      )}
+                    </div>
+                    <div className="form-group mt-4 mb-5">
+                      <div className="remember-checkbox clearfix">
+                        <div className="custom-control custom-checkbox">
+                          <input
+                            type="checkbox"
+                            className="custom-control-input"
+                            id="customCheck1"
+                          />
+                          <label
+                            className="custom-control-label"
+                            htmlFor="customCheck1"
+                          >
+                            Remember me
+                          </label>
+                        </div>
+                        <a href="#" className="float-right">
+                          Forgot Password?
+                        </a>
+                      </div>
+                    </div>{" "}
+                    <button className="btn btn-theme btn-block">
+                      <span>Đăng nhập</span>
+                    </button>
+                    <h5 className="mb-0 mt-3 text-capitalize">
+                      Don&apos;t Have An Account ?{" "}
+                      <a href="#">
+                        <i>Sign Up!</i>
+                      </a>
+                    </h5>
+                  </form>
+                  <div className="login-social mt-5 text-center clearfix">
+                    <ul className="list-inline d-flex flex-lg-row flex-column justify-content-between align-items-between">
+                      <li>
+                        <a className="fb" href="#">
+                          <i className="fab fa-facebook-f mr-1" />
+                        </a>
+                      </li>
+                      <li>
+                        <a className="twitter" href="#">
+                          <i className="fab fa-twitter mr-1" />
+                        </a>
+                      </li>
+                      <li>
+                        <a className="gplus" href="#">
+                          <i className="fab fa-google-plus-g mr-1" />
+                        </a>
+                      </li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+        {/*login end*/}
+        {/*newsletter start*/}
+        <section className="theme-bg py-5">
+          <div className="container">
+            <div className="row">
+              <div className="col-lg-4 col-md-12">
+                <h2 className="title">
+                  News<span>letter</span>
+                </h2>
+              </div>
+              <div className="col-lg-8 col-md-12 md-mt-3">
+                <div className="subscribe-form">
+                  <form id="mc-form" className="group row align-items-center">
+                    <div className="col-sm-8">
+                      <input
+                        type="email"
+                        defaultValue=""
+                        name="EMAIL"
+                        className="email box-shadow"
+                        id="mc-email"
+                        placeholder="Email Address"
+                        required=""
+                      />
+                    </div>
+                    <div className="col-sm-4 xs-mt-1">
+                      <input
+                        className="btn btn-white"
+                        type="submit"
+                        name="subscribe"
+                        defaultValue="Subscribe"
+                      />
+                    </div>
+                    <label htmlFor="mc-email" className="subscribe-message" />
+                  </form>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+        {/*newsletter end*/}
+      </div>
+      {/*body content end*/}
+    </>
+  );
+};
+
+export default LoginPage;
