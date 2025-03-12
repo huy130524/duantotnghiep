@@ -61,8 +61,6 @@ const Login = () => {
                           name="name"
                           className="form-control"
                           placeholder="User name"
-                          required="required"
-                          data-error="Username is required."
                         />
                         <div className="help-block with-errors" />
                       </div>
