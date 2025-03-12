@@ -17,8 +17,8 @@ class Size extends Model
 
     protected $dates = ['deleted_at'];
 
-    // public function productVariant()
-    // {
-    //     return $this->hasMany(ProductVariant::class);
-    // }
+    public function productVariant()
+    {
+        return $this->hasMany(ProductVariant::class);
+    }
 }
