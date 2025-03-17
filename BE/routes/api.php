@@ -43,10 +43,13 @@ Route::post('/blog/add', [BlogController::class, 'store']);
 Route::get('/blog/detail/{id}', [BlogController::class, 'detail']);
 Route::post('/blog/update/{id}', [BlogController::class, 'update']);
 
-Route::post('/category/add', [CategoryController::class,'create']);
-Route::get('/category/delete/{id}', [CategoryController::class,'deleteCategory']);
-Route::get('/category/detail/{id}', [CategoryController::class,'edit']);
-Route::post('/category/update/{id}', [CategoryController::class,'update']);
+//
+Route::get('/categories', [CategoryController::class, 'index']);
+//
+Route::post('/category/add', [CategoryController::class, 'create']);
+Route::get('/category/delete/{id}', [CategoryController::class, 'deleteCategory']);
+Route::get('/category/detail/{id}', [CategoryController::class, 'edit']);
+Route::post('/category/update/{id}', [CategoryController::class, 'update']);
 
 // Product
 
@@ -69,5 +72,5 @@ Route::post('/login', [UserController::class, 'login']);
 Route::middleware('auth:sanctum')->post('/logout', [UserController::class, 'logout']);
 
 
-Route::get('profile/{id}',[UserController::class,'profile']);
-Route::post('updateprofile/{id}',[UserController::class,'UpdateProfile']);
+Route::get('profile/{id}', [UserController::class, 'profile']);
+Route::post('updateprofile/{id}', [UserController::class, 'UpdateProfile']);
