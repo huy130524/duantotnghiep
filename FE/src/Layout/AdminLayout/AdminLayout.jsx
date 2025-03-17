@@ -49,6 +49,11 @@ const items = [
     icon: <AppstoreOutlined />,
     label: <Link to="/admin/size">Quản lý kích thước</Link>,
   },
+  {
+    key: "7",
+    icon: <AppstoreOutlined />,
+    label: <Link to="/admin/blog">Quản lý bài viết</Link>,
+  },
 ];
 
 const AdminLayout = () => {

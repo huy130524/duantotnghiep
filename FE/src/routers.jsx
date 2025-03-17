@@ -18,6 +18,9 @@ import UpdateColor from "./Pages/admin/Color/UpdateColor";
 import ListSize from "./Pages/admin/Size/ListSize";
 import AddSize from "./Pages/admin/Size/AddSize";
 import UpdateSize from "./Pages/admin/Size/UpdateSize";
+import ListBlog from "./Pages/admin/Blog/ListBlog";
+import UpdateBlog from "./Pages/admin/Blog/UpdateCategory";
+import AddBlog from "./Pages/admin/Blog/AddBlog";
 
 const router = createBrowserRouter([
   {
@@ -105,6 +108,20 @@ const router = createBrowserRouter([
           {
             path: "size/:id/edit",
             element: <UpdateSize />,
+          },
+
+          // blog
+          {
+            path: "blog",
+            element: <ListBlog />,
+          },
+          {
+            path: "blog/add",
+            element: <AddBlog />,
+          },
+          {
+            path: "blog/:id/edit",
+            element: <UpdateBlog />,
           },
         ],
       },
