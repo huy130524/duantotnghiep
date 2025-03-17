@@ -21,6 +21,9 @@ import UpdateSize from "./Pages/admin/Size/UpdateSize";
 import ListBlog from "./Pages/admin/Blog/ListBlog";
 import UpdateBlog from "./Pages/admin/Blog/UpdateCategory";
 import AddBlog from "./Pages/admin/Blog/AddBlog";
+import ListCoupon from "./Pages/admin/Coupon/ListCoupon";
+import AddCoupon from "./Pages/admin/Coupon/AddCoupon";
+import UpdateCoupon from "./Pages/admin/Coupon/UpdaterCoupon";
 
 const router = createBrowserRouter([
   {
@@ -122,6 +125,19 @@ const router = createBrowserRouter([
           {
             path: "blog/:id/edit",
             element: <UpdateBlog />,
+          },
+
+          {
+            path: "coupon",
+            element: <ListCoupon />,
+          },
+          {
+            path: "coupon/add",
+            element: <AddCoupon />,
+          },
+          {
+            path: "coupon/:id/edit",
+            element: <UpdateCoupon />,
           },
         ],
       },
