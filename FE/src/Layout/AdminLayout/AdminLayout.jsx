@@ -50,6 +50,11 @@ const items = [
     label: <Link to="/admin/size">Quản lý kích thước</Link>,
   },
   {
+    key: "8",
+    icon: <AppstoreOutlined />,
+    label: <Link to="/admin/coupon">Quản lý mã giảm giá</Link>,
+  },
+  {
     key: "7",
     icon: <AppstoreOutlined />,
     label: <Link to="/admin/blog">Quản lý bài viết</Link>,
