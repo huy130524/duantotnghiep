@@ -51,8 +51,6 @@ const UpdateBlog = () => {
   }, []);
 
   useEffect(() => {
-    if (!title) return;
-
     form.setFieldValue("slug", genSlug(title));
   }, [title]);
 
