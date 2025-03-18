@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\BlogController;
 use App\Http\Controllers\CategoryController;
+
 use App\Http\Controllers\ColorController;
 use App\Http\Controllers\CouponController;
 use App\Http\Controllers\SizeController;
@@ -72,5 +73,6 @@ Route::post('/login', [UserController::class, 'login']);
 Route::middleware('auth:sanctum')->post('/logout', [UserController::class, 'logout']);
 
 
-Route::get('profile/{id}', [UserController::class, 'profile']);
-Route::post('updateprofile/{id}', [UserController::class, 'UpdateProfile']);
+Route::middleware('auth:sanctum')->get('profile', [UserController::class, 'profile']);
+Route::post('updateprofile/{id}',[UserController::class,'UpdateProfile']);
+

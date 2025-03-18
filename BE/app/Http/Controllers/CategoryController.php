@@ -11,9 +11,14 @@ class CategoryController extends Controller
 {
     public function index()
     {
-        $categories = Category::all();
+        $categories = Category::all()->map(function ($category) {
+            $category->image = $category->image ? asset('storage/' . $category->image) : null;
+            return $category;
+        });
+    
         return response()->json($categories);
     }
+    
     public function deleteCategory($id)
     {
         $category = Category::find($id);
