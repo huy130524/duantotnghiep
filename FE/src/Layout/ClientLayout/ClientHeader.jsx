@@ -3,8 +3,10 @@ import { useAuth } from "../../hooks/useAuth";
 import { Dropdown } from "antd";
 import { useMutation } from "@tanstack/react-query";
 import { api } from "../../api/api";
+import { useProfile } from "../../hooks/useProfile";
 
 const ClientHeader = () => {
+  const { profile } = useProfile();
   const { isLogged, logout } = useAuth();
 
   const logoutMutation = useMutation({
@@ -77,7 +79,9 @@ const ClientHeader = () => {
                           }}
                           arrow
                         >
-                          <Link to="/profile">Xin chào, Admin</Link>
+                          <Link to="/profile">
+                            Xin chào, {profile?.fullname}
+                          </Link>
                         </Dropdown>
                       </li>
                     ) : (

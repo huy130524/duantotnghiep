@@ -24,6 +24,9 @@ import AddBlog from "./Pages/admin/Blog/AddBlog";
 import ListCoupon from "./Pages/admin/Coupon/ListCoupon";
 import AddCoupon from "./Pages/admin/Coupon/AddCoupon";
 import UpdateCoupon from "./Pages/admin/Coupon/UpdaterCoupon";
+import ListProduct from "./Pages/admin/Product/ListProduct";
+import AddProduct from "./Pages/admin/Product/AddProduct";
+import UpdateProduct from "./Pages/admin/Product/UpdateProduct";
 
 const router = createBrowserRouter([
   {
@@ -138,6 +141,18 @@ const router = createBrowserRouter([
           {
             path: "coupon/:id/edit",
             element: <UpdateCoupon />,
+          },
+          {
+            path: "product",
+            element: <ListProduct />,
+          },
+          {
+            path: "product/add",
+            element: <AddProduct />,
+          },
+          {
+            path: "product/:id/edit",
+            element: <UpdateProduct />,
           },
         ],
       },
