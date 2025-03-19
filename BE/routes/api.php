@@ -74,5 +74,5 @@ Route::middleware('auth:sanctum')->post('/logout', [UserController::class, 'logo
 
 
 Route::middleware('auth:sanctum')->get('profile', [UserController::class, 'profile']);
-Route::post('updateprofile/{id}',[UserController::class,'UpdateProfile']);
+Route::middleware('auth:sanctum')->post('updateprofile/{id}',[UserController::class,'UpdateProfile']);
 

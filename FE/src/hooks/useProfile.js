@@ -7,11 +7,11 @@ export const useProfile = () => {
 
   const token = getAccessToken();
 
-  const { data } = useQuery({
+  const { data, refetch } = useQuery({
     queryKey: ["GET_PROFILE"],
     queryFn: () => api.get("/profile"),
     enabled: !!token,
   });
 
-  return { profile: data ?? null };
+  return { profile: data ?? null, refreshProfile: refetch };
 };
