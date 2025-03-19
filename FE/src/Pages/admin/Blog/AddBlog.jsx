@@ -6,8 +6,10 @@ import { api } from "../../../api/api";
 import { useEffect } from "react";
 import { genSlug } from "../../../utils/genSlug";
 import SunEditorFormItem from "../../../components/SunEditorFormItem/SunEditorFormItem";
+import { useProfile } from "../../../hooks/useProfile";
 
 const AddBlog = () => {
+  const { profile } = useProfile();
   const navigate = useNavigate();
 
   const [form] = Form.useForm();
@@ -38,7 +40,7 @@ const AddBlog = () => {
   const onSubmit = (values) => {
     mutate({
       ...values,
-      user_id: 1,
+      user_id: profile.id,
     });
   };
 
