@@ -30,6 +30,7 @@ import UpdateProduct from "./Pages/admin/Product/UpdateProduct";
 import AccountLayout from "./Layout/AccountLayout/AccountLayout";
 import UpdateInformation from "./Pages/client/Profile/UpdateInformation/UpdateInformation";
 import ChangePassword from "./Pages/client/Profile/ChangePassword/ChangePassword";
+import ListAddress from "./Pages/client/Profile/Address/ListAddress";
 
 const router = createBrowserRouter([
   {
@@ -65,6 +66,10 @@ const router = createBrowserRouter([
               {
                 path: "change-password",
                 element: <ChangePassword />,
+              },
+              {
+                path: "address",
+                element: <ListAddress />,
               },
             ],
           },
