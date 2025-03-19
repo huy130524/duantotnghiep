@@ -1,11 +1,13 @@
-import { FaUser, FaSignOutAlt, FaEye } from "react-icons/fa";
+import { FaUser, FaSignOutAlt, FaEye, FaKey } from "react-icons/fa";
 import { FaCartShopping, FaLocationDot } from "react-icons/fa6";
 
 import { NavLink } from "react-router-dom";
 import { useProfile } from "../../hooks/useProfile";
+import { useAuth } from "../../hooks/useAuth";
 
 const Sidebar = () => {
   const { profile } = useProfile();
+  const { logout } = useAuth();
 
   return (
     <aside className="tw-bg-white tw-rounded tw-h-full">
@@ -16,15 +18,15 @@ const Sidebar = () => {
           className="tw-w-[48px] tw-h-[48px] tw-rounded-full tw-object-cover"
         />
 
-        <p className="tw-text-[18px] tw-font-semibold tw-text-[#111] tw-m-0">
+        <p className="tw-text-[18px] tw-font-semibold tw-tw-text-[#111] tw-m-0">
           {profile?.fullname}
         </p>
       </header>
 
       <div className="tw-pb-6">
         <NavLink
-          to="/account"
-          className="tw-flex tw-items-center tw-py-3 tw-px-5 tw-gap-x-3 text-[#111] hover:text-[#e30019] tw-transition-all [&.active]:text-[#e30019]"
+          to="/profile"
+          className="tw-flex tw-items-center tw-py-3 tw-px-5 tw-gap-x-3 tw-text-[#111] hover:text-[#e30019] tw-transition-all [&.active]:tw-text-[#e30019]"
           end
         >
           <FaUser />
@@ -33,8 +35,18 @@ const Sidebar = () => {
         </NavLink>
 
         <NavLink
-          to="/account/address"
-          className="tw-flex tw-items-center tw-py-3 tw-px-5 tw-gap-x-3 text-[#111] hover:text-[#e30019] tw-transition-all [&.active]:text-[#e30019]"
+          to="/profile/change-password"
+          className="tw-flex tw-items-center tw-py-3 tw-px-5 tw-gap-x-3 tw-text-[#111] hover:text-[#e30019] tw-transition-all [&.active]:tw-text-[#e30019]"
+          end
+        >
+          <FaKey />
+
+          <p className="tw-m-0">Đổi mật khẩu</p>
+        </NavLink>
+
+        <NavLink
+          to="/profile/address"
+          className="tw-flex tw-items-center tw-py-3 tw-px-5 tw-gap-x-3 tw-text-[#111] hover:text-[#e30019] tw-transition-all [&.active]:tw-text-[#e30019]"
           end
         >
           <FaLocationDot />
@@ -44,7 +56,7 @@ const Sidebar = () => {
 
         <NavLink
           to="/account/orders-history"
-          className="tw-flex tw-items-center tw-py-3 tw-px-5 tw-gap-x-3 text-[#111] hover:text-[#e30019] tw-transition-all [&.active]:text-[#e30019]"
+          className="tw-flex tw-items-center tw-py-3 tw-px-5 tw-gap-x-3 tw-text-[#111] hover:text-[#e30019] tw-transition-all [&.active]:tw-text-[#e30019]"
         >
           <FaCartShopping />
 
@@ -53,14 +65,17 @@ const Sidebar = () => {
 
         <NavLink
           to="/account/viewed"
-          className="tw-flex tw-items-center tw-py-3 tw-px-5 tw-gap-x-3 text-[#111] hover:text-[#e30019] tw-transition-all [&.active]:text-[#e30019]"
+          className="tw-flex tw-items-center tw-py-3 tw-px-5 tw-gap-x-3 tw-text-[#111] hover:text-[#e30019] tw-transition-all [&.active]:tw-text-[#e30019]"
         >
           <FaEye />
 
           <p className="tw-m-0">Sản phẩm đã xem</p>
         </NavLink>
 
-        <div className="tw-flex tw-items-center tw-py-3 tw-px-5 tw-gap-x-3 text-[#111] hover:text-[#e30019] tw-transition-all tw-cursor-pointer">
+        <div
+          onClick={logout}
+          className="tw-flex tw-items-center tw-py-3 tw-px-5 tw-gap-x-3 tw-text-[#111] hover:text-[#e30019] tw-transition-all tw-cursor-pointer"
+        >
           <FaSignOutAlt />
 
           <p className="tw-m-0">Đăng xuất</p>
