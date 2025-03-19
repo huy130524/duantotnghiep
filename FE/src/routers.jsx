@@ -27,6 +27,9 @@ import UpdateCoupon from "./Pages/admin/Coupon/UpdaterCoupon";
 import ListProduct from "./Pages/admin/Product/ListProduct";
 import AddProduct from "./Pages/admin/Product/AddProduct";
 import UpdateProduct from "./Pages/admin/Product/UpdateProduct";
+import AccountLayout from "./Layout/AccountLayout/AccountLayout";
+import UpdateInformation from "./Pages/client/Profile/UpdateInformation/UpdateInformation";
+import ChangePassword from "./Pages/client/Profile/ChangePassword/ChangePassword";
 
 const router = createBrowserRouter([
   {
@@ -49,6 +52,21 @@ const router = createBrowserRouter([
           {
             path: "register",
             element: <RegisterPage />,
+          },
+
+          {
+            path: "profile",
+            element: <AccountLayout />,
+            children: [
+              {
+                path: "",
+                element: <UpdateInformation />,
+              },
+              {
+                path: "change-password",
+                element: <ChangePassword />,
+              },
+            ],
           },
         ],
       },

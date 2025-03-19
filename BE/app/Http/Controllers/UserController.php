@@ -112,6 +112,8 @@ class UserController extends Controller
         $user->email = $request->email ?? $user->email;
         $user->gender = $request->gender ?? $user->gender;
         $user->address = $request->address ?? $user->address;
+        $user->birthday = $request->birthday ?? $user->birthday;
+        $user->bio = $request->bio ?? $user->birthday;
 
         if ($request->hasFile('avatar')) {
             $avatarPath = $request->file('avatar')->store('avatars', 'public');
