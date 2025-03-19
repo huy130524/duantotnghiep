@@ -57,7 +57,7 @@ const UpdateBlog = () => {
   const onSubmit = (values) => {
     mutate({
       ...values,
-      user_id: 1,
+      user_id: getBlogMutation.data.user_id,
     });
   };
 
