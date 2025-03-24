@@ -80,3 +80,11 @@ Route::middleware('auth:sanctum')->get('profile', [UserController::class, 'profi
 Route::middleware('auth:sanctum')->post('updateprofile/{id}',[UserController::class,'UpdateProfile']);
 
 Route::get('/home', [HomeController::class, 'index']);
+
+
+// Comment
+Route::middleware('auth:sanctum')->group(function () {
+    Route::get('/comments', [CommentController::class, 'index']);
+    Route::get('/comments/detail/{id}', [CommentController::class, 'detail']);
+    Route::post('/comments/send/{order_id}',[CommentController::class,'send']);
+});
