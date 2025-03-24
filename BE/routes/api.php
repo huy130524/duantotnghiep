@@ -7,6 +7,7 @@ use App\Http\Controllers\ColorController;
 use App\Http\Controllers\CouponController;
 use App\Http\Controllers\SizeController;
 use App\Http\Controllers\BrandController;
+use App\Http\Controllers\ContactController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\UserController;
 
@@ -78,4 +79,12 @@ Route::middleware('auth:sanctum')->post('/logout', [UserController::class, 'logo
 
 Route::middleware('auth:sanctum')->get('profile', [UserController::class, 'profile']);
 Route::middleware('auth:sanctum')->post('updateprofile/{id}',[UserController::class,'UpdateProfile']);
+
+
+//  Contact
+Route::get('/contacts', [ContactController::class, 'index']);
+Route::post('/contacts/add', [ContactController::class, 'store']);
+Route::get('/contacts/detail/{id}', [ContactController::class, 'show']);
+Route::post('/contacts/update/{id}', [ContactController::class, 'update']);
+Route::delete('/contacts/delete/{id}', [ContactController::class, 'destroy']);
 
