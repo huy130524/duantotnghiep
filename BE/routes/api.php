@@ -14,7 +14,7 @@ use Illuminate\Support\Facades\Route;
 
 
 
-// Color 
+// Color
 
 Route::get('/colors', [ColorController::class, 'index']);
 Route::post('/color/add', [ColorController::class, 'store']);
@@ -22,7 +22,7 @@ Route::get('/color/detail/{id}', [ColorController::class, 'detail']);
 Route::post('/color/update/{id}', [ColorController::class, 'update']);
 
 
-// Size 
+// Size
 
 Route::get('/sizes', [SizeController::class, 'index']);
 Route::post('/size/add', [SizeController::class, 'store']);
@@ -30,14 +30,14 @@ Route::get('/size/detail/{id}', [SizeController::class, 'detail']);
 Route::post('/size/update/{id}', [SizeController::class, 'update']);
 
 
-// Coupon 
+// Coupon
 
 Route::get('/coupons', [CouponController::class, 'index']);
 Route::post('/coupon/add', [CouponController::class, 'store']);
 Route::get('/coupon/detail/{id}', [CouponController::class, 'detail']);
 Route::post('/coupon/update/{id}', [CouponController::class, 'update']);
 
-// Blog 
+// Blog
 
 Route::get('/blogs', [BlogController::class, 'index']);
 Route::post('/blog/add', [BlogController::class, 'store']);
@@ -58,8 +58,10 @@ Route::get('/products', [ProductController::class, 'index']);
 Route::post('/product/add', [ProductController::class, 'store']);
 Route::get('/product/detail/{id}', [ProductController::class, 'ProductDetail']);
 Route::post('/product/update/{id}', [ProductController::class, 'update']);
+Route::get('/products/size/{size_id}', [ProductController::class, 'filterBySize']);
 
-// Brand 
+
+// Brand
 
 Route::get('/brands', [BrandController::class, 'index']);
 Route::post('/brand/add', [BrandController::class, 'store']);

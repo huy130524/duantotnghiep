@@ -69,7 +69,7 @@ class ProductController extends Controller
             return response()->json(["error" => "Lỗi: " . $e->getMessage()], 500);
         }
     }
-    
+
     public function update(Request $request, $id)
     {
         $data = $request->validate([
@@ -139,6 +139,21 @@ class ProductController extends Controller
             'products' => $products,
         ]);
     }
+    public function filterBySize($size_id)
+    {
+        $products = Product::whereHas('productVariants', function ($query) use ($size_id) {
+            $query->where('size_id', $size_id);
+        })->with(['productVariants' => function ($query) use ($size_id) {
+            $query->where('size_id', $size_id);
+        }])->paginate(10);
 
+        if ($products->isEmpty()) {
+            return response()->json([
+                'message' => 'Không có sản phẩm nào với size này.'
+            ], 404);
+        }
+
+        return response()->json($products);
+    }
 
 }
