@@ -155,5 +155,32 @@ class ProductController extends Controller
 
         return response()->json($products);
     }
+    public function search(Request $request)
+    {
+        $query = Product::query();
+
+        // Tìm kiếm theo tên sản phẩm
+        if ($request->has('name')) {
+            $query->where('name', 'LIKE', '%' . $request->name . '%');
+        }
+        // Tìm kiếm theo khoảng giá
+        if ($request->has('min_price') || $request->has('max_price')) {
+            $query->whereHas('productVariants', function ($q) use ($request) {
+                if ($request->has('min_price')) {
+                    $q->where('price', '>=', $request->min_price);
+                }
+                if ($request->has('max_price')) {
+                    $q->where('price', '<=', $request->max_price);
+                }
+            });
+        }
+        // Phân trang kết quả
+        $products = $query->paginate(10);
+
+        return response()->json([
+            'success' => true,
+            'data' => $products
+        ]);
+    }
 
 }

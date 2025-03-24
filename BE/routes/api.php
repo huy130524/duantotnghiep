@@ -59,7 +59,7 @@ Route::post('/product/add', [ProductController::class, 'store']);
 Route::get('/product/detail/{id}', [ProductController::class, 'ProductDetail']);
 Route::post('/product/update/{id}', [ProductController::class, 'update']);
 Route::get('/products/size/{size_id}', [ProductController::class, 'filterBySize']);
-
+Route::get('/products/search', [ProductController::class, 'search']);
 
 // Brand
 
