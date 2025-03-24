@@ -7,6 +7,7 @@ use App\Http\Controllers\ColorController;
 use App\Http\Controllers\CouponController;
 use App\Http\Controllers\SizeController;
 use App\Http\Controllers\BrandController;
+use App\Http\Controllers\CommentController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\UserController;
@@ -44,6 +45,7 @@ Route::get('/blogs', [BlogController::class, 'index']);
 Route::post('/blog/add', [BlogController::class, 'store']);
 Route::get('/blog/detail/{id}', [BlogController::class, 'detail']);
 Route::post('/blog/update/{id}', [BlogController::class, 'update']);
+Route::get('blog-user', [BlogController::class, 'userBlog']);
 
 //
 Route::get('/categories', [CategoryController::class, 'index']);

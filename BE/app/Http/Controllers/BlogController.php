@@ -11,25 +11,7 @@ class BlogController extends Controller
 {
     public function index(Request $request)
     {
-        $query = Blog::with('user', 'category');
-        if ($request->has('title')) {
-            $title = $request->input('title');
-            $query->where('title', 'LIKE', "%$title%");
-        }
-        if ($request->has('user')) {
-            $userName = $request->input('user');
-            $query->whereHas('user', function ($q) use ($userName) {
-                $q->where('name', 'LIKE', "%$userName%");
-            });
-        }
-        if ($request->has('status')) {
-            $query->where('status', $request->input('status'));
-        }
-        if ($request->has('category_id')) {
-            $query->where('category_id', $request->input('category_id'));
-        }
-        $query->orderBy('created_at', $request->input('sort', 'desc'));
-        $blogs = $query->paginate($request->input('limit', 10));
+        $blogs = Blog::paginate(5);
 
         return response()->json($blogs);
     }
@@ -92,7 +74,7 @@ class BlogController extends Controller
             'content' => 'required|string',
             'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
             'category_id' => 'required|exists:categories,id',
-            'user_id' => 'required|exists:users,id', 
+            'user_id' => 'required|exists:users,id',
         ]);
 
         if ($validator->fails()) {
@@ -116,5 +98,10 @@ class BlogController extends Controller
             'message' => 'Cập nhật bài viết thành công!',
             'blog' => $blog
         ], 200);
+    }
+    public function userBlog(){
+        $blogs = Blog::paginate(10);
+
+        return response()->json($blogs);
     }
 }
