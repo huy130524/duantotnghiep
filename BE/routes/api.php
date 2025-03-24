@@ -14,7 +14,7 @@ use Illuminate\Support\Facades\Route;
 
 
 
-// Color 
+// Color
 
 Route::get('/colors', [ColorController::class, 'index']);
 Route::post('/color/add', [ColorController::class, 'store']);
@@ -22,7 +22,7 @@ Route::get('/color/detail/{id}', [ColorController::class, 'detail']);
 Route::post('/color/update/{id}', [ColorController::class, 'update']);
 
 
-// Size 
+// Size
 
 Route::get('/sizes', [SizeController::class, 'index']);
 Route::post('/size/add', [SizeController::class, 'store']);
@@ -30,14 +30,14 @@ Route::get('/size/detail/{id}', [SizeController::class, 'detail']);
 Route::post('/size/update/{id}', [SizeController::class, 'update']);
 
 
-// Coupon 
+// Coupon
 
 Route::get('/coupons', [CouponController::class, 'index']);
 Route::post('/coupon/add', [CouponController::class, 'store']);
 Route::get('/coupon/detail/{id}', [CouponController::class, 'detail']);
 Route::post('/coupon/update/{id}', [CouponController::class, 'update']);
 
-// Blog 
+// Blog
 
 Route::get('/blogs', [BlogController::class, 'index']);
 Route::post('/blog/add', [BlogController::class, 'store']);
@@ -59,7 +59,7 @@ Route::post('/product/add', [ProductController::class, 'store']);
 Route::get('/product/detail/{id}', [ProductController::class, 'ProductDetail']);
 Route::post('/product/update/{id}', [ProductController::class, 'update']);
 
-// Brand 
+// Brand
 
 Route::get('/brands', [BrandController::class, 'index']);
 Route::post('/brand/add', [BrandController::class, 'store']);
@@ -76,3 +76,7 @@ Route::middleware('auth:sanctum')->post('/logout', [UserController::class, 'logo
 Route::middleware('auth:sanctum')->get('profile', [UserController::class, 'profile']);
 Route::middleware('auth:sanctum')->post('updateprofile/{id}',[UserController::class,'UpdateProfile']);
 
+// Order admin
+Route::get('/admin-orders',[OrderController::class,'admin_index']);
+Route::get('/admin-orders/detail/{id}',[OrderController::class,'admin_detail']);
+Route::post('/admin-orders/update/{order}',[OrderController::class,'update']);
