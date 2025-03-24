@@ -14,8 +14,13 @@ class ProductController extends Controller
         $products = Product::all();
         return response()->json($products);
     }
-    public function ProductDetail($id){
-        $product = Product::findOrFail($id);
+    public function ProductDetail($id)
+    {
+        $product = Product::with([
+            'productVariants',
+            'comments'
+        ])->findOrFail($id);
+
         return response()->json($product);
     }
     public function store(Request $request)
@@ -69,7 +74,7 @@ class ProductController extends Controller
             return response()->json(["error" => "Lỗi: " . $e->getMessage()], 500);
         }
     }
-    
+
     public function update(Request $request, $id)
     {
         $data = $request->validate([
@@ -127,17 +132,20 @@ class ProductController extends Controller
             return response()->json(["error" => "Lỗi: " . $e->getMessage()], 500);
         }
     }
-    public function getByCategory($category_id)
+    public function getProductsByCategory($id)
     {
-        $category = Category::find($category_id);
-        if (!$category) {
-            return response()->json(['message' => 'Danh mục không tồn tại'], 404);
+        $products = Product::where('category_id', $id)->get();
+        $category = Category::where('id',$id)->first();
+        if ($products->isEmpty()) {
+            return response()->json([
+                'message' => 'Không có sản phẩm nào trong danh mục này.'
+            ], 404);
         }
-        $products = Product::where('category_id', $category_id)->paginate(10);
+
         return response()->json([
             'category' => $category->name,
-            'products' => $products,
-        ]);
+            'products' => $products
+        ], 200);
     }
 
 

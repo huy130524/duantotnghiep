@@ -59,6 +59,8 @@ Route::get('/products', [ProductController::class, 'index']);
 Route::post('/product/add', [ProductController::class, 'store']);
 Route::get('/product/detail/{id}', [ProductController::class, 'ProductDetail']);
 Route::post('/product/update/{id}', [ProductController::class, 'update']);
+Route::get('/categories/{id}/products', [ProductController::class, 'getProductsByCategory']);
+
 
 // Brand
 
