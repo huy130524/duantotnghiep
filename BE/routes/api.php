@@ -88,3 +88,11 @@ Route::get('/contacts/detail/{id}', [ContactController::class, 'show']);
 Route::post('/contacts/update/{id}', [ContactController::class, 'update']);
 Route::delete('/contacts/delete/{id}', [ContactController::class, 'destroy']);
 
+// Banner
+Route::get('/banners', [BannerController::class, 'index']);
+Route::post('/banner/add', [BannerController::class, 'store']);
+Route::get('/banner/{id}', [BannerController::class, 'show']);
+Route::post('/banner/update/{id}', [BannerController::class, 'update']);
+Route::delete('/banner/delete/{id}', [BannerController::class, 'destroy']);
+
+
