@@ -182,5 +182,37 @@ class ProductController extends Controller
             'data' => $products
         ]);
     }
+    public function filterProducts(Request $request)
+    {
+        $query = Product::query();
+
+        // Lọc theo thời gian tạo (mới nhất, cũ nhất)
+        if ($request->has('sort_by')) {
+            switch ($request->sort_by) {
+                case 'latest':
+                    $query->orderBy('created_at', 'desc');
+                    break;
+                case 'oldest':
+                    $query->orderBy('created_at', 'asc');
+                    break;
+                case 'price_asc':
+                    $query->join('product_variants', 'products.id', '=', 'product_variants.product_id')
+                          ->orderBy('product_variants.price', 'asc')
+                          ->select('products.*');
+                    break;
+                case 'price_desc':
+                    $query->join('product_variants', 'products.id', '=', 'product_variants.product_id')
+                          ->orderBy('product_variants.price', 'desc')
+                          ->select('products.*');
+                    break;
+            }
+        }
+        $products = $query->paginate(10);
+
+        return response()->json([
+            'success' => true,
+            'data' => $products
+        ]);
+    }
 
 }
