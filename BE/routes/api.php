@@ -7,6 +7,7 @@ use App\Http\Controllers\ColorController;
 use App\Http\Controllers\CouponController;
 use App\Http\Controllers\SizeController;
 use App\Http\Controllers\BrandController;
+use App\Http\Controllers\ContactController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\UserController;
 
@@ -14,7 +15,7 @@ use Illuminate\Support\Facades\Route;
 
 
 
-// Color 
+// Color
 
 Route::get('/colors', [ColorController::class, 'index']);
 Route::post('/color/add', [ColorController::class, 'store']);
@@ -22,7 +23,7 @@ Route::get('/color/detail/{id}', [ColorController::class, 'detail']);
 Route::post('/color/update/{id}', [ColorController::class, 'update']);
 
 
-// Size 
+// Size
 
 Route::get('/sizes', [SizeController::class, 'index']);
 Route::post('/size/add', [SizeController::class, 'store']);
@@ -30,14 +31,14 @@ Route::get('/size/detail/{id}', [SizeController::class, 'detail']);
 Route::post('/size/update/{id}', [SizeController::class, 'update']);
 
 
-// Coupon 
+// Coupon
 
 Route::get('/coupons', [CouponController::class, 'index']);
 Route::post('/coupon/add', [CouponController::class, 'store']);
 Route::get('/coupon/detail/{id}', [CouponController::class, 'detail']);
 Route::post('/coupon/update/{id}', [CouponController::class, 'update']);
 
-// Blog 
+// Blog
 
 Route::get('/blogs', [BlogController::class, 'index']);
 Route::post('/blog/add', [BlogController::class, 'store']);
@@ -58,8 +59,11 @@ Route::get('/products', [ProductController::class, 'index']);
 Route::post('/product/add', [ProductController::class, 'store']);
 Route::get('/product/detail/{id}', [ProductController::class, 'ProductDetail']);
 Route::post('/product/update/{id}', [ProductController::class, 'update']);
+Route::get('/products/size/{size_id}', [ProductController::class, 'filterBySize']);
+Route::get('/products/search', [ProductController::class, 'search']);
+Route::get('/products/filter', [ProductController::class, 'filterProducts']);
 
-// Brand 
+// Brand
 
 Route::get('/brands', [BrandController::class, 'index']);
 Route::post('/brand/add', [BrandController::class, 'store']);
@@ -75,4 +79,20 @@ Route::middleware('auth:sanctum')->post('/logout', [UserController::class, 'logo
 
 Route::middleware('auth:sanctum')->get('profile', [UserController::class, 'profile']);
 Route::middleware('auth:sanctum')->post('updateprofile/{id}',[UserController::class,'UpdateProfile']);
+
+
+//  Contact
+Route::get('/contacts', [ContactController::class, 'index']);
+Route::post('/contacts/add', [ContactController::class, 'store']);
+Route::get('/contacts/detail/{id}', [ContactController::class, 'show']);
+Route::post('/contacts/update/{id}', [ContactController::class, 'update']);
+Route::delete('/contacts/delete/{id}', [ContactController::class, 'destroy']);
+
+// Banner
+Route::get('/banners', [BannerController::class, 'index']);
+Route::post('/banner/add', [BannerController::class, 'store']);
+Route::get('/banner/{id}', [BannerController::class, 'show']);
+Route::post('/banner/update/{id}', [BannerController::class, 'update']);
+Route::delete('/banner/delete/{id}', [BannerController::class, 'destroy']);
+
 
