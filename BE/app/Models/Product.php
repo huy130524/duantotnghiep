@@ -31,7 +31,7 @@ class Product extends Model
         'brand_id' => 'nullable|exists:brands,id',
         'is_active' => 'boolean'
     ];
-
+    
     protected $casts = [
         'views' => 'integer',
         'is_active' => 'boolean',
@@ -49,8 +49,13 @@ class Product extends Model
     {
         return $this->belongsTo(Brand::class);
     }
-    public function variants()
+
+    public function productVariants()
     {
         return $this->hasMany(ProductVariant::class);
     }
-}
+    public function comments()
+    {
+        return $this->hasMany(Comment::class, 'product_id');
+    }
+    }
