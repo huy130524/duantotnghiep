@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\BannerController;
 use App\Http\Controllers\BlogController;
 use App\Http\Controllers\CategoryController;
 
@@ -10,6 +11,7 @@ use App\Http\Controllers\BrandController;
 use App\Http\Controllers\CommentController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\ContactController;
+use App\Http\Controllers\OrderController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\UserController;
 
@@ -113,3 +115,12 @@ Route::get('/banner/{id}', [BannerController::class, 'show']);
 Route::post('/banner/update/{id}', [BannerController::class, 'update']);
 Route::delete('/banner/delete/{id}', [BannerController::class, 'destroy']);
 
+// Address 
+Route::middleware('auth:sanctum')->group(function () {
+    Route::get('/addresses', [AddressController::class, 'index']);
+    Route::post('/addresses/add', [AddressController::class, 'store']);
+    Route::get('/addresses/detail/{id}', [AddressController::class, 'show']);
+    Route::post('/addresses/update/{id}', [AddressController::class, 'update']);
+    Route::delete('//addresses/delete/{id}', [AddressController::class, 'destroy']);
+
+});
