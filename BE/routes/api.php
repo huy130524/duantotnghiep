@@ -7,6 +7,9 @@ use App\Http\Controllers\ColorController;
 use App\Http\Controllers\CouponController;
 use App\Http\Controllers\SizeController;
 use App\Http\Controllers\BrandController;
+use App\Http\Controllers\CommentController;
+use App\Http\Controllers\HomeController;
+use App\Http\Controllers\ContactController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\UserController;
 
@@ -43,6 +46,7 @@ Route::get('/blogs', [BlogController::class, 'index']);
 Route::post('/blog/add', [BlogController::class, 'store']);
 Route::get('/blog/detail/{id}', [BlogController::class, 'detail']);
 Route::post('/blog/update/{id}', [BlogController::class, 'update']);
+Route::get('blog-user', [BlogController::class, 'userBlog']);
 
 //
 Route::get('/categories', [CategoryController::class, 'index']);
@@ -58,6 +62,11 @@ Route::get('/products', [ProductController::class, 'index']);
 Route::post('/product/add', [ProductController::class, 'store']);
 Route::get('/product/detail/{id}', [ProductController::class, 'ProductDetail']);
 Route::post('/product/update/{id}', [ProductController::class, 'update']);
+Route::get('/categories/{id}/products', [ProductController::class, 'getProductsByCategory']);
+
+Route::get('/products/size/{size_id}', [ProductController::class, 'filterBySize']);
+Route::get('/products/search', [ProductController::class, 'search']);
+Route::get('/products/filter', [ProductController::class, 'filterProducts']);
 
 // Brand
 
@@ -80,3 +89,27 @@ Route::middleware('auth:sanctum')->post('updateprofile/{id}',[UserController::cl
 Route::get('/admin-orders',[OrderController::class,'admin_index']);
 Route::get('/admin-orders/detail/{id}',[OrderController::class,'admin_detail']);
 Route::post('/admin-orders/update/{order}',[OrderController::class,'update']);
+Route::get('/home', [HomeController::class, 'index']);
+
+
+// Comment
+Route::middleware('auth:sanctum')->group(function () {
+    Route::get('/comments', [CommentController::class, 'index']);
+    Route::get('/comments/detail/{id}', [CommentController::class, 'detail']);
+    Route::post('/comments/send/{order_id}',[CommentController::class,'send']);
+});
+
+//  Contact
+Route::get('/contacts', [ContactController::class, 'index']);
+Route::post('/contacts/add', [ContactController::class, 'store']);
+Route::get('/contacts/detail/{id}', [ContactController::class, 'show']);
+Route::post('/contacts/update/{id}', [ContactController::class, 'update']);
+Route::delete('/contacts/delete/{id}', [ContactController::class, 'destroy']);
+
+// Banner
+Route::get('/banners', [BannerController::class, 'index']);
+Route::post('/banner/add', [BannerController::class, 'store']);
+Route::get('/banner/{id}', [BannerController::class, 'show']);
+Route::post('/banner/update/{id}', [BannerController::class, 'update']);
+Route::delete('/banner/delete/{id}', [BannerController::class, 'destroy']);
+
