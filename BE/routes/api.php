@@ -64,7 +64,6 @@ Route::get('/product/detail/{id}', [ProductController::class, 'ProductDetail']);
 Route::post('/product/update/{id}', [ProductController::class, 'update']);
 Route::get('/categories/{id}/products', [ProductController::class, 'getProductsByCategory']);
 
-
 Route::get('/products/size/{size_id}', [ProductController::class, 'filterBySize']);
 Route::get('/products/search', [ProductController::class, 'search']);
 Route::get('/products/filter', [ProductController::class, 'filterProducts']);
@@ -86,6 +85,10 @@ Route::middleware('auth:sanctum')->post('/logout', [UserController::class, 'logo
 Route::middleware('auth:sanctum')->get('profile', [UserController::class, 'profile']);
 Route::middleware('auth:sanctum')->post('updateprofile/{id}',[UserController::class,'UpdateProfile']);
 
+// Order admin
+Route::get('/admin-orders',[OrderController::class,'admin_index']);
+Route::get('/admin-orders/detail/{id}',[OrderController::class,'admin_detail']);
+Route::post('/admin-orders/update/{order}',[OrderController::class,'update']);
 Route::get('/home', [HomeController::class, 'index']);
 
 
