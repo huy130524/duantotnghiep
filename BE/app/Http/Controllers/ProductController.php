@@ -11,7 +11,13 @@ use Illuminate\Support\Facades\DB;
 class ProductController extends Controller
 {
     public function index(){
-        $products = Product::all();
+        $products = Product::with([
+            'productVariants',
+            'comments',
+            'brand',
+            'category',
+
+        ])->get();
         return response()->json($products);
     }
     public function ProductDetail($id)
