@@ -18,7 +18,10 @@ class ProductController extends Controller
     {
         $product = Product::with([
             'productVariants',
-            'comments'
+            'comments',
+            'brand',
+            'category',
+
         ])->findOrFail($id);
 
         return response()->json($product);
