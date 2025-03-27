@@ -30,10 +30,13 @@ const ListCategory = () => {
       key: "image",
       dataIndex: "image",
       render: (image) => {
-        const url = getImageUrl(image);
-
         return (
-          <Image src={url} width={100} height={100} className={styles.image} />
+          <Image
+            src={image}
+            width={100}
+            height={100}
+            className={styles.image}
+          />
         );
       },
     },
