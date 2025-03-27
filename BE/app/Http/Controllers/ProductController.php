@@ -4,7 +4,9 @@ namespace App\Http\Controllers;
 
 use App\Models\Category;
 use App\Models\Product;
+use App\Models\ProductVariant;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class ProductController extends Controller
 {
@@ -18,60 +20,156 @@ class ProductController extends Controller
             'productVariants',
             'comments'
         ])->findOrFail($id);
-    
+
         return response()->json($product);
     }
-    
     public function store(Request $request)
     {
         $data = $request->validate([
-            'code' =>'required|unique:products,code',
+            'code' => 'required|unique:products,code',
             'name' => 'required|max:255',
             'slug' => 'required|unique:products,slug',
             'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
             'description' => 'nullable|string',
             'category_id' => 'required|exists:categories,id',
-            'brand_id' => 'required|exists:brands,id'
+            'brand_id' => 'required|exists:brands,id',
+            'variants' => 'nullable|array', // Mảng biến thể
+            'variants.*.color_id' => 'required|exists:colors,id', // Kiểm tra color_id có tồn tại không
+            'variants.*.size_id' => 'required|exists:sizes,id', // Kiểm tra size_id có tồn tại không
+            'variants.*.price' => 'required|numeric|min:0',
+            'variants.*.sale_price' => 'nullable|numeric|min:0',
+            'variants.*.quantity' => 'required|integer|min:0',
+            'variants.*.image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
         ]);
-    
-        // Xử lý upload ảnh
+
+        // Xử lý upload ảnh sản phẩm chính
         if ($request->hasFile('image')) {
             try {
                 $imagePath = $request->file('image')->store('uploads/products', 'public');
                 $data['image'] = $imagePath;
             } catch (\Exception $e) {
-                return response()->json(["error" => "Lỗi upload ảnh: " . $e->getMessage()], 500);
+                return response()->json(["error" => "Lỗi upload ảnh sản phẩm: " . $e->getMessage()], 500);
             }
         }
-    
-        // Lưu vào database
+
+        DB::beginTransaction();
         try {
-            Product::create($data);
-            return response()->json(["success" => "Thêm thành công"]);
+            // Tạo sản phẩm
+            $product = Product::create($data);
+
+            // Xử lý biến thể nếu có
+            if (!empty($data['variants'])) {
+                foreach ($data['variants'] as $variant) {
+                    // Xử lý ảnh biến thể (nếu có)
+                    if (!empty($variant['image']) && $request->hasFile("variants.{$variant['index']}.image")) {
+                        try {
+                            $variant['image'] = $request->file("variants.{$variant['index']}.image")->store('uploads/variants', 'public');
+                        } catch (\Exception $e) {
+                            return response()->json(["error" => "Lỗi upload ảnh biến thể: " . $e->getMessage()], 500);
+                        }
+                    }
+
+                    // Thêm biến thể vào sản phẩm
+                    $product->productVariants()->create([
+                        'color_id' => $variant['color_id'],
+                        'size_id' => $variant['size_id'],
+                        'price' => $variant['price'],
+                        'sale_price' => $variant['sale_price'] ?? null,
+                        'quantity' => $variant['quantity'],
+                        'image' => $variant['image'] ?? null,
+                    ]);
+                }
+            }
+
+            DB::commit();
+            return response()->json(["success" => "Thêm sản phẩm và biến thể thành công"]);
         } catch (\Exception $e) {
+            DB::rollBack();
             return response()->json(["error" => "Lỗi khi lưu vào database: " . $e->getMessage()], 500);
         }
     }
-    
-    public function update($product_id, Request $request)
-    {
-        $data = $request->post();
-        $validator = \Validator::make($data, Product::$rules);
 
-        if ($validator->fails()) {
-            return response()->json(['status' => 0, "message" => "Data invalid.",  "errors" => $validator->errors()]);
-            
-        }
 
-        $product = Product::find($product_id);
+    public function update(Request $request, $product_id)
+{
+    // Validate dữ liệu
+    $data = $request->validate([
+        'code' => 'required|unique:products,code,' . $product_id,
+        'name' => 'required|max:255',
+        'slug' => 'required|unique:products,slug,' . $product_id,
+        'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+        'description' => 'nullable|string',
+        'category_id' => 'required|exists:categories,id',
+        'brand_id' => 'required|exists:brands,id',
+        'variants' => 'nullable|array',
+        'variants.*.id' => 'nullable|exists:product_variants,id', // ID biến thể (nếu có)
+        'variants.*.color_id' => 'required|exists:colors,id',
+        'variants.*.size_id' => 'required|exists:sizes,id',
+        'variants.*.price' => 'required|numeric|min:0',
+        'variants.*.sale_price' => 'nullable|numeric|min:0',
+        'variants.*.quantity' => 'required|integer|min:0',
+        'variants.*.image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+    ]);
 
-        if (empty($product)) {
-            return response()->json(['status' => 0, "message" => "Product does not exist."]);
-        }
-
-        $product->update($data) ;
-        return response()->json(['status' => 1, "message" => "Success."]);
+    // Tìm sản phẩm cần cập nhật
+    $product = Product::find($product_id);
+    if (!$product) {
+        return response()->json(['status' => 0, "message" => "Product does not exist."]);
     }
+
+    // Xử lý upload ảnh sản phẩm chính (nếu có)
+    if ($request->hasFile('image')) {
+        try {
+            $imagePath = $request->file('image')->store('uploads/products', 'public');
+            $data['image'] = $imagePath;
+        } catch (\Exception $e) {
+            return response()->json(["error" => "Lỗi upload ảnh sản phẩm: " . $e->getMessage()], 500);
+        }
+    }
+
+    DB::beginTransaction();
+    try {
+        // Cập nhật thông tin sản phẩm
+        $product->update($data);
+
+        // Lưu danh sách ID biến thể từ request
+        $variantIds = collect($data['variants'])->pluck('id')->filter()->toArray();
+
+        // Xóa các biến thể không còn trong danh sách
+        $product->productVariants()->whereNotIn('id', $variantIds)->delete();
+
+        // Xử lý cập nhật hoặc thêm mới biến thể
+        foreach ($data['variants'] as $variant) {
+            // Nếu biến thể có ID, cập nhật
+            if (!empty($variant['id'])) {
+                $existingVariant = ProductVariant::find($variant['id']);
+                if ($existingVariant) {
+                    $existingVariant->update($variant);
+                }
+            } else {
+                // Nếu không có ID, tạo mới biến thể
+                $product->productVariants()->create($variant);
+            }
+
+            // Xử lý upload ảnh biến thể (nếu có)
+            if (!empty($variant['image']) && $request->hasFile("variants.{$variant['index']}.image")) {
+                try {
+                    $variant['image'] = $request->file("variants.{$variant['index']}.image")->store('uploads/variants', 'public');
+                    ProductVariant::where('id', $variant['id'])->update(['image' => $variant['image']]);
+                } catch (\Exception $e) {
+                    return response()->json(["error" => "Lỗi upload ảnh biến thể: " . $e->getMessage()], 500);
+                }
+            }
+        }
+
+        DB::commit();
+        return response()->json(['status' => 1, "message" => "Cập nhật sản phẩm và biến thể thành công."]);
+    } catch (\Exception $e) {
+        DB::rollBack();
+        return response()->json(["error" => "Lỗi khi cập nhật database: " . $e->getMessage()], 500);
+    }
+}
+
     public function getByCategory($category_id)
     {
         $category = Category::find($category_id);
@@ -94,7 +192,7 @@ class ProductController extends Controller
                 'message' => 'Không có sản phẩm nào trong danh mục này.'
             ], 404);
         }
-    
+
         return response()->json([
             'category' => $category->name,
             'products' => $products
