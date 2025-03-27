@@ -1,17 +1,26 @@
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQuery } from "@tanstack/react-query";
 import { Button, Form, Input, message, Modal, Switch } from "antd";
 
 import { FaTimes } from "react-icons/fa";
 import { api } from "../../../../api/api";
+import { useEffect } from "react";
 
-const AddAddressModal = (props) => {
-  const { open, onClose, onSuccess } = props;
+const UpdateAddressModal = (props) => {
+  const { open, onClose, onSuccess, id } = props;
+
+  const [form] = Form.useForm();
+
+  const { data } = useQuery({
+    queryKey: ["GET_ADDRESS", id],
+    queryFn: () => api.get(`/addresses/detail/${id}`),
+    enabled: open,
+  });
 
   const addAddressMutation = useMutation({
-    mutationKey: ["ADD_ADDRESS"],
-    mutationFn: (values) => api.post("/addresses/add", values),
+    mutationKey: ["UPDATE_ADDRESS"],
+    mutationFn: (values) => api.post("/addresses/update/" + id, values),
     onSuccess: () => {
-      message.success("Thêm địa chỉ thành công");
+      message.success("Cập nhật địa chỉ thành công");
       onClose();
       onSuccess();
     },
@@ -19,6 +28,12 @@ const AddAddressModal = (props) => {
       message.error(error?.response?.data?.message || "Có lỗi xảy ra");
     },
   });
+
+  useEffect(() => {
+    if (data) {
+      form.setFieldsValue(data);
+    }
+  }, [data]);
 
   return (
     <Modal
@@ -40,6 +55,7 @@ const AddAddressModal = (props) => {
         layout="vertical"
         className="tw-mt-4"
         onFinish={addAddressMutation.mutate}
+        form={form}
       >
         <p className="tw-font-semibold text-[16px] text-[#333] tw-mb-3">
           Thông tin khách hàng
@@ -116,4 +132,4 @@ const AddAddressModal = (props) => {
   );
 };
 
-export default AddAddressModal;
+export default UpdateAddressModal;
