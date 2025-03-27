@@ -1,4 +1,4 @@
-import { Button } from "antd";
+import { Button, Empty } from "antd";
 import AddAddressModal from "./AddressModal";
 import { useState } from "react";
 import AddressItem from "./AddressItem";
@@ -8,7 +8,7 @@ import { api } from "../../../../api/api";
 const ListAddress = () => {
   const [openModal, setOpenModal] = useState(false);
 
-  const { data } = useQuery({
+  const { data, refetch } = useQuery({
     queryKey: ["GET_ADDRESS"],
     queryFn: () => api.get("/addresses"),
   });
@@ -30,12 +30,25 @@ const ListAddress = () => {
       </div>
 
       <div className="tw-px-6 tw-py-4">
-        <AddressItem isDefault />
-        <AddressItem isDefault={false} />
-        <AddressItem isDefault={false} />
+        {data?.map((it) => (
+          <AddressItem
+            key={it.id}
+            isDefault={it.is_default}
+            data={it}
+            refetch={refetch}
+          />
+        ))}
+
+        {!data?.length && (
+          <Empty className="mt-4" description="Chưa có địa chỉ" />
+        )}
       </div>
 
-      <AddAddressModal open={openModal} onClose={() => setOpenModal(false)} />
+      <AddAddressModal
+        open={openModal}
+        onClose={() => setOpenModal(false)}
+        onSuccess={refetch}
+      />
     </>
   );
 };
