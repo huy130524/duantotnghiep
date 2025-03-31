@@ -73,7 +73,7 @@ const AddProduct = () => {
           });
         });
       } else {
-        formData.append(key, value ?? null);
+        formData.append(key, value ?? "");
       }
     });
 
