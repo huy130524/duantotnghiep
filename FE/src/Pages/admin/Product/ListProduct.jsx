@@ -38,6 +38,22 @@ const ListProduct = () => {
       },
     },
     {
+      title: "Danh mục",
+      key: "category",
+      dataIndex: "category",
+      render: (category) => {
+        return category.name;
+      },
+    },
+    {
+      title: "Thương hiệu",
+      key: "brand",
+      dataIndex: "brand",
+      render: (brand) => {
+        return brand.name;
+      },
+    },
+    {
       title: "Hành động",
       key: "actions",
       render: (_, record) => (
