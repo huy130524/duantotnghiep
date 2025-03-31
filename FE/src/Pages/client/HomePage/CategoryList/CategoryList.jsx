@@ -13,7 +13,7 @@ const CategoryList = ({ data = [] }) => {
           </div>
         </div>
         <div className="tw-grid tw-grid-cols-12 tw-gap-4">
-          {data?.map((it) => (
+          {data?.slice(0, 4).map((it) => (
             <Link
               to={`/products?category=${it.id}`}
               className="item tw-col-span-3"
@@ -22,7 +22,7 @@ const CategoryList = ({ data = [] }) => {
               <div className="product-item">
                 <div className="product-img">
                   <img
-                    className="img-fluid"
+                    className="img-fluid tw-h-[300px] tw-object-cover"
                     src={getImageUrl(it.image)}
                     alt=""
                   />

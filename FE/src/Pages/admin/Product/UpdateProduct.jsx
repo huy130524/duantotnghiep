@@ -101,11 +101,12 @@ const UpdateProduct = () => {
   }, []);
 
   const onSubmit = ({ image, ...values }) => {
+    const formData = new FormData();
+
     if (image.file) {
       formData.append("image", image.file);
     }
 
-    const formData = new FormData();
     Object.entries(values).forEach(([key, value]) => {
       if (key === "variants") {
         value.forEach((variant, index) => {
