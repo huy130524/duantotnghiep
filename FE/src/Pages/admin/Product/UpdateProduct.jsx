@@ -32,6 +32,14 @@ const UpdateProduct = () => {
     mutationKey: ["GET_PRODUCT", id],
     mutationFn: () => api.get("/product/detail/" + id),
     onSuccess: (r) => {
+      const variants = r.product_variants.map((it) => ({
+        size_id: it.size_id,
+        color_id: it.color_id,
+        price: it.price,
+        sale_price: it.sale_price,
+        quantity: it.quantity,
+      }));
+
       form.setFieldsValue({
         code: r.code,
         name: r.name,
@@ -42,6 +50,7 @@ const UpdateProduct = () => {
           preview: getImageUrl(r.image),
         },
         description: r.description,
+        variants,
       });
     },
   });
@@ -97,7 +106,6 @@ const UpdateProduct = () => {
     }
 
     const formData = new FormData();
-    formData.append("image", image.file);
     Object.entries(values).forEach(([key, value]) => {
       if (key === "variants") {
         value.forEach((variant, index) => {
@@ -106,7 +114,7 @@ const UpdateProduct = () => {
           });
         });
       } else {
-        formData.append(key, value ?? null);
+        formData.append(key, value ?? "");
       }
     });
 
