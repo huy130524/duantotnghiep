@@ -1,6 +1,7 @@
 import { Link } from "react-router-dom";
+import { getImageUrl } from "../../../../utils/image";
 
-const CategoryList = () => {
+const CategoryList = ({ data = [] }) => {
   return (
     <section className="pt-0">
       <div className="container">
@@ -11,38 +12,30 @@ const CategoryList = () => {
             </div>
           </div>
         </div>
-        <div className="row">
-          <div className="col-md-12">
-            <div
-              className="owl-carousel no-pb slide-arrow-2"
-              data-dots="false"
-              data-nav="false"
-              data-items={4}
-              data-lg-items={3}
-              data-md-items={2}
-              data-sm-items={2}
-              data-margin={30}
-              data-autoplay="false"
+        <div className="tw-grid tw-grid-cols-12 tw-gap-4">
+          {data?.map((it) => (
+            <Link
+              to={`/products?category=${it.id}`}
+              className="item tw-col-span-3"
+              key={it.id}
             >
-              <Link to="/products?category=1" className="item">
-                <div className="product-item">
-                  <div className="product-img">
-                    <img
-                      className="img-fluid"
-                      src="images/product/01.jpg"
-                      alt=""
-                    />
-                  </div>
-                  <div className="product-desc !tw-block !tw-py-3 !tw-translate-y-full">
-                    {" "}
-                    <p className="product-name tw-m-0 tw-text-center">
-                      Danh mục 1
-                    </p>
-                  </div>
+              <div className="product-item">
+                <div className="product-img">
+                  <img
+                    className="img-fluid"
+                    src={getImageUrl(it.image)}
+                    alt=""
+                  />
                 </div>
-              </Link>
-            </div>
-          </div>
+                <div className="product-desc !tw-block !tw-py-3 !tw-translate-y-full">
+                  {" "}
+                  <p className="product-name tw-m-0 tw-text-center">
+                    {it.name}
+                  </p>
+                </div>
+              </div>
+            </Link>
+          ))}
         </div>
       </div>
     </section>
