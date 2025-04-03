@@ -113,7 +113,7 @@ const ClientHeader = () => {
                     <img
                       id="logo-img"
                       className="img-center"
-                      src="images/logo.png"
+                      src="/images/logo.png"
                       alt=""
                     />
                   </Link>
