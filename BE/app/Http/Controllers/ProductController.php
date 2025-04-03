@@ -198,7 +198,8 @@ class ProductController extends Controller
         $category = Category::where('id',$id)->first();
         if ($products->isEmpty()) {
             return response()->json([
-                'message' => 'Không có sản phẩm nào trong danh mục này.'
+                'message' => 'Không có sản phẩm nào trong danh mục này.',
+                'category' => $category->name,
             ], 404);
         }
 
@@ -224,32 +225,28 @@ class ProductController extends Controller
     return response()->json($products);
 }
 public function search(Request $request)
-    {
-        $query = Product::query();
+{
+    $query = $request->input('query');
 
-        // Tìm kiếm theo tên sản phẩm
-        if ($request->has('name')) {
-            $query->where('name', 'LIKE', '%' . $request->name . '%');
-        }
-        // Tìm kiếm theo khoảng giá
-        if ($request->has('min_price') || $request->has('max_price')) {
-            $query->whereHas('productVariants', function ($q) use ($request) {
-                if ($request->has('min_price')) {
-                    $q->where('price', '>=', $request->min_price);
-                }
-                if ($request->has('max_price')) {
-                    $q->where('price', '<=', $request->max_price);
-                }
-            });
-        }
-        // Phân trang kết quả
-        $products = $query->paginate(10);
 
+    if (!$query) {
         return response()->json([
-            'success' => true,
-            'data' => $products
-        ]);
+            'success' => false,
+            'message' => 'Query parameter is required'
+        ], 400);
     }
+
+
+    $products = Product::where('name', 'LIKE', "%{$query}%")->get();
+
+
+    return response()->json([
+        'success' => true,
+        'data' => $products
+    ]);
+}
+
+
     public function filterProducts(Request $request)
 {
     $query = Product::query();
@@ -281,6 +278,13 @@ public function search(Request $request)
         'success' => true,
         'data' => $products
     ]);
+}
+public function detail($slug){
+    $product = Product::where('slug',$slug)->with('productVariants','category','comments')->first();
+    if(!$product){
+        return response()->json(["message"=>"Sản phẩm không tồn tại"]);
+    }
+    return response()->json($product);
 }
 
 

@@ -37,7 +37,6 @@ Route::post('/size/update/{id}', [SizeController::class, 'update']);
 
 
 // Coupon
-
 Route::get('/coupons', [CouponController::class, 'index']);
 Route::post('/coupon/add', [CouponController::class, 'store']);
 Route::get('/coupon/detail/{id}', [CouponController::class, 'detail']);
@@ -70,6 +69,7 @@ Route::get('/categories/{id}/products', [ProductController::class, 'getProductsB
 Route::get('/products/size/{size_id}', [ProductController::class, 'filterBySize']);
 Route::get('/products/search', [ProductController::class, 'search']);
 Route::get('/products/filter', [ProductController::class, 'filterProducts']);
+Route::get('products/{slug}',[ProductController::class, 'detail']);
 
 // Brand
 
@@ -116,7 +116,8 @@ Route::get('/banner/{id}', [BannerController::class, 'show']);
 Route::post('/banner/update/{id}', [BannerController::class, 'update']);
 Route::delete('/banner/delete/{id}', [BannerController::class, 'destroy']);
 
-// Address 
+
+// Address
 Route::middleware('auth:sanctum')->group(function () {
     Route::get('/addresses', [AddressController::class, 'index']);
     Route::post('/addresses/add', [AddressController::class, 'store']);
