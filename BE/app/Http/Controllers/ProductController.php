@@ -275,7 +275,15 @@ public function detail($slug){
     if(!$product){
         return response()->json(["message"=>"Sản phẩm không tồn tại"]);
     }
-    return response()->json($product);
+    $relatedProducts = Product::where('category_id', $product->category_id)
+        ->where('id', '!=', $product->id)
+        ->with('productVariants','category')
+        ->get();
+
+    return response()->json([
+        'product' => $product,
+        'related_products' => $relatedProducts
+    ]);
 }
 
 
