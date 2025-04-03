@@ -11,9 +11,11 @@ import { api } from "../../../api/api";
 const ProductList = () => {
   const [searchParams] = useSearchParams();
   const [keyword, setKeyword] = useState("");
+  const [category, setCategory] = useState({ name: "", id: "" });
+  const [sortBy, setSortBy] = useState("latest");
 
   const { data } = useQuery({
-    queryKey: ["PRODUCTS_FILTER", keyword],
+    queryKey: ["PRODUCTS_FILTER", keyword, category.id, sortBy],
     queryFn: async () => {
       if (keyword) {
         const r = await api.get("/products/search", {
@@ -24,26 +26,61 @@ const ProductList = () => {
 
         return r.data;
       }
+
+      if (category.id) {
+        const r = await api.get(`/categories/${category.id}/products`);
+        setCategory({
+          ...category,
+          name: r.category,
+        });
+
+        return r.products;
+      }
+
+      const r = await api.get("/products/filter", {
+        params: {
+          sort_by: sortBy,
+        },
+      });
+
+      return r.data.data;
     },
   });
-  console.log("🚀 352 ~ ProductList ~ data:", data);
 
   useEffect(() => {
     const keyword = searchParams.get("search");
+    const categoryId = searchParams.get("category");
+
     setKeyword(keyword);
+    setCategory({
+      id: categoryId,
+    });
   }, [searchParams]);
 
   return (
     <>
-      <PageTitle keyword={keyword} />
+      <PageTitle keyword={keyword} category={category.name} />
 
       <div className="page-content">
         <section>
           <div className="container">
             <div className="tw-flex tw-gap-x-3">
-              {!keyword && <Sidebar />}
+              {!keyword && (
+                <Sidebar
+                  activeCategory={category.id}
+                  onCategoryChange={(categoryId) => {
+                    setCategory({ ...category, id: categoryId });
+                  }}
+                />
+              )}
 
-              <Content isSearch={!!keyword} data={data} />
+              <Content
+                isSearch={!!keyword}
+                data={data}
+                isCategory={category.id}
+                onSortChange={setSortBy}
+                sortBy={sortBy}
+              />
             </div>
           </div>
         </section>
