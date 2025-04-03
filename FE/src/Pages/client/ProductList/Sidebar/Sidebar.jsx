@@ -1,20 +1,32 @@
-const Sidebar = () => {
+import { useQuery } from "@tanstack/react-query";
+import classNames from "classnames";
+import { api } from "../../../../api/api";
+
+const Sidebar = ({ activeCategory, onCategoryChange }) => {
+  const { data } = useQuery({
+    queryKey: ["CATEGORIES"],
+    queryFn: async () => {
+      const r = await api.get("/categories");
+      return r;
+    },
+  });
+
   return (
     <div className="tw-w-[300px] sidebar">
       <div className="widget">
         <h5 className="widget-title mt-0">Categories</h5>
         <ul className="widget-categories list-unstyled">
-          <li>
-            <a className="tw-cursor-pointer">All</a>
-          </li>
-
-          <li>
-            <a className="tw-cursor-pointer">Danh mục 1</a>
-          </li>
-
-          <li>
-            <a className="tw-cursor-pointer">Danh mục 2</a>
-          </li>
+          {data?.map((it) => (
+            <li key={it.id} onClick={() => onCategoryChange(it.id)}>
+              <a
+                className={classNames("tw-cursor-pointer", {
+                  "!tw-text-[#dc143c]": +activeCategory == it.id,
+                })}
+              >
+                {it.name}
+              </a>
+            </li>
+          ))}
         </ul>
       </div>
       {/* <div className="widget">

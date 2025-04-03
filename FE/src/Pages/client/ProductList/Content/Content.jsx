@@ -1,7 +1,7 @@
 import { Empty, Select } from "antd";
 import ProductItem from "../../../../components/ProductItem/ProductItem";
 
-const Content = ({ isSearch, data }) => {
+const Content = ({ isSearch, data, isCategory, sortBy, onSortChange }) => {
   return (
     <div className="tw-flex-1">
       <div className="row mb-5 align-items-center">
@@ -11,11 +11,13 @@ const Content = ({ isSearch, data }) => {
                     </h5> */}
         </div>
         <div className="col-md-7 sm-mt-3 d-sm-flex justify-content-md-end align-items-center">
-          {!isSearch && (
+          {!isSearch && !isCategory && (
             <div className="sort-filter mr-4 d-flex align-items-center">
               <h5 className="mr-2">SORT BY :</h5>
 
               <Select
+                value={sortBy}
+                onChange={onSortChange}
                 options={[
                   { label: "Product latest", value: "latest" },
                   { label: "Product oldest", value: "oldest" },
