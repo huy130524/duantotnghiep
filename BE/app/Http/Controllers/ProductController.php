@@ -201,7 +201,7 @@ ProductVariant::where('id', $variant['id'])->update(['image' => $variant['image'
 
                 'products' => $products,
                 'category' => $category->name,
-            ], 404);
+            ], 200);
         }
 
         return response()->json([
