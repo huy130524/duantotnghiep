@@ -15,7 +15,7 @@ use App\Http\Controllers\OrderController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\AddressController;
-
+use App\Http\Controllers\CartController;
 use Illuminate\Support\Facades\Route;
 
 
@@ -125,4 +125,13 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('/addresses/update/{id}', [AddressController::class, 'update']);
     Route::delete('//addresses/delete/{id}', [AddressController::class, 'destroy']);
 
+});
+
+// Cart
+
+Route::middleware('auth:sanctum')->group(function () {
+    Route::get('/cart', [CartController::class, 'index']);
+    Route::post('/cart/add', [CartController::class, 'store']);
+    Route::post('/cart/change/{id}', [CartController::class, 'update']);
+    Route::delete('/cart/delete/{id}', [CartController::class, 'destroy']);
 });
