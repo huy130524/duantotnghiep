@@ -32,6 +32,7 @@ import UpdateInformation from "./Pages/client/Profile/UpdateInformation/UpdateIn
 import ChangePassword from "./Pages/client/Profile/ChangePassword/ChangePassword";
 import ListAddress from "./Pages/client/Profile/Address/ListAddress";
 import ProductList from "./Pages/client/ProductList/ProductList";
+import ProductDetail from "./Pages/client/ProductDetail/ProductDetail";
 
 const router = createBrowserRouter([
   {
@@ -78,6 +79,10 @@ const router = createBrowserRouter([
           {
             path: "products",
             element: <ProductList />,
+          },
+          {
+            path: "products/:slug",
+            element: <ProductDetail />,
           },
         ],
       },
