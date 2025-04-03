@@ -271,7 +271,7 @@ public function search(Request $request)
     ]);
 }
 public function detail($slug){
-    $product = Product::where('slug',$slug)->with('productVariants','category','comments')->first();
+    $product = Product::where('slug',$slug)->with(['productVariants.size', 'productVariants.color', 'category', 'comments'])->first();
     if(!$product){
         return response()->json(["message"=>"Sản phẩm không tồn tại"]);
     }
