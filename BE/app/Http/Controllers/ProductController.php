@@ -199,12 +199,12 @@ class ProductController extends Controller
         if ($products->isEmpty()) {
             return response()->json([
                 'message' => 'Không có sản phẩm nào trong danh mục này.',
-                'category' => $category->name,
+                'category' => $category,
             ], 404);
         }
 
         return response()->json([
-            'category' => $category->name,
+            'category' => $category,
             'products' => $products
         ], 200);
     }
