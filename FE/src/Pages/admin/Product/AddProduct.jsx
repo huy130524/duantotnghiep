@@ -279,7 +279,16 @@ const AddProduct = () => {
           <FormItemImage />
         </Form.Item>
 
-        <Form.Item name="description" label="Mô tả">
+        <Form.Item
+          name="description"
+          label="Mô tả"
+          rules={[
+            {
+              required: true,
+              message: "Vui lòng nhập mô tả",
+            },
+          ]}
+        >
           <TextArea placeholder="Nhập mô tả" rows={6} />
         </Form.Item>
 
