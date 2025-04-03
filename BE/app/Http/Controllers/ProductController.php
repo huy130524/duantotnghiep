@@ -198,7 +198,8 @@ ProductVariant::where('id', $variant['id'])->update(['image' => $variant['image'
         $category = Category::where('id',$id)->first();
         if ($products->isEmpty()) {
             return response()->json([
-                'message' => 'Không có sản phẩm nào trong danh mục này.',
+
+                'products' => $products,
                 'category' => $category->name,
             ], 404);
         }
