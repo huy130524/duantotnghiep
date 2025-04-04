@@ -76,7 +76,7 @@ const Content = ({ data }) => {
       return (
         <span className="mr-3">
           {formatPrice(salePrice)}
-          <del>{formatPrice(originalPrice)}</del>
+          <del className="tw-ml-3">{formatPrice(originalPrice)}</del>
         </span>
       );
     }
