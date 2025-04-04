@@ -89,29 +89,24 @@ class OrderController extends Controller
         $order = Order::where('id', $id)->with('orderDetails')->get();
         return response()->json($order);
     }
-    public function adminChangeOrder($id, Request $request) {}
     public function update(Request $request, Order $order)
     {
         $user = $request->user();
-
         $request->validate([
             'status' => 'required|string',
-            'note' => function ($attribute, $value, $fail) use ($request) {
-                if ($request->status === 'Đơn hàng đã hủy' && empty($value)) {
-                    $fail('Vui lòng ghi chú lý do hủy đơn hàng.');
-                }
-            },
         ]);
-        $data = [
-            'status' => $request->status,
-            'note' => $request->note,
-        ];
+        $data = ['status' => $request->status];
+
         if ($request->status === 'Đơn hàng đã hủy') {
+            $request->validate([
+                'note' => 'required|string',
+            ]);
+            $data['note'] = $request->note;
+
             $notificationData = [
                 'message' => 'Đơn hàng #' . $order->code . ' đã bị hủy, Lí do: ' . $request->note . '.',
                 'order_code' => $order->code,
                 'order_status' => 'Đã hủy',
-                'details_url' => route('order.show', ['code' => $order->code]),
                 'product_name' => $order->orderDetails->first()->productVariant->product->name,
                 'product_image' => $order->orderDetails->first()->productVariant->product->image,
             ];
@@ -121,13 +116,13 @@ class OrderController extends Controller
         }
 
         try {
-            // Cập nhật đơn hàng
             $order->update($data);
             return response()->json([
                 'message' => 'Cập nhật đơn hàng thành công!',
                 'order' => $order,
             ], 200);
         } catch (\Exception $e) {
+            // Trả về thông báo lỗi nếu có
             return response()->json([
                 'message' => 'Có lỗi xảy ra khi cập nhật đơn hàng.',
                 'error' => $e->getMessage(),
