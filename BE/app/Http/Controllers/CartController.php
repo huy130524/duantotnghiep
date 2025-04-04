@@ -26,10 +26,22 @@ class CartController extends Controller
 
         $userId = $request->user()->id;
 
-        $cartItem = Cart::updateOrCreate(
-            ['user_id' => $userId, 'product_id' => $request->product_id, 'product_variant_id' => $request->product_variant_id],
-            ['quantity' => $request->quantity]
-        );
+        $cartItem = Cart::where('user_id', $userId)
+                        ->where('product_id', $request->product_id)
+                        ->where('product_variant_id', $request->product_variant_id)
+                        ->first();
+
+        if ($cartItem) {
+            $cartItem->quantity += $request->quantity;
+            $cartItem->save();
+        } else {
+            Cart::create([
+                'user_id' => $userId,
+                'product_id' => $request->product_id,
+                'product_variant_id' => $request->product_variant_id,
+                'quantity' => $request->quantity,
+            ]);
+        }
 
         return response()->json([
             'message' => 'Sản phẩm đã được thêm vào giỏ hàng',

@@ -27,7 +27,7 @@ class ColorController extends Controller
         return response()->json([
             'status' => 1,
             'message' => 'Thêm màu thành công!'
-           
+
         ], 201);
     }
     public function detail($id){
@@ -47,7 +47,8 @@ class ColorController extends Controller
             return response()->json(["message"=> "Thương hiệu không tồn tai!"]);
         }
         $validated = $request->validate([
-            'name' => 'required|unique:colors|max:255',
+            'name' => 'required|max:255|unique:colors,name,' . $color->id,
+
             'color_code' => 'required'
         ], [
             'name.required' => 'Tên màu là trường bắt buộc.',
@@ -55,13 +56,13 @@ class ColorController extends Controller
             'name.max' => 'Tên màu không được vượt quá :max ký tự.',
             'color_code.required' => 'Mã màu là trường bắt buộc.'
         ]);
-        
+
         $color->update($validated);
-    
+
         return response()->json([
             'status' => 1,
             'message' => 'Cập nhật màu thành công!'
         ], 200);
     }
-    
+
 }
