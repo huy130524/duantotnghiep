@@ -41,9 +41,13 @@ const UpdateColor = () => {
   }, []);
 
   const onSubmit = (values) => {
+    console.log("🚀 352 ~ onSubmit ~ values:", values);
     mutate({
       name: values.name,
-      color_code: values.code.toHexString(),
+      color_code:
+        typeof values.code === "string"
+          ? values.code
+          : values.code.toHexString(),
     });
   };
 

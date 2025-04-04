@@ -1,7 +1,7 @@
 import { Link, NavLink, useLocation, useNavigate } from "react-router-dom";
 import { useAuth } from "../../hooks/useAuth";
 import { Dropdown, Input } from "antd";
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQuery } from "@tanstack/react-query";
 import { api } from "../../api/api";
 import { useProfile } from "../../hooks/useProfile";
 import { SearchOutlined } from "@ant-design/icons";
@@ -22,6 +22,16 @@ const ClientHeader = () => {
   }, [location.pathname]);
 
   const navigate = useNavigate();
+
+  const { data: carts } = useQuery({
+    queryKey: ["CART"],
+    queryFn: async () => {
+      const r = await api.get("/cart");
+
+      return r?.cart ?? [];
+    },
+    enabled: isLogged,
+  });
 
   const logoutMutation = useMutation({
     mutationKey: ["LOGOUT"],
@@ -158,10 +168,12 @@ const ClientHeader = () => {
                     <li className="list-inline-item">
                       <div className="cart">
                         {" "}
-                        <a href="#" id="header-cart-btn">
-                          <span className="cart-badge">2</span>{" "}
+                        <Link to="/cart" id="header-cart-btn">
+                          {carts?.length > 0 && (
+                            <span className="cart-badge">{carts.length}</span>
+                          )}
                           <i className="ti-bag" />
-                        </a>
+                        </Link>
                         {/* Cart List Area Start */}
                         <ul className="cart-list">
                           <li>
