@@ -10,7 +10,9 @@ class CartController extends Controller
     public function index(Request $request)
     {
         $userId = $request->user()->id;
-        $cartItems = Cart::where('user_id', $userId)->with(['product', 'productVariant'])->get();
+        $cartItems = Cart::where('user_id', $userId)
+        ->with(['product', 'productVariant.size', 'productVariant.color'])
+        ->get();
         return response()->json([
             'cart' => $cartItems
         ]);
