@@ -166,16 +166,17 @@ const ClientHeader = () => {
                   </div>
                   <ul className="right-nav justify-content-end list-inline">
                     <li className="list-inline-item">
-                      <div className="cart">
-                        {" "}
-                        <Link to="/cart" id="header-cart-btn">
-                          {carts?.length > 0 && (
-                            <span className="cart-badge">{carts.length}</span>
-                          )}
-                          <i className="ti-bag" />
-                        </Link>
-                        {/* Cart List Area Start */}
-                        <ul className="cart-list">
+                      {isLogged && (
+                        <div className="cart">
+                          {" "}
+                          <Link to="/cart" id="header-cart-btn">
+                            {carts?.length > 0 && (
+                              <span className="cart-badge">{carts.length}</span>
+                            )}
+                            <i className="ti-bag" />
+                          </Link>
+                          {/* Cart List Area Start */}
+                          {/* <ul className="cart-list">
                           <li>
                             <a href="#" className="image">
                               <img
@@ -228,8 +229,9 @@ const ClientHeader = () => {
                               Checkout
                             </a>
                           </li>
-                        </ul>
-                      </div>
+                        </ul> */}
+                        </div>
+                      )}
                     </li>
                   </ul>
                 </nav>

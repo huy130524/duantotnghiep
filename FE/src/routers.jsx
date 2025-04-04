@@ -33,6 +33,7 @@ import ChangePassword from "./Pages/client/Profile/ChangePassword/ChangePassword
 import ListAddress from "./Pages/client/Profile/Address/ListAddress";
 import ProductList from "./Pages/client/ProductList/ProductList";
 import ProductDetail from "./Pages/client/ProductDetail/ProductDetail";
+import Cart from "./Pages/client/Cart/Cart";
 
 const router = createBrowserRouter([
   {
@@ -83,6 +84,10 @@ const router = createBrowserRouter([
           {
             path: "products/:slug",
             element: <ProductDetail />,
+          },
+          {
+            path: "cart",
+            element: <Cart />,
           },
         ],
       },
