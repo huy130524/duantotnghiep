@@ -27,7 +27,7 @@ const ProductDetail = () => {
 
         <Tabs description={data?.product.description} />
 
-        <RelatedProducts />
+        <RelatedProducts data={data?.related_products ?? []} />
 
         <NewsLetter />
       </div>

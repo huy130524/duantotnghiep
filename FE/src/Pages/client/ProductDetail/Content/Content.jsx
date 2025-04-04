@@ -1,8 +1,16 @@
-import { useMemo } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { getImageUrl } from "../../../../utils/image";
-import { Select } from "antd";
+import { message, Select } from "antd";
+import { formatPrice } from "../../../../utils/formatPrice";
+import { api } from "../../../../api/api";
+import { useMutation } from "@tanstack/react-query";
+import { client } from "../../../../main";
 
 const Content = ({ data }) => {
+  const [size, setSize] = useState();
+  const [color, setColor] = useState();
+  const [quantity, setQuantity] = useState(1);
+
   const { uniqueColors, uniqueSizes } = useMemo(() => {
     const uniqueColors = [
       ...new Map(data?.product_variants.map((item) => [item.color_id, item])),
@@ -24,6 +32,76 @@ const Content = ({ data }) => {
     };
   }, [data?.product_variants]);
 
+  const selectedVariant = useMemo(() => {
+    return data?.product_variants.find(
+      (item) => item.size_id === size && item.color_id === color
+    );
+  }, [data?.product_variants, size, color]);
+
+  useEffect(() => {
+    setSize(uniqueSizes[0]?.size_id);
+    setColor(uniqueColors[0]?.color_id);
+  }, [uniqueColors, uniqueSizes]);
+
+  useEffect(() => {
+    if (size && color && !selectedVariant) {
+      message.error("No variant found for the selected size and color");
+    }
+  }, [color, selectedVariant, size]);
+
+  const addCartMutation = useMutation({
+    mutationKey: ["ADD_CART"],
+    mutationFn: (data) => api.post("/cart/add", data),
+    onSuccess: () => {
+      message.success("Added to cart successfully");
+
+      setSize(uniqueSizes[0]?.size_id);
+      setColor(uniqueColors[0]?.color_id);
+      setQuantity(1);
+
+      client.invalidateQueries(["CART"]);
+    },
+    onError: () => {
+      message.error("Failed to add to cart");
+    },
+  });
+
+  const renderPrice = () => {
+    if (!selectedVariant) return <span className="mr-3">N/A</span>;
+
+    const originalPrice = parseFloat(selectedVariant?.price);
+    const salePrice = parseFloat(selectedVariant?.sale_price);
+
+    if (salePrice > 0) {
+      return (
+        <span className="mr-3">
+          {formatPrice(salePrice)}
+          <del>{formatPrice(originalPrice)}</del>
+        </span>
+      );
+    }
+
+    return <span className="mr-3">{formatPrice(originalPrice)}</span>;
+  };
+
+  const handleAddCart = () => {
+    if (!selectedVariant) {
+      message.error("Variant not found");
+      return;
+    }
+
+    if (selectedVariant.quantity < quantity) {
+      message.error("Not enough quantity available");
+      return;
+    }
+
+    addCartMutation.mutate({
+      product_id: data?.id,
+      product_variant_id: selectedVariant?.id,
+      quantity,
+    });
+  };
+
   return (
     <section>
       <div className="container">
@@ -41,10 +119,8 @@ const Content = ({ data }) => {
             <div className="product-details">
               <h4>{data?.name}</h4>
               <div className="product-price my-4">
-                <span className="mr-3">
-                  {" "}
-                  $179.99 <del>$279.00</del>
-                </span>
+                {renderPrice()}
+
                 <span className="review-rating">
                   <i className="fas fa-star" />
                   <i className="fas fa-star" />
@@ -71,6 +147,8 @@ const Content = ({ data }) => {
                           value: it.size_id,
                         }))}
                         className="tw-w-24"
+                        value={size}
+                        onChange={setSize}
                       />
                     </li>
                   </ul>
@@ -82,15 +160,18 @@ const Content = ({ data }) => {
                       {uniqueColors?.map((it) => (
                         <li key={it.color_id}>
                           <input
-                            type="checkbox"
-                            name={`color-filter-${it.color_id}`}
+                            type="radio"
+                            name="color"
                             id={`color-filter-${it.color_id}`}
                             className="checkbox-color-filter"
+                            value={it.color_id}
+                            checked={it.color_id === color}
+                            onChange={() => setColor(it.color_id)}
                           />
                           <label
                             htmlFor={`color-filter-${it.color_id}`}
                             className="color-filter"
-                            data-bg-color={it.color_code}
+                            style={{ backgroundColor: it.color_code }}
                           />
                         </li>
                       ))}
@@ -102,16 +183,30 @@ const Content = ({ data }) => {
                 <div className="col-sm-6">
                   <div>
                     <h6 className="mb-2 text-black">Quantity</h6>
-                    <button className="btn-product btn-product-up">
+                    <button
+                      className="btn-product"
+                      onClick={() =>
+                        setQuantity((prev) => Math.max(prev - 1, 1))
+                      }
+                    >
                       <i className="fas fa-minus" />
                     </button>
                     <input
                       className="form-product"
                       type="number"
                       name="form-product"
-                      defaultValue={1}
+                      value={quantity}
+                      onChange={(e) => {
+                        const value = parseInt(e.target.value);
+                        if (value > 0) {
+                          setQuantity(value);
+                        }
+                      }}
                     />
-                    <button className="btn-product btn-product-down">
+                    <button
+                      className="btn-product"
+                      onClick={() => setQuantity((prev) => prev + 1)}
+                    >
                       <i className="fas fa-plus" />
                     </button>
                   </div>
@@ -141,7 +236,10 @@ const Content = ({ data }) => {
                   </div>
                 </div>
               </div>
-              <button className="btn btn-theme btn-iconic mt-3">
+              <button
+                className="btn btn-theme btn-iconic mt-3"
+                onClick={handleAddCart}
+              >
                 Add to Cart <i className="fa fa-shopping-cart ml-2" />
               </button>
             </div>

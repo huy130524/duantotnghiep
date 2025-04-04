@@ -3,7 +3,7 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import "./styles/global.scss";
 import App from "./App";
 
-const client = new QueryClient();
+export const client = new QueryClient();
 const rootElement = document.getElementById("root");
 
 if (rootElement) {
