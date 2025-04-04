@@ -9,14 +9,8 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 class OrderDetail extends Model
 {
     use HasFactory;
-    protected $fillable =
-    [
-        'order_id',
-        'variant_id',
-        'price',
-        'quantity',
-        'is_rated',
-        'unit_price',
+    protected $fillable = [
+        'order_id', 'variant_id', 'price', 'quantity', 'total_price'
     ];
 
     public function product()
