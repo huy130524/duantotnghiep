@@ -1,8 +1,35 @@
 import { Link } from "react-router-dom";
 import { getImageUrl } from "../../utils/image";
 import { formatPrice } from "../../utils/formatPrice";
+import { useMutation } from "@tanstack/react-query";
+import { message } from "antd";
+import { client } from "../../main";
+import { api } from "../../api/api";
 
 const ProductItem = ({ data }) => {
+  const addCartMutation = useMutation({
+    mutationKey: ["ADD_CART"],
+    mutationFn: (data) => api.post("/cart/add", data),
+    onSuccess: () => {
+      message.success("Added to cart successfully");
+
+      client.invalidateQueries(["CART"]);
+    },
+    onError: () => {
+      message.error("Failed to add to cart");
+    },
+  });
+
+  const handleAddCart = (e) => {
+    e.preventDefault();
+
+    addCartMutation.mutate({
+      product_variant_id: data.product_variants[0].id,
+      quantity: 1,
+      product_id: data?.id,
+    });
+  };
+
   return (
     <Link to={`/products/${data.slug}`} className="grid-item cat1">
       <div className="product-item product-label-new">
@@ -45,7 +72,7 @@ const ProductItem = ({ data }) => {
           </span>
         </div>
         <div className="product-btn">
-          <button className="btn btn-theme btn-block">
+          <button className="btn btn-theme btn-block" onClick={handleAddCart}>
             <span>Add to Cart</span> <i className="fas fa-shopping-cart" />
           </button>
         </div>

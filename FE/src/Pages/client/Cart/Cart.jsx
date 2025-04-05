@@ -139,10 +139,10 @@ const Cart = () => {
                                   </Link>
 
                                   <p className="tw-m-0">
-                                    Size: {it.product_variant.size_id}
+                                    Size: {it.product_variant.size.name}
                                   </p>
                                   <p className="tw-m-0">
-                                    Color: {it.product_variant.color_id}
+                                    Color: {it.product_variant.color.name}
                                   </p>
                                 </td>
                                 <td>{formatPrice(price)}</td>
