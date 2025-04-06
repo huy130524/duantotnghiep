@@ -125,6 +125,7 @@ const ClientHeader = () => {
                       className="img-center"
                       src="/images/logo.png"
                       alt=""
+                     style={{ width: "auto", height: "100px",textAlign: "center" }}
                     />
                   </Link>
                   <button
