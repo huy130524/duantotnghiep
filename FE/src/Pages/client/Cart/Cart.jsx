@@ -2,12 +2,25 @@ import { useMutation, useQuery } from "@tanstack/react-query";
 import { api } from "../../../api/api";
 import NewsLetter from "../HomePage/NewsLetter/NewsLetter";
 import { Empty, message, Popconfirm } from "antd";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { getImageUrl } from "../../../utils/image";
 import { formatPrice } from "../../../utils/formatPrice";
 import { useMemo } from "react";
 
+export const getPrice = (data) => {
+  const salePrice = parseFloat(data?.sale_price);
+  const originalPrice = parseFloat(data?.price);
+
+  if (salePrice > 0) {
+    return salePrice;
+  }
+
+  return originalPrice;
+};
+
 const Cart = () => {
+  const navigate = useNavigate();
+
   const { data, refetch } = useQuery({
     queryKey: ["CART"],
     queryFn: async () => {
@@ -55,17 +68,6 @@ const Cart = () => {
       message.error("Error deleting cart");
     },
   });
-
-  const getPrice = (data) => {
-    const salePrice = parseFloat(data?.sale_price);
-    const originalPrice = parseFloat(data?.price);
-
-    if (salePrice > 0) {
-      return salePrice;
-    }
-
-    return originalPrice;
-  };
 
   return (
     <>
@@ -201,12 +203,7 @@ const Cart = () => {
                         </tbody>
                       </table>
                     </div>
-                    <div className="row mt-3">
-                      <div className="col-md-12 text-right">
-                        <button className="btn btn-border">Cancel</button>
-                        <button className="btn btn-theme">Update Cart</button>
-                      </div>
-                    </div>
+
                     <div className="row align-items-end sm-mt-3">
                       <div className="col-md-7">
                         <h5>Coupon Code</h5>
@@ -224,7 +221,7 @@ const Cart = () => {
                         <div className="checkout-box white-bg box-shadow mt-5">
                           <ul className="list-unstyled mb-3">
                             <li className="mb-2">
-                              <span> Sub Total: </span>
+                              <span>Tạm tính:</span>
                               {formatPrice(totalPrice)}
                             </li>
                             {/* <li className="mb-2">
@@ -232,15 +229,20 @@ const Cart = () => {
                             </li> */}
                             <li>
                               <span>
-                                <strong className="cart-total"> Total :</strong>
+                                <strong className="cart-total">
+                                  Tổng tiền:
+                                </strong>
                               </span>
                               <strong className="cart-total">
                                 {formatPrice(totalPrice)}
                               </strong>
                             </li>
                           </ul>
-                          <button className="btn btn-sm btn-theme">
-                            Proceed to Checkout
+                          <button
+                            className="btn btn-sm btn-theme"
+                            onClick={() => navigate("/checkout")}
+                          >
+                            Tiến hành thanh toán
                           </button>
                         </div>
                       </div>
