@@ -34,6 +34,7 @@ import ListAddress from "./Pages/client/Profile/Address/ListAddress";
 import ProductList from "./Pages/client/ProductList/ProductList";
 import ProductDetail from "./Pages/client/ProductDetail/ProductDetail";
 import Cart from "./Pages/client/Cart/Cart";
+import Checkout from "./Pages/client/Checkout/Checkout";
 
 const router = createBrowserRouter([
   {
@@ -88,6 +89,10 @@ const router = createBrowserRouter([
           {
             path: "cart",
             element: <Cart />,
+          },
+          {
+            path: "checkout",
+            element: <Checkout />,
           },
         ],
       },

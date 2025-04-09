@@ -13,14 +13,10 @@ const ProductLatest = ({ data = [] }) => {
             </div>
           </div>
         </div>
-        <div className="row">
-          <div className="col-lg-12 col-md-12">
-            <div className="grid row columns-3">
-              {data.slice(0, 6).map((it) => (
-                <ProductItem key={it.id} data={it} />
-              ))}
-            </div>
-          </div>
+        <div className="tw-grid tw-grid-cols-3 tw-gap-6">
+          {data.slice(0, 6).map((it) => (
+            <ProductItem key={it.id} data={it} />
+          ))}
         </div>
       </div>
     </section>
