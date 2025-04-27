@@ -262,4 +262,81 @@ class OrderController extends Controller
             return redirect()->route('payment.failure')->with('error', 'Thanh toán thất bại!');
         }
     }
+    public function updateStatus(Request $request, $id)
+    {
+        // Tìm đơn hàng theo ID
+        $order = Order::findOrFail($id);
+    
+        // Kiểm tra nếu đơn hàng đã có trạng thái 'Đã giao hàng' hoặc 'Đơn hàng đã hủy', không cho phép thay đổi
+        if (in_array($order->status, ['Đã giao hàng', 'Đơn hàng đã hủy'])) {
+            return response()->json([
+                'message' => 'Không thể thay đổi trạng thái của đơn hàng đã giao hoặc đã hủy!',
+            ], 400);
+        }
+    
+        // Validate dữ liệu từ request
+        $request->validate([
+            'status' => 'nullable|in:Chờ xác nhận,Đã xác nhận,Đang chuẩn bị hàng,Đang giao hàng,Đã giao hàng,Đơn hàng đã hủy',
+            'payment_status' => 'nullable|in:Chưa thanh toán,Đã thanh toán',
+        ]);
+    
+        // Nếu trạng thái có trong request, cập nhật trạng thái
+        if ($request->has('status')) {
+            // Nếu trạng thái được chọn là "Đã giao hàng", tự động cập nhật payment_status
+            if ($request->input('status') === 'Đã giao hàng') {
+                $order->payment_status = 'Đã thanh toán';
+            }
+            $order->status = $request->input('status');
+        }
+    
+        // Nếu payment_status có trong request, cập nhật payment_status
+        if ($request->has('payment_status')) {
+            $order->payment_status = $request->input('payment_status');
+        }
+    
+        // Lưu lại thay đổi
+        $order->save();
+    
+        // Trả về kết quả
+        return response()->json([
+            'message' => 'Cập nhật thành công!',
+            'order' => $order
+        ]);
+    }
+    
+    public function cancelOrder(Request $request, $id)
+{
+    // Tìm đơn hàng theo ID
+    $order = Order::findOrFail($id);
+
+    // Kiểm tra trạng thái đơn hàng, chỉ cho phép hủy khi trạng thái là 'Chờ xác nhận'
+    if ($order->status === 'Chờ xác nhận') {
+        // Duyệt qua tất cả các chi tiết đơn hàng và hoàn lại số lượng sản phẩm
+        foreach ($order->orderDetails as $orderDetail) {
+            // Tìm sản phẩm variant tương ứng
+            $productVariant = $orderDetail->variant;
+            
+            // Hoàn lại số lượng sản phẩm vào kho (tăng số lượng)
+            $productVariant->quantity += $orderDetail->quantity;
+            $productVariant->save();
+        }
+
+        // Cập nhật trạng thái đơn hàng thành 'Đơn hàng đã hủy'
+        $order->status = 'Đơn hàng đã hủy';
+        $order->save();
+
+        // Trả về phản hồi JSON
+        return response()->json([
+            'message' => 'Đơn hàng đã hủy thành công và số lượng sản phẩm đã được hoàn lại!',
+            'order' => $order
+        ]);
+    }
+
+    // Trả về lỗi nếu không thể hủy đơn
+    return response()->json([
+        'message' => 'Không thể hủy đơn hàng vì trạng thái không cho phép!',
+    ], 400);
+}
+
+
 }
