@@ -48,4 +48,34 @@ class User extends Authenticatable
         'gender' => 'string',
         'deleted_at' => 'datetime',
     ];
+    public static function roles()
+    {
+        return [
+            'admin' => 'Admin',
+            'staff' => 'Staff',
+            'user' => 'User',
+        ];
+    }
+    public function rules()
+    {
+        return [
+            'fullname' => 'required|string|max:255',
+            'email' => 'required|email|unique:users,email',
+            'password' => 'required|string|min:8',
+            'role' => 'required|in:admin,staff,user',
+            'phone' => 'nullable|string|max:15',
+            'avatar' => 'nullable|url',
+            'gender' => 'nullable|in:male,female,other',
+            'birthday' => 'nullable|date',
+        ];
+    }
+
+    public function messages()
+    {
+        return [
+            'password.min' => 'Mật khẩu phải có ít nhất 8 ký tự.',
+            'email.unique' => 'Email đã tồn tại trong hệ thống.',
+            'role.in' => 'Vai trò phải là admin, staff hoặc user.',
+        ];
+    }
 }

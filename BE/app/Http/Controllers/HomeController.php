@@ -3,9 +3,13 @@
 namespace App\Http\Controllers;
 
 use App\Models\Banner;
+use App\Models\Brand;
 use App\Models\Category;
 use App\Models\Product;
+use App\Models\User;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class HomeController extends Controller
 {
@@ -25,4 +29,68 @@ class HomeController extends Controller
             'new_products' => $newProducts
         ], 200);
     }
+    public function dashboard(Request $request)
+    {
+        $totalUser = User::where('role', 'user')
+                            ->where('status', 'active')
+                            ->count();
+        $totalProduct = Product::where('is_active', 1)->count();
+        $totalBrand = Brand::count();
+        
+        $filter = $request->input('filter', 'month'); 
+        $now = Carbon::now();
+    
+        switch ($filter) {
+            case 'week':
+                $startDate = $now->startOfWeek();
+                $endDate = $now->endOfWeek();
+                break;
+            case 'year':
+                $startDate = $now->startOfYear();
+                $endDate = $now->endOfYear();
+                break;
+            case 'month':
+            default:
+                $startDate = $now->startOfMonth();
+                $endDate = $now->endOfMonth();
+                break;
+        }
+    
+        $orders = DB::table('orders')
+            ->whereBetween('created_at', [$startDate, $endDate])
+
+            ->get();
+    
+        $totalRevenue = $orders->where('payment_status', 'Đã thanh toán')->sum('total_price');
+        $totalOrders = $orders->count();
+        $pendingOrders = $orders->where('status', 'Chờ xác nhận')->count();
+        $confirmedOrders = $orders->where('status', 'Đã xác nhận')->count();
+        $preparingOrders = $orders->where('status', 'Đang chuẩn bị hàng')->count();
+        $shippingOrders = $orders->where('status', 'Đang giao hàng')->count();
+        $deliveredOrders = $orders->where('status', 'Đã giao hàng')->count();
+        $canceledOrders = $orders->where('status', 'Đơn hàng đã hủy')->count();
+    
+        return response()->json([
+            'filter' => $filter,
+            'start_date' => $startDate->toDateString(),
+            'end_date' => $endDate->toDateString(),
+    
+            'total_user' => $totalUser,
+            'total_product' => $totalProduct,
+            'total_brand' => $totalBrand,
+    
+            'total_revenue' => $totalRevenue,
+            'total_orders' => $totalOrders,
+    
+            'orders' => [
+                'pending' => $pendingOrders,
+                'confirmed' => $confirmedOrders,
+                'preparing' => $preparingOrders,
+                'shipping' => $shippingOrders,
+                'delivered' => $deliveredOrders,
+                'canceled' => $canceledOrders,
+            ]
+        ]);
+    }
+    
 }

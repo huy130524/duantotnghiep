@@ -124,4 +124,85 @@ class UserController extends Controller
 
         return response()->json(['message' => 'Profile updated successfully', 'user' => $user]);
     }
+    public function index()
+    {
+        return response()->json(User::paginate(20));
+    }
+
+      public function store(Request $request)
+      {
+          $data = $request->validate([
+              'fullname' => 'required|string|max:255',
+              'email' => 'required|email|unique:users,email',
+              'password' => 'required|string|min:8',
+              'role' => 'required|in:admin,staff,user',
+              'phone' => 'nullable|string|max:15',
+              'avatar' => 'nullable|url',
+              'gender' => 'nullable|in:male,female,other',
+              'birthday' => 'nullable|date',
+          ]);
+          $data['password'] = Hash::make($data['password']);
+          $user = User::create($data);
+          return response()->json([
+              'message' => 'Tạo người dùng thành công',
+              'user' => $user
+          ], 201);
+      }
+      public function show($id)
+      {
+          $user = User::findOrFail($id);
+          return response()->json($user);
+      }
+  
+      public function update(Request $request, $id)
+      {
+          $user = User::findOrFail($id);
+  
+          $data = $request->validate([
+              'fullname' => 'nullable|string|max:255',
+              'email' => 'nullable|email|unique:users,email,' . $id,
+              'password' => 'nullable|string|min:8',
+              'role' => 'nullable|in:admin,staff,user',
+              'phone' => 'nullable|string|max:15',
+              'avatar' => 'nullable|url',
+              'gender' => 'nullable|in:male,female,other',
+              'birthday' => 'nullable|date',
+          ]);
+          if (isset($data['password'])) {
+              $data['password'] = Hash::make($data['password']);
+          }
+          $user->update($data);
+          return response()->json([
+            "message"=> "Cập nhật thành công !",
+            "user"=> $user,
+        ]);
+      }
+  
+      public function destroy($id)
+      {
+          $user = User::findOrFail($id);
+          $user->delete();
+          return response()->json(['message' => 'Đã xoá user']);
+      }
+      public function change($id)
+      {
+          $user = User::find($id);
+      
+          if (!$user) {
+              return response()->json([
+                  'message' => 'User not found.'
+              ], 404);
+          }
+      
+          // Chuyển đổi giữa "active" và "inactive"
+          $user->status = $user->status === 'active' ? 'inactive' : 'active';
+          $user->save();
+      
+          return response()->json([
+              'message' => 'Thay đổi thành công!',
+              'status' => $user->status,
+              'user' => $user,
+          ]);
+      }
+      
 }

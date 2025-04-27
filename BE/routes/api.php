@@ -20,50 +20,13 @@ use Illuminate\Support\Facades\Route;
 
 
 
-// Color
 
-Route::get('/colors', [ColorController::class, 'index']);
-Route::post('/color/add', [ColorController::class, 'store']);
-Route::get('/color/detail/{id}', [ColorController::class, 'detail']);
-Route::post('/color/update/{id}', [ColorController::class, 'update']);
-
-
-// Size
-
-Route::get('/sizes', [SizeController::class, 'index']);
-Route::post('/size/add', [SizeController::class, 'store']);
-Route::get('/size/detail/{id}', [SizeController::class, 'detail']);
-Route::post('/size/update/{id}', [SizeController::class, 'update']);
-
-
-// Coupon
-Route::get('/coupons', [CouponController::class, 'index']);
-Route::post('/coupon/add', [CouponController::class, 'store']);
-Route::get('/coupon/detail/{id}', [CouponController::class, 'detail']);
-Route::post('/coupon/update/{id}', [CouponController::class, 'update']);
-
-// Blog
-
-Route::get('/blogs', [BlogController::class, 'index']);
-Route::post('/blog/add', [BlogController::class, 'store']);
-Route::get('/blog/detail/{id}', [BlogController::class, 'detail']);
-Route::post('/blog/update/{id}', [BlogController::class, 'update']);
-Route::get('blog-user', [BlogController::class, 'userBlog']);
 
 //
-Route::get('/categories', [CategoryController::class, 'index']);
-//
-Route::post('/category/add', [CategoryController::class, 'create']);
-Route::get('/category/delete/{id}', [CategoryController::class, 'deleteCategory']);
-Route::get('/category/detail/{id}', [CategoryController::class, 'edit']);
-Route::post('/category/update/{id}', [CategoryController::class, 'update']);
+
 
 // Product
 
-Route::get('/products', [ProductController::class, 'index']);
-Route::post('/product/add', [ProductController::class, 'store']);
-Route::get('/product/detail/{id}', [ProductController::class, 'ProductDetail']);
-Route::post('/product/update/{id}', [ProductController::class, 'update']);
 Route::get('/categories/{id}/products', [ProductController::class, 'getProductsByCategory']);
 
 Route::get('/products/size/{size_id}', [ProductController::class, 'filterBySize']);
@@ -71,12 +34,6 @@ Route::get('/products/search', [ProductController::class, 'search']);
 Route::get('/products/filter', [ProductController::class, 'filterProducts']);
 Route::get('products/{slug}',[ProductController::class, 'detail']);
 
-// Brand
-
-Route::get('/brands', [BrandController::class, 'index']);
-Route::post('/brand/add', [BrandController::class, 'store']);
-Route::get('/brand/detail/{id}', [BrandController::class, 'brandDetail']);
-Route::post('/brand/update/{id}', [BrandController::class, 'update']);
 
 // Đăng ký đăng nhập
 Route::post('/change-password/{id}', [UserController::class, 'changePassword']);
@@ -88,50 +45,114 @@ Route::middleware('auth:sanctum')->post('/logout', [UserController::class, 'logo
 Route::middleware('auth:sanctum')->get('profile', [UserController::class, 'profile']);
 Route::middleware('auth:sanctum')->post('updateprofile/{id}',[UserController::class,'UpdateProfile']);
 
-// Order admin
-Route::get('/admin-orders',[OrderController::class,'admin_index']);
-Route::get('/admin-orders/detail/{id}',[OrderController::class,'admin_detail']);
-Route::post('/admin-orders/update/{order}',[OrderController::class,'update']);
-Route::get('/home', [HomeController::class, 'index']);
+Route::get('blog-user', [BlogController::class, 'userBlog']);
 
 
-// Comment
-Route::middleware('auth:sanctum')->group(function () {
-    Route::get('/comments', [CommentController::class, 'index']);
-    Route::get('/comments/detail/{id}', [CommentController::class, 'detail']);
-    Route::post('/comments/send/{order_id}',[CommentController::class,'send']);
-});
 
-//  Contact
+// Liên hệ
 Route::get('/contacts', [ContactController::class, 'index']);
 Route::post('/contacts/add', [ContactController::class, 'store']);
 Route::get('/contacts/detail/{id}', [ContactController::class, 'show']);
 Route::post('/contacts/update/{id}', [ContactController::class, 'update']);
 Route::delete('/contacts/delete/{id}', [ContactController::class, 'destroy']);
 
-// Banner
-Route::get('/banners', [BannerController::class, 'index']);
-Route::post('/banner/add', [BannerController::class, 'store']);
-Route::get('/banner/{id}', [BannerController::class, 'show']);
-Route::post('/banner/update/{id}', [BannerController::class, 'update']);
-Route::delete('/banner/delete/{id}', [BannerController::class, 'destroy']);
-
-
-// Address
+// Api admin
 Route::middleware('auth:sanctum')->group(function () {
-    Route::get('/addresses', [AddressController::class, 'index']);
-    Route::post('/addresses/add', [AddressController::class, 'store']);
-    Route::get('/addresses/detail/{id}', [AddressController::class, 'show']);
-    Route::post('/addresses/update/{id}', [AddressController::class, 'update']);
-    Route::delete('//addresses/delete/{id}', [AddressController::class, 'destroy']);
-
-});
-
-// Cart
-
-Route::middleware('auth:sanctum')->group(function () {
+    // Giỏ hàng
     Route::get('/cart', [CartController::class, 'index']);
     Route::post('/cart/add', [CartController::class, 'store']);
     Route::post('/cart/change/{id}', [CartController::class, 'update']);
     Route::delete('/cart/delete/{id}', [CartController::class, 'destroy']);
+
+    // Quản lý địa chỉ
+    Route::get('/addresses', [AddressController::class, 'index']);
+    Route::post('/addresses/add', [AddressController::class, 'store']);
+    Route::get('/addresses/detail/{id}', [AddressController::class, 'show']);
+    Route::post('/addresses/update/{id}', [AddressController::class, 'update']);
+    Route::delete('/addresses/delete/{id}', [AddressController::class, 'destroy']);
+
+    // Quản lý banner 
+    Route::get('/banners', [BannerController::class, 'index'])->middleware('role:admin,staff');
+    Route::post('/banner/add', [BannerController::class, 'store'])->middleware('role:admin,staff');
+    Route::get('/banner/{id}', [BannerController::class, 'show'])->middleware('role:admin,staff');
+    Route::post('/banner/update/{id}', [BannerController::class, 'update'])->middleware('role:admin,staff');
+    Route::delete('/banner/delete/{id}', [BannerController::class, 'destroy'])->middleware('role:admin,staff');
+
+
+    // Comment
+    Route::get('/comments', [CommentController::class, 'index']);
+    Route::get('/comments/detail/{id}', [CommentController::class, 'detail']);
+    Route::post('/comments/send/{order_id}',[CommentController::class,'send']);
+
+
+    // Thanh toán
+    Route::post('/orders/tao-don',[OrderController::class,'store']);
+    Route::get('payment/vnpay/return', [OrderController::class, 'vnpayReturn'])->name('payment.vnpay.return');
+
+    // Quản lý User 
+    Route::get('/users', [UserController::class, 'index'])->middleware('role:admin,staff');
+    Route::post('/users/add', [UserController::class, 'store'])->middleware('role:admin');
+    Route::get('/users/show/{id}', [UserController::class, 'show'])->middleware('role:admin,staff');
+    Route::post('/users/update/{id}', [UserController::class, 'update'])->middleware('role:admin');
+    Route::post('/users/change/{id}', [UserController::class, 'change'])->middleware('role:admin');
+    Route::delete('/users/{id}', [UserController::class, 'destroy'])->middleware('role:admin');
+
+    // Quản lý đơn hàng Admin
+    Route::get('/admin-orders',[OrderController::class,'admin_index'])->middleware('role:admin,staff');
+    Route::get('/admin-orders/detail/{id}',[OrderController::class,'admin_detail'])->middleware('role:admin,staff');
+    Route::post('/admin-orders/update/{order}',[OrderController::class,'update'])->middleware('role:admin,staff');
+    Route::get('/home', [HomeController::class, 'index']);
+
+    
+    // Quản lý màu sấc
+
+    Route::get('/colors', [ColorController::class, 'index'])->middleware('role:admin,staff');
+    Route::post('/color/add', [ColorController::class, 'store'])->middleware('role:admin,staff');
+    Route::get('/color/detail/{id}', [ColorController::class, 'detail'])->middleware('role:admin,staff');
+    Route::post('/color/update/{id}', [ColorController::class, 'update'])->middleware('role:admin,staff');
+
+    // Quản lý kích cỡ
+
+    Route::get('/sizes', [SizeController::class, 'index'])->middleware('role:admin,staff');
+    Route::post('/size/add', [SizeController::class, 'store'])->middleware('role:admin,staff');
+    Route::get('/size/detail/{id}', [SizeController::class, 'detail'])->middleware('role:admin,staff');
+    Route::post('/size/update/{id}', [SizeController::class, 'update'])->middleware('role:admin,staff');
+
+
+    // Quản lý mã giảm giá
+    Route::get('/coupons', [CouponController::class, 'index'])->middleware('role:admin');
+    Route::post('/coupon/add', [CouponController::class, 'store'])->middleware('role:admin');
+    Route::get('/coupon/detail/{id}', [CouponController::class, 'detail'])->middleware('role:admin');
+    Route::post('/coupon/update/{id}', [CouponController::class, 'update'])->middleware('role:admin');
+
+    // Quản lý bài viết
+
+    Route::get('/blogs', [BlogController::class, 'index'])->middleware('role:admin,staff');
+    Route::post('/blog/add', [BlogController::class, 'store'])->middleware('role:admin,staff');
+    Route::get('/blog/detail/{id}', [BlogController::class, 'detail'])->middleware('role:admin,staff');
+    Route::post('/blog/update/{id}', [BlogController::class, 'update'])->middleware('role:admin,staff');
+    
+    // Quản lý thương hiẹu
+
+    Route::get('/brands', [BrandController::class, 'index'])->middleware('role:admin,staff');
+    Route::post('/brand/add', [BrandController::class, 'store'])->middleware('role:admin,staff');
+    Route::get('/brand/detail/{id}', [BrandController::class, 'brandDetail'])->middleware('role:admin,staff');
+    Route::post('/brand/update/{id}', [BrandController::class, 'update'])->middleware('role:admin,staff');
+
+    // Quản lý sản phẩm
+    Route::get('/products', [ProductController::class, 'index'])->middleware('role:admin,staff');
+    Route::post('/product/add', [ProductController::class, 'store'])->middleware('role:admin,staff');
+    Route::get('/product/detail/{id}', [ProductController::class, 'ProductDetail'])->middleware('role:admin,staff');
+    Route::post('/product/update/{id}', [ProductController::class, 'update'])->middleware('role:admin,staff');
+    
+    // Quản lý danh mục
+    Route::get('/categories', [CategoryController::class, 'index'])->middleware('role:admin,staff');
+    Route::post('/category/add', [CategoryController::class, 'create'])->middleware('role:admin,staff');
+    Route::get('/category/delete/{id}', [CategoryController::class, 'deleteCategory'])->middleware('role:admin,staff');
+    Route::get('/category/detail/{id}', [CategoryController::class, 'edit'])->middleware('role:admin,staff');
+    Route::post('/category/update/{id}', [CategoryController::class, 'update'])->middleware('role:admin,staff');
+    // Dashboard
+    Route::get('dashboard',[HomeController::class,'dashboard']);
+
+
 });
