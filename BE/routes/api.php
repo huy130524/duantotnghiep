@@ -15,6 +15,7 @@ use App\Http\Controllers\OrderController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\AddressController;
+use App\Http\Controllers\BankAccountController;
 use App\Http\Controllers\CartController;
 use Illuminate\Support\Facades\Route;
 
@@ -86,8 +87,10 @@ Route::middleware('auth:sanctum')->group(function () {
 
 
     // Thanh toán
+    Route::get('getcheckout', [OrderController::class,'getCheckout']);
     Route::post('/orders/tao-don',[OrderController::class,'store']);
-    Route::get('payment/vnpay/return', [OrderController::class, 'vnpayReturn'])->name('payment.vnpay.return');
+    Route::get('/payment/return', [OrderController::class, 'vnpayReturn'])->name('payment.return');
+
 
     // Quản lý User 
     Route::get('/users', [UserController::class, 'index'])->middleware('role:admin,staff');
@@ -105,7 +108,6 @@ Route::middleware('auth:sanctum')->group(function () {
 
     
     // Quản lý màu sấc
-
     Route::get('/colors', [ColorController::class, 'index'])->middleware('role:admin,staff');
     Route::post('/color/add', [ColorController::class, 'store'])->middleware('role:admin,staff');
     Route::get('/color/detail/{id}', [ColorController::class, 'detail'])->middleware('role:admin,staff');
@@ -124,6 +126,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('/coupon/add', [CouponController::class, 'store'])->middleware('role:admin');
     Route::get('/coupon/detail/{id}', [CouponController::class, 'detail'])->middleware('role:admin');
     Route::post('/coupon/update/{id}', [CouponController::class, 'update'])->middleware('role:admin');
+    Route::post('/coupon/apply', [OrderController::class, 'checkVC']);
 
     // Quản lý bài viết
 
@@ -155,4 +158,8 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('dashboard',[HomeController::class,'dashboard']);
 
 
+    // Quản lý tài khoản ngân hàng
+    Route::post('bank-account/add', [BankAccountController::class, 'store']);
+    Route::get('bank-account', [BankAccountController::class, 'show']); 
+    Route::post('bank-account/update', [BankAccountController::class, 'update']);
 });
