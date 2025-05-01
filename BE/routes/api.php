@@ -59,6 +59,11 @@ Route::delete('/contacts/delete/{id}', [ContactController::class, 'destroy']);
 
 // Api admin
 Route::middleware('auth:sanctum')->group(function () {
+    // Hủy đơn tại client
+    Route::post('/orders/{id}/cancel',[OrderController::class,'cancelOrder'])->middleware('role:admin,staff');
+
+
+
     // Giỏ hàng
     Route::get('/cart', [CartController::class, 'index']);
     Route::post('/cart/add', [CartController::class, 'store']);
@@ -89,7 +94,7 @@ Route::middleware('auth:sanctum')->group(function () {
     // Thanh toán
     Route::get('getcheckout', [OrderController::class,'getCheckout']);
     Route::post('/orders/tao-don',[OrderController::class,'store']);
-    Route::get('/payment/return', [OrderController::class, 'vnpayReturn'])->name('payment.return');
+    Route::get('/payment/return', [OrderController::class, 'vnpayReturn']);
 
 
     // Quản lý User 
@@ -104,6 +109,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('/admin-orders',[OrderController::class,'admin_index'])->middleware('role:admin,staff');
     Route::get('/admin-orders/detail/{id}',[OrderController::class,'admin_detail'])->middleware('role:admin,staff');
     Route::post('/admin-orders/update/{order}',[OrderController::class,'update'])->middleware('role:admin,staff');
+    Route::post('/admin-order-status-update/{id}',[OrderController::class,'updateStatus'])->middleware('role:admin,staff');
     Route::get('/home', [HomeController::class, 'index']);
 
     
@@ -158,8 +164,4 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('dashboard',[HomeController::class,'dashboard']);
 
 
-    // Quản lý tài khoản ngân hàng
-    Route::post('bank-account/add', [BankAccountController::class, 'store']);
-    Route::get('bank-account', [BankAccountController::class, 'show']); 
-    Route::post('bank-account/update', [BankAccountController::class, 'update']);
 });

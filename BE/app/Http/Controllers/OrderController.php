@@ -306,19 +306,18 @@ class OrderController extends Controller
     public function VNPAY(Request $request, Order $order)
     {
         $vnp_Url = "https://sandbox.vnpayment.vn/paymentv2/vpcpay.html";
-        $vnp_Returnurl = route('payment.return');
+        $vnp_Returnurl = " http://localhost:5173/vnpay-return";
         $vnp_TmnCode = "OXAW03IW";
         $vnp_HashSecret = "0GXPKQFPJA8NE2VE2LO0WYO575TFRTAZ";
         
         $vnp_TxnRef = $order->code;
         $vnp_OrderInfo = "Thanh toán hóa đơn";
         $vnp_OrderType = "Bee Sneaker";
-        $vnp_Amount = $order->total_price * 100; // VNPAY yêu cầu amount tính theo đơn vị đồng
+        $vnp_Amount = $order->total_price * 100; 
         $vnp_Locale = "vn";
-        $vnp_BankCode = "NCB"; // Tùy chọn ngân hàng
-        $vnp_IpAddr = $request->ip(); // Địa chỉ IP của người dùng
-        
-        // Dữ liệu cần gửi đi
+        $vnp_BankCode = "NCB"; 
+        $vnp_IpAddr = $request->ip(); 
+
         $inputData = [
             "vnp_Version" => "2.1.0",
             "vnp_TmnCode" => $vnp_TmnCode,
@@ -334,15 +333,10 @@ class OrderController extends Controller
             "vnp_TxnRef" => $vnp_TxnRef
         ];
         
-        // Nếu có mã ngân hàng, thêm vào dữ liệu
         if (!empty($vnp_BankCode)) {
             $inputData['vnp_BankCode'] = $vnp_BankCode;
         }
-    
-        // Sắp xếp các tham số theo thứ tự tăng dần của key
         ksort($inputData);
-    
-        // Tạo chuỗi query và chuỗi hashData
         $query = "";
         $hashdata = "";
         $i = 0;
@@ -351,13 +345,10 @@ class OrderController extends Controller
             $hashdata .= ($i++ ? '&' : '') . urlencode($key) . "=" . urlencode($value);
         }
     
-        // Tạo SecureHash bằng HMAC SHA512
         $vnpSecureHash = hash_hmac('sha512', $hashdata, $vnp_HashSecret);
         
-        // Thêm SecureHash vào cuối URL
         $paymentUrl = $vnp_Url . '?' . $query . 'vnp_SecureHash=' . $vnpSecureHash;
     
-        // Trả về URL thanh toán và mã đơn hàng
         return [
             'payment_url' => $paymentUrl,
             'order_code' => $order->code
@@ -368,46 +359,39 @@ class OrderController extends Controller
     {
         $vnp_ResponseCode = $request->input('vnp_ResponseCode');
         $orderCode = $request->input('vnp_TxnRef');
-    
-        // Tìm đơn hàng theo mã
+
         $order = Order::where('code', $orderCode)->first();
-    
         if (!$order) {
-            // Trường hợp không tìm thấy đơn hàng
             return response()->json([
                 'status' => false,
                 'message' => 'Đơn hàng không tồn tại.'
             ], 404);
         }
-    
-        // Kiểm tra kết quả thanh toán từ VNPAY
+
         if ($vnp_ResponseCode == '00') {
-            // Thanh toán thành công
-            $order->payment_status = 'Đã thanh toán';  // Cập nhật trạng thái thanh toán
-            $order->status = 'Đã xác nhận';  // Cập nhật trạng thái thanh toán
+            $order->payment_status = 'Đã thanh toán';  
+            $order->status = 'Đã xác nhận';  
             $order->save();
-    
+
             return response()->json([
                 'status' => true,
                 'message' => 'Thanh toán thành công!',
                 'order_code' => $order->code
-            ]);
+            ], 200);  
         } else {
-            // Thanh toán thất bại
             $order->payment_status = 'Thanh toán thất bại'; 
             $order->status = 'Đơn hàng đã hủy'; 
             $order->save();
-    
-            // Xóa chi tiết đơn hàng nếu cần
+
             $order->orderDetails()->delete();
-    
             return response()->json([
                 'status' => false,
                 'message' => 'Thanh toán bị hủy. Đơn hàng chưa được xử lý.',
                 'order_code' => $order->code
-            ], 400);  // Mã lỗi 400 - Bad Request
+            ], 400);  
         }
     }
+
     
     
 }
