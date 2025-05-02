@@ -35,6 +35,8 @@ import ProductList from "./Pages/client/ProductList/ProductList";
 import ProductDetail from "./Pages/client/ProductDetail/ProductDetail";
 import Cart from "./Pages/client/Cart/Cart";
 import Checkout from "./Pages/client/Checkout/Checkout";
+import VNPayReturn from "./Pages/client/VNPayReturn/VNPayReturn";
+import ThankYou from "./Pages/client/ThankYou/ThankYou";
 
 const router = createBrowserRouter([
   {
@@ -93,6 +95,14 @@ const router = createBrowserRouter([
           {
             path: "checkout",
             element: <Checkout />,
+          },
+          {
+            path: "vnpay-return",
+            element: <VNPayReturn />,
+          },
+          {
+            path: "thank-you",
+            element: <ThankYou />,
           },
         ],
       },

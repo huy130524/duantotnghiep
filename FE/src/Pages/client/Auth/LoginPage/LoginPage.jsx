@@ -7,6 +7,8 @@ import { api } from "../../../../api/api";
 import { message } from "antd";
 import { useAuth } from "../../../../hooks/useAuth";
 
+import { Link } from "react-router-dom";
+
 const LoginPage = () => {
   const { setAccessToken } = useAuth();
 
@@ -145,9 +147,9 @@ const LoginPage = () => {
                     </button>
                     <h5 className="mb-0 mt-3 text-capitalize">
                       Don&apos;t Have An Account ?{" "}
-                      <a href="#">
+                      <Link to="/register">
                         <i>Sign Up!</i>
-                      </a>
+                      </Link>
                     </h5>
                   </form>
                   <div className="login-social mt-5 text-center clearfix">

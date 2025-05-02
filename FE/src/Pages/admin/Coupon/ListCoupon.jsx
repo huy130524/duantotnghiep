@@ -59,7 +59,7 @@ const ListCoupon = () => {
       title: "Thời gian hiệu lực",
       key: "expired_at",
       render: (_, record) => {
-        return `${dayjs(record.start_at).format(
+        return `${dayjs(record.start_date).format(
           "DD/MM/YYYY HH:mm:ss"
         )} - ${dayjs(record.end_date).format("DD/MM/YYYY HH:mm:ss")}`;
       },
