@@ -5,21 +5,25 @@ import { Empty, message, Popconfirm } from "antd";
 import { Link, useNavigate } from "react-router-dom";
 import { getImageUrl } from "../../../utils/image";
 import { formatPrice } from "../../../utils/formatPrice";
-import { useMemo } from "react";
-
-export const getPrice = (data) => {
-  const salePrice = parseFloat(data?.sale_price);
-  const originalPrice = parseFloat(data?.price);
-
-  if (salePrice > 0) {
-    return salePrice;
-  }
-
-  return originalPrice;
-};
+import { useMemo, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  clearCoupon,
+  selectCoupon,
+  setCoupon as setCouponStore,
+} from "../../../store/couponReducer";
+import { getDiscount } from "../../../utils/getDiscount";
+import { CloseOutlined } from "@ant-design/icons";
+import { getPrice } from "../../../utils/getPrice";
 
 const Cart = () => {
   const navigate = useNavigate();
+
+  const couponApplied = useSelector(selectCoupon);
+
+  const dispatch = useDispatch();
+
+  const [coupon, setCoupon] = useState("");
 
   const { data, refetch } = useQuery({
     queryKey: ["CART"],
@@ -38,6 +42,8 @@ const Cart = () => {
       return acc + finalPrice * it.quantity;
     }, 0);
   }, [data]);
+
+  const discountInfo = getDiscount(totalPrice, couponApplied);
 
   const updateQuantityMutation = useMutation({
     mutationKey: ["UPDATE_CART"],
@@ -68,6 +74,41 @@ const Cart = () => {
       message.error("Error deleting cart");
     },
   });
+
+  const applyCouponMutation = useMutation({
+    mutationKey: ["APPLY_COUPON"],
+    mutationFn: (coupon) => {
+      return api.post("/coupon/apply", {
+        code: coupon,
+        amount: totalPrice,
+      });
+    },
+    onSuccess: (r) => {
+      message.success("Coupon applied successfully");
+      dispatch(
+        setCouponStore({
+          ...r,
+          code: coupon.trim().toUpperCase(),
+        })
+      );
+
+      setCoupon("");
+    },
+    onError: (error) => {
+      message.error(error.response.data.message);
+    },
+  });
+
+  const handleApplyCoupon = (e) => {
+    e.preventDefault();
+
+    if (!coupon) {
+      message.error("Vui lòng nhập mã giảm giá");
+      return;
+    }
+
+    applyCouponMutation.mutate(coupon);
+  };
 
   return (
     <>
@@ -208,9 +249,17 @@ const Cart = () => {
                       <div className="col-md-7">
                         <h5>Coupon Code</h5>
                         <p>Enter Your Coupon Code</p>
-                        <form className="form-inline coupon-form">
+                        <form
+                          className="form-inline coupon-form"
+                          onSubmit={handleApplyCoupon}
+                        >
                           <div className="form-group">
-                            <input type="text" className="form-control" />
+                            <input
+                              type="text"
+                              className="form-control"
+                              value={coupon}
+                              onChange={(e) => setCoupon(e.target.value)}
+                            />
                             <button className="btn btn-theme" type="submit">
                               Apply Coupon
                             </button>
@@ -224,9 +273,24 @@ const Cart = () => {
                               <span>Tạm tính:</span>
                               {formatPrice(totalPrice)}
                             </li>
-                            {/* <li className="mb-2">
-                              <span> VAT (20%) : </span> $ 498.00
-                            </li> */}
+
+                            {discountInfo && (
+                              <li className="mb-2">
+                                <span>Giảm giá:</span>
+
+                                <p className="tw-m-0">
+                                  {discountInfo.text}
+
+                                  <span
+                                    className="tw-ml-2 tw-cursor-pointer"
+                                    onClick={() => dispatch(clearCoupon())}
+                                  >
+                                    <CloseOutlined />
+                                  </span>
+                                </p>
+                              </li>
+                            )}
+
                             <li>
                               <span>
                                 <strong className="cart-total">
@@ -234,7 +298,9 @@ const Cart = () => {
                                 </strong>
                               </span>
                               <strong className="cart-total">
-                                {formatPrice(totalPrice)}
+                                {formatPrice(
+                                  totalPrice - (discountInfo?.value ?? 0)
+                                )}
                               </strong>
                             </li>
                           </ul>

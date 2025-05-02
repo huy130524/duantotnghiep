@@ -1,11 +1,36 @@
-import { useQuery } from "@tanstack/react-query";
+import { useQuery, useMutation } from "@tanstack/react-query";
 import PageTitle from "./PageTitle/PageTitle";
 import { api } from "../../../api/api";
-import { useMemo } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { formatPrice } from "../../../utils/formatPrice";
-import { getPrice } from "../Cart/Cart";
+import { getDiscount } from "../../../utils/getDiscount";
+import { useDispatch, useSelector } from "react-redux";
+import { clearCoupon, selectCoupon } from "../../../store/couponReducer";
+import { PAYMENT_METHODS } from "../../../constants";
+import { PlusOutlined } from "@ant-design/icons";
+import SelectAddressModal from "./SelectAddressModal";
+import { getPrice } from "../../../utils/getPrice";
+import { useForm } from "react-hook-form";
+import { useProfile } from "../../../hooks/useProfile";
+import { message } from "antd";
+import { useNavigate } from "react-router-dom";
+import { client } from "../../../main";
 
 const Checkout = () => {
+  const couponApplied = useSelector(selectCoupon);
+  const [selectedAddress, setSelectedAddress] = useState(null);
+  const { profile } = useProfile();
+
+  const dispatch = useDispatch();
+
+  const navigate = useNavigate();
+
+  const { register, handleSubmit, setValue } = useForm({
+    defaultValues: {
+      paymentMethod: PAYMENT_METHODS.COD,
+    },
+  });
+
   const { data } = useQuery({
     queryKey: ["CART"],
     queryFn: async () => {
@@ -14,7 +39,56 @@ const Checkout = () => {
       return r.cart ?? [];
     },
   });
-  console.log("🚀 352 ~ Checkout ~ data:", data);
+
+  const checkoutMutation = useMutation({
+    mutationKey: ["CHECKOUT"],
+    mutationFn: async (values) => {
+      const r = await api.post("/orders/tao-don", values);
+
+      return r;
+    },
+    onSuccess: (r) => {
+      dispatch(clearCoupon());
+
+      if (r?.payment_url) {
+        window.location.href = r.payment_url;
+      } else {
+        navigate("/thank-you");
+        client.invalidateQueries(["CART"]);
+      }
+    },
+    onError: () => {
+      message.error("Có lỗi xảy ra khi đặt hàng");
+    },
+  });
+
+  useEffect(() => {
+    setValue("fullname", profile?.fullname);
+    setValue("email", profile?.email);
+    setValue("phone", selectedAddress?.phone);
+
+    if (selectedAddress) {
+      const address =
+        selectedAddress.street +
+        ", " +
+        selectedAddress.district +
+        ", " +
+        selectedAddress.city;
+      setValue("address", address);
+    }
+  }, [profile?.fullname, setValue, selectedAddress, profile?.email]);
+
+  useEffect(() => {
+    const fetchDefaultAddress = async () => {
+      const r = await api.get("/addresses");
+      const defaultAddress = r.find((it) => it.is_default);
+
+      if (defaultAddress) {
+        setSelectedAddress(defaultAddress);
+      }
+    };
+    fetchDefaultAddress();
+  }, []);
 
   const totalPrice = useMemo(() => {
     return data?.reduce((acc, it) => {
@@ -25,67 +99,115 @@ const Checkout = () => {
     }, 0);
   }, [data]);
 
+  const discountInfo = getDiscount(totalPrice, couponApplied);
+
+  const onSubmit = (values) => {
+    const payload = {
+      fullname: values.fullname,
+      phone: values.phone,
+      email: values.email,
+      address: values.address,
+      payment: values.paymentMethod,
+      total_price: totalPrice,
+      items: data.map((it) => {
+        return {
+          variant_id: it.product_variant.id,
+          price: getPrice(it.product_variant),
+          quantity: it.quantity,
+          total_price: getPrice(it.product_variant) * it.quantity,
+        };
+      }),
+    };
+
+    checkoutMutation.mutate(payload);
+  };
+
   return (
     <>
       <PageTitle />
 
       {/*page title end*/}
       {/*body content start*/}
-      <div className="page-content">
+      <form className="page-content" onSubmit={handleSubmit(onSubmit)}>
         <section>
           <div className="container">
             <div className="row">
               <div className="col-lg-7 col-md-12">
+                <SelectAddressModal
+                  selectedAddress={selectedAddress}
+                  setSelectedAddress={setSelectedAddress}
+                >
+                  <button className="btn btn-theme tw-mb-4 tw-ml-auto tw-block">
+                    <PlusOutlined className="tw-mr-2" />
+                    Chọn địa chỉ
+                  </button>
+                </SelectAddressModal>
+
                 <div className="checkout-form box-shadow white-bg px-5 py-5 md-px-3 md-py-3 xs-px-2 xs-py-2">
                   <h3 className="mb-4">
                     Chi tiết <span className="text-theme">Hoá đơn</span>
                   </h3>
-                  <form className="row">
-                    <div className="col-md-6">
+                  <div className="row">
+                    <div className="col-md-12">
                       <div className="form-group">
-                        <label>First Name</label>
+                        <label>Họ và tên</label>
                         <input
                           type="text"
                           id="fname"
                           className="form-control"
-                          placeholder="Your firstname"
+                          placeholder="Họ và tên"
+                          {...register("fullname", {
+                            required: "Vui lòng nhập họ và tên",
+                          })}
                         />
                       </div>
                     </div>
-                    <div className="col-md-6">
+
+                    <div className="col-md-12">
                       <div className="form-group">
-                        <label>Last Name</label>
+                        <label>Email</label>
                         <input
                           type="text"
-                          id="lname"
+                          id="fname"
                           className="form-control"
-                          placeholder="Your lastname"
+                          placeholder="Email"
+                          {...register("email", {
+                            required: "Vui lòng nhập email",
+                          })}
                         />
                       </div>
                     </div>
-                    <div className="col-md-6">
+
+                    <div className="col-md-12">
                       <div className="form-group">
-                        <label>E-mail Address</label>
+                        <label>Số điện thoại</label>
                         <input
                           type="text"
-                          id="email"
+                          id="fname"
                           className="form-control"
-                          placeholder="State Province"
+                          placeholder="Số điện thoại"
+                          {...register("phone", {
+                            required: "Vui lòng nhập số điện thoại",
+                          })}
                         />
                       </div>
                     </div>
-                    <div className="col-md-6">
+
+                    <div className="col-md-12">
                       <div className="form-group">
-                        <label>Phone Number</label>
+                        <label>Địa chỉ nhận hàng</label>
                         <input
                           type="text"
-                          id="phone"
+                          id="fname"
                           className="form-control"
-                          placeholder=""
+                          placeholder="Địa chỉ nhận hàng"
+                          {...register("address", {
+                            required: "Vui lòng nhập địa chỉ",
+                          })}
                         />
                       </div>
                     </div>
-                  </form>
+                  </div>
                 </div>
               </div>
               <div className="col-lg-5 col-md-12 md-mt-5">
@@ -108,12 +230,20 @@ const Checkout = () => {
                       );
                     })}
 
+                    {discountInfo && (
+                      <li className="mb-2">
+                        <span>Giảm giá:</span>
+
+                        {discountInfo.text}
+                      </li>
+                    )}
+
                     <li>
                       <span>
                         <strong className="cart-total">Tổng tiền:</strong>
                       </span>
                       <strong className="cart-total">
-                        {formatPrice(totalPrice)}
+                        {formatPrice(totalPrice - (discountInfo?.value ?? 0))}
                       </strong>
                     </li>
                   </ul>
@@ -126,13 +256,15 @@ const Checkout = () => {
                     <div className="custom-control custom-radio">
                       <input
                         type="radio"
-                        id="customRadio1"
+                        id={PAYMENT_METHODS.COD}
                         name="customRadio"
                         className="custom-control-input"
+                        value={PAYMENT_METHODS.COD}
+                        {...register("paymentMethod")}
                       />
                       <label
                         className="custom-control-label"
-                        htmlFor="customRadio1"
+                        htmlFor={PAYMENT_METHODS.COD}
                       >
                         Thanh toán khi nhận hàng
                       </label>
@@ -142,20 +274,24 @@ const Checkout = () => {
                     <div className="custom-control custom-radio">
                       <input
                         type="radio"
-                        id="customRadio2"
+                        id={PAYMENT_METHODS.VNPay}
                         name="customRadio"
                         className="custom-control-input"
+                        value={PAYMENT_METHODS.VNPay}
+                        {...register("paymentMethod")}
                       />
                       <label
                         className="custom-control-label"
-                        htmlFor="customRadio2"
+                        htmlFor={PAYMENT_METHODS.VNPay}
                       >
                         VNPay
                       </label>
                     </div>
                   </div>
                 </div>
-                <button className="btn btn-theme btn-block">Đặt hàng</button>
+                <button className="btn btn-theme btn-block" type="submit">
+                  Đặt hàng
+                </button>
               </div>
             </div>
           </div>
@@ -172,7 +308,7 @@ const Checkout = () => {
               </div>
               <div className="col-lg-8 col-md-12 md-mt-3">
                 <div className="subscribe-form">
-                  <form id="mc-form" className="group row align-items-center">
+                  <div id="mc-form" className="group row align-items-center">
                     <div className="col-sm-8">
                       <input
                         type="email"
@@ -193,14 +329,14 @@ const Checkout = () => {
                       />
                     </div>
                     <label htmlFor="mc-email" className="subscribe-message" />
-                  </form>
+                  </div>
                 </div>
               </div>
             </div>
           </div>
         </section>
         {/*newsletter end*/}
-      </div>
+      </form>
     </>
   );
 };
