@@ -4,8 +4,8 @@ import { api } from "../../../api/api";
 import { useEffect, useMemo, useState } from "react";
 import { formatPrice } from "../../../utils/formatPrice";
 import { getDiscount } from "../../../utils/getDiscount";
-import { useSelector } from "react-redux";
-import { selectCoupon } from "../../../store/couponReducer";
+import { useDispatch, useSelector } from "react-redux";
+import { clearCoupon, selectCoupon } from "../../../store/couponReducer";
 import { PAYMENT_METHODS } from "../../../constants";
 import { PlusOutlined } from "@ant-design/icons";
 import SelectAddressModal from "./SelectAddressModal";
@@ -20,6 +20,8 @@ const Checkout = () => {
   const couponApplied = useSelector(selectCoupon);
   const [selectedAddress, setSelectedAddress] = useState(null);
   const { profile } = useProfile();
+
+  const dispatch = useDispatch();
 
   const navigate = useNavigate();
 
@@ -46,6 +48,8 @@ const Checkout = () => {
       return r;
     },
     onSuccess: (r) => {
+      dispatch(clearCoupon());
+
       if (r?.payment_url) {
         window.location.href = r.payment_url;
       } else {
