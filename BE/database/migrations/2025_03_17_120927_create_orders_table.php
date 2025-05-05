@@ -1,8 +1,10 @@
 <?php
 
+
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
+
 
 return new class extends Migration
 {
@@ -23,13 +25,14 @@ return new class extends Migration
             $table->enum('payment_status' ,['Chưa thanh toán', 'Đã thanh toán','Thanh toán thất bại' ]);
             $table->double('shiping')->nullable();
             $table->double('discount')->nullable();
+            $table->string('voucher_code')->nullable();
             $table->double('total_price');
-            $table->text('note')->nullable(); 
+            $table->text('note')->nullable();
             $table->foreignId('user_id')->constrained('users');
             $table->softDeletes();
             $table->timestamps();
         });
-        
+       
         Schema::create('order_details', function (Blueprint $table) {
             $table->foreignId('order_id')->constrained();
             $table->foreignId('variant_id')->constrained('product_variants');
@@ -41,6 +44,7 @@ return new class extends Migration
             $table->timestamps();
         });
     }
+
 
     /**
      * Reverse the migrations.
