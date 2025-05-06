@@ -276,7 +276,12 @@ const Cart = () => {
 
                             {discountInfo && (
                               <li className="mb-2">
-                                <span>Giảm giá:</span>
+                                <div>
+                                  <p className="tw-m-0">Giảm giá:</p>
+                                  <p className="tw-m-0 tw-text-left">
+                                    ({couponApplied.code})
+                                  </p>
+                                </div>
 
                                 <p className="tw-m-0">
                                   {discountInfo.text}
