@@ -102,20 +102,13 @@ const Checkout = () => {
   const discountInfo = getDiscount(totalPrice, couponApplied);
 
   const onSubmit = (values) => {
-    const priceAfterDiscount = Math.max(
-      totalPrice - (discountInfo?.value ?? 0),
-      0
-    );
-
     const payload = {
       fullname: values.fullname,
       phone: values.phone,
       email: values.email,
       address: values.address,
       payment: values.paymentMethod,
-      total_price: priceAfterDiscount,
-      voucher_code: couponApplied?.code,
-      discount: discountInfo?.value,
+      total_price: totalPrice,
       items: data.map((it) => {
         return {
           variant_id: it.product_variant.id,
@@ -239,12 +232,7 @@ const Checkout = () => {
 
                     {discountInfo && (
                       <li className="mb-2">
-                        <div>
-                          <p className="tw-m-0">Giảm giá:</p>
-                          <p className="tw-m-0 tw-text-left">
-                            ({couponApplied.code})
-                          </p>
-                        </div>
+                        <span>Giảm giá:</span>
 
                         {discountInfo.text}
                       </li>

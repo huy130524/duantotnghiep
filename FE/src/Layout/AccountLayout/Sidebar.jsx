@@ -1,4 +1,4 @@
-import { FaUser, FaSignOutAlt, FaKey } from "react-icons/fa";
+import { FaUser, FaSignOutAlt, FaEye, FaKey } from "react-icons/fa";
 import { FaCartShopping, FaLocationDot } from "react-icons/fa6";
 
 import { NavLink } from "react-router-dom";
@@ -55,7 +55,7 @@ const Sidebar = () => {
         </NavLink>
 
         <NavLink
-          to="/profile/orders-history"
+          to="/account/orders-history"
           className="tw-flex tw-items-center tw-py-3 tw-px-5 tw-gap-x-3 tw-text-[#111] hover:text-[#e30019] tw-transition-all [&.active]:tw-text-[#e30019]"
         >
           <FaCartShopping />
@@ -63,14 +63,14 @@ const Sidebar = () => {
           <p className="tw-m-0">Quản lý đơn hàng</p>
         </NavLink>
 
-        {/* <NavLink
+        <NavLink
           to="/account/viewed"
           className="tw-flex tw-items-center tw-py-3 tw-px-5 tw-gap-x-3 tw-text-[#111] hover:text-[#e30019] tw-transition-all [&.active]:tw-text-[#e30019]"
         >
           <FaEye />
 
           <p className="tw-m-0">Sản phẩm đã xem</p>
-        </NavLink> */}
+        </NavLink>
 
         <div
           onClick={logout}

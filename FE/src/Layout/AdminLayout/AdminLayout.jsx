@@ -25,11 +25,6 @@ const items = [
     label: <Link>Dashboard</Link>,
   },
   {
-    key: "9",
-    icon: <AppstoreOutlined />,
-    label: <Link to="/admin/orders">Quản lý đơn hàng</Link>,
-  },
-  {
     key: "2",
     icon: <AppstoreOutlined />,
     label: <Link to="/admin/category">Quản lý danh mục</Link>,
