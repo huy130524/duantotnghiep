@@ -3,6 +3,7 @@ import { Button, Result } from "antd";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import { api } from "../../../api/api";
 import { useEffect } from "react";
+import { client } from "../../../main";
 
 const VNPayReturn = () => {
   const navigate = useNavigate();
@@ -21,6 +22,9 @@ const VNPayReturn = () => {
           vnp_TxnRef: txnRef,
         },
       });
+    },
+    onSuccess: () => {
+      client.invalidateQueries(["CART"]);
     },
   });
 
