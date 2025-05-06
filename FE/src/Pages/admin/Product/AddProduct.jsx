@@ -247,7 +247,7 @@ const AddProduct = () => {
 
                   <MinusCircleOutlined
                     className={styles.removeIcon}
-                    onClick={() => remove(name)}
+                    onClick={() => remove(field.name)}
                   />
                 </Flex>
               ))}

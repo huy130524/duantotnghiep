@@ -3,7 +3,6 @@ import styles from "./index.module.scss";
 import { Link } from "react-router-dom";
 
 import { Button, Flex, Image, Table } from "antd";
-import { getImageUrl } from "../../../utils/image";
 import { useQuery } from "@tanstack/react-query";
 import { api } from "../../../api/api";
 import { EditOutlined } from "@ant-design/icons";

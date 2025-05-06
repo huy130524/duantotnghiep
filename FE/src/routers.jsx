@@ -37,6 +37,10 @@ import Cart from "./Pages/client/Cart/Cart";
 import Checkout from "./Pages/client/Checkout/Checkout";
 import VNPayReturn from "./Pages/client/VNPayReturn/VNPayReturn";
 import ThankYou from "./Pages/client/ThankYou/ThankYou";
+import OrdersHistory from "./Pages/client/Profile/OrdersHistory";
+import OrderHistoryDetail from "./Pages/client/Profile/OrderDetail";
+import OrderList from "./Pages/admin/OrderManagement/OrderList";
+import OrderDetail from "./Pages/admin/OrderManagement/OrderDetail";
 
 const router = createBrowserRouter([
   {
@@ -77,6 +81,14 @@ const router = createBrowserRouter([
                 path: "address",
                 element: <ListAddress />,
               },
+              {
+                path: "orders-history",
+                element: <OrdersHistory />,
+              },
+              {
+                path: "orders-history/:id",
+                element: <OrderHistoryDetail />,
+              },
             ],
           },
 
@@ -114,6 +126,14 @@ const router = createBrowserRouter([
           {
             path: "",
             element: <Dashboard />,
+          },
+          {
+            path: "orders",
+            element: <OrderList />,
+          },
+          {
+            path: "orders/:id",
+            element: <OrderDetail />,
           },
           {
             path: "category",
