@@ -163,5 +163,7 @@ Route::middleware('auth:sanctum')->group(function () {
     // Dashboard
     Route::get('dashboard',[HomeController::class,'dashboard']);
 
-
+    // 
+    Route::get('/profile/orders-history',[OrderController::class,'getOrderUser']);
+    Route::get('/profile/orders-detail/{code}',[OrderController::class,'getOrder']);
 });
