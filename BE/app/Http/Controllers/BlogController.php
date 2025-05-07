@@ -11,10 +11,11 @@ class BlogController extends Controller
 {
     public function index(Request $request)
     {
-        $blogs = Blog::paginate(5);
-
+        $blogs = Blog::with('category', 'user')->paginate(5);
+    
         return response()->json($blogs);
     }
+    
 
 
     public function store(Request $request)
@@ -100,7 +101,7 @@ class BlogController extends Controller
         ], 200);
     }
     public function userBlog(){
-        $blogs = Blog::paginate(10);
+        $blogs = Blog::with('category', 'user')->paginate(10);
 
         return response()->json($blogs);
     }
