@@ -24,17 +24,24 @@ class OrderController extends Controller
 {
     public function admin_index()
     {
-        $orders = Order::all();
+        $orders = Order::latest()->get();
         return response()->json($orders);
     }
-
+    
 
     public function admin_detail($id)
     {
-        $order = Order::where('id', $id)->with('orderDetails')->get();
+        $order = Order::where('id', $id)
+            ->with([
+                'orderDetails.variant.product'
+            ])
+            ->first(); 
+    
+        if(empty($order)){
+            return response()->json(["message"=>"Không có đơn hàng nào"]);
+        }
         return response()->json($order);
     }
-
 
     public function update(Request $request, Order $order)
     {
@@ -413,7 +420,36 @@ class OrderController extends Controller
         }
     }
 
+    public function getOrderUser(Request $request){
+        $user = $request->user(); 
+        $order = Order::where('user_id', $user->id)
+        ->orderBy('created_at', 'desc')
+        ->with([
+            'orderDetails.variant.product'
+        ])
+        ->get(); 
 
+    if(empty($order)){
+        return response()->json(["message"=>"Không có đơn hàng nào"]);
+    }
+
+    return response()->json($order);
+    }
+    public function getOrder(Request $request, $code){
+        $user = $request->user(); 
+        $order = Order::where('user_id', $user->id)
+        ->where('code', $code)
+        ->with([
+            'orderDetails.variant.product'
+        ])
+        ->first(); 
+
+    if(empty($order)){
+        return response()->json(["message"=>"Không có đơn hàng nào"]);
+    }
+    return response()->json($order);
+    }
+    
    
    
 }
