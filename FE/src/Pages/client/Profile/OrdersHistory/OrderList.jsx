@@ -41,6 +41,13 @@ const OrderCard = ({ data }) => {
                   <p className="tw-text-[#111] tw-font-semibold tw-mb-0">
                     {product?.name}
                   </p>
+
+                  <p className="tw-text-[14px] tw-text-[#535353] tw-mt-1 tw-mb-0">
+                    Màu: {it.variant?.color?.name}
+                  </p>
+                  <p className="tw-text-[14px] tw-text-[#535353] tw-mb-0">
+                    Size: {it.variant?.size?.name}
+                  </p>
                 </div>
               </div>
 

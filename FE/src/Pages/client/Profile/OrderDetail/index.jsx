@@ -141,8 +141,10 @@ const OrderHistoryDetail = () => {
                     <p className="tw-text-[#111] tw-mb-0">{product?.name}</p>
 
                     <p className="tw-text-[14px] tw-text-[#535353] tw-mt-1 tw-mb-0">
-                      PC GVN x ASUS ROG Hyperion White (Intel i9-14900K/ VGA RTX
-                      4090)
+                      Màu: {it.variant?.color?.name}
+                    </p>
+                    <p className="tw-text-[14px] tw-text-[#535353] tw-mb-0">
+                      Size: {it.variant?.size?.name}
                     </p>
 
                     <p className="tw-text-[14px] tw-text-[#535353] tw-mt-1 tw-mb-0">

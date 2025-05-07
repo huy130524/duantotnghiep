@@ -55,10 +55,24 @@ const OrderDetail = () => {
       dataIndex: "stt",
       render: (_, __, index) => ++index,
     },
+
     {
-      title: "Tên SP",
+      title: "Sản phẩm",
       key: "product",
-      render: (_, record) => record.variant?.product?.name,
+      render: (_, record) => {
+        return (
+          <>
+            <p className="tw-mb-0">{record.variant?.product?.name}</p>
+
+            <p className="tw-text-[14px] tw-text-[#535353] tw-mt-1 tw-mb-0">
+              Màu: {record.variant?.color?.name}
+            </p>
+            <p className="tw-text-[14px] tw-text-[#535353] tw-mb-0">
+              Size: {record.variant?.size?.name}
+            </p>
+          </>
+        );
+      },
     },
     {
       title: "Đơn giá",
