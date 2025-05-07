@@ -5,6 +5,7 @@ import { Button, Flex, message, Popconfirm, Spin } from "antd";
 import dayjs from "dayjs";
 import { formatPrice } from "../../../../utils/formatPrice";
 import { useMemo } from "react";
+import { getImageUrl } from "../../../../utils/image";
 
 const OrderHistoryDetail = () => {
   const params = useParams();
@@ -12,9 +13,9 @@ const OrderHistoryDetail = () => {
   const { data, refetch } = useQuery({
     queryKey: ["GET_ORDER_DETAIL", params?.id],
     queryFn: async () => {
-      const r = await api.get(`/admin-orders/detail/${params.id}`);
+      const r = await api.get(`/profile/orders-detail/${params.id}`);
 
-      return r?.[0];
+      return r;
     },
   });
 
@@ -124,39 +125,40 @@ const OrderHistoryDetail = () => {
             </p>
           </div>
 
-          {data.order_details.map((it, idx) => (
-            <div className="tw-p-2 tw-flex tw-gap-x-4" key={idx}>
-              <div className="tw-w-3/4 tw-flex tw-gap-x-3 tw-items-center">
-                <img
-                  src="https://picsum.photos/200/200"
-                  alt="Product image"
-                  className="tw-w-[60px] tw-h-[60px] tw-object-cover"
-                />
+          {data.order_details.map((it, idx) => {
+            const product = it.variant?.product;
 
-                <div>
-                  <p className="tw-text-[#111] tw-mb-0">
-                    PC GVN x ASUS ROG Hyperion White (Intel i9-14900K/ VGA RTX
-                    4090)
-                  </p>
+            return (
+              <div className="tw-p-2 tw-flex tw-gap-x-4" key={idx}>
+                <div className="tw-w-3/4 tw-flex tw-gap-x-3 tw-items-center">
+                  <img
+                    src={getImageUrl(product?.image)}
+                    alt="Product image"
+                    className="tw-w-[60px] tw-h-[60px] tw-object-cover"
+                  />
 
-                  <p className="tw-text-[14px] tw-text-[#535353] tw-mt-1 tw-mb-0">
-                    PC GVN x ASUS ROG Hyperion White (Intel i9-14900K/ VGA RTX
-                    4090)
-                  </p>
+                  <div>
+                    <p className="tw-text-[#111] tw-mb-0">{product?.name}</p>
 
-                  <p className="tw-text-[14px] tw-text-[#535353] tw-mt-1 tw-mb-0">
-                    Số lượng: {it.quantity}
+                    <p className="tw-text-[14px] tw-text-[#535353] tw-mt-1 tw-mb-0">
+                      PC GVN x ASUS ROG Hyperion White (Intel i9-14900K/ VGA RTX
+                      4090)
+                    </p>
+
+                    <p className="tw-text-[14px] tw-text-[#535353] tw-mt-1 tw-mb-0">
+                      Số lượng: {it.quantity}
+                    </p>
+                  </div>
+                </div>
+
+                <div className="tw-w-1/4">
+                  <p className="tw-text-[#e30019] tw-text-right tw-mb-0">
+                    {formatPrice(it.total_price)}
                   </p>
                 </div>
               </div>
-
-              <div className="tw-w-1/4">
-                <p className="tw-text-[#e30019] tw-text-right tw-mb-0">
-                  {formatPrice(it.total_price)}
-                </p>
-              </div>
-            </div>
-          ))}
+            );
+          })}
         </div>
 
         <div className="tw-ml-[50%] tw-mt-4">

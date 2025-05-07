@@ -5,6 +5,7 @@ import { api } from "../../../api/api";
 import { formatPrice } from "../../../utils/formatPrice";
 
 import styles from "./index.module.scss";
+import { useMemo } from "react";
 
 const ConfirmPopup = ({ children, onConfirm }) => {
   return (
@@ -27,9 +28,15 @@ const OrderDetail = () => {
     queryFn: async () => {
       const r = await api.get(`/admin-orders/detail/${params.id}`);
 
-      return r?.[0];
+      return r;
     },
   });
+
+  const totalPrice = useMemo(() => {
+    return data?.order_details.reduce((acc, item) => {
+      return acc + item.price * item.quantity;
+    }, 0);
+  }, [data]);
 
   const updateStatusMutation = useMutation({
     mutationKey: ["UPDATE_ORDER_STATUS", orderId],
@@ -48,12 +55,11 @@ const OrderDetail = () => {
       dataIndex: "stt",
       render: (_, __, index) => ++index,
     },
-    // {
-    //   title: "Tên SP",
-    //   key: "product",
-    //   dataIndex: "product",
-    //   render: (product) => product.name,
-    // },
+    {
+      title: "Tên SP",
+      key: "product",
+      render: (_, record) => record.variant?.product?.name,
+    },
     {
       title: "Đơn giá",
       key: "price",
@@ -187,9 +193,19 @@ const OrderDetail = () => {
         pagination={false}
       />
 
-      <p className="tw-text-2xl tw-mt-4 tw-text-center tw-font-semibold">
-        Tổng tiền: {formatPrice(data?.total_price)}
-      </p>
+      <div className="tw-text-center tw-mt-6">
+        <p className="tw-text-base">Tạm tính: {formatPrice(totalPrice)}</p>
+
+        {data?.voucher_code && (
+          <p className="tw-text-base">
+            Giảm giá: {formatPrice(data?.discount)}
+          </p>
+        )}
+
+        <p className="tw-text-2xl tw-mt-4 tw-text-center tw-font-semibold">
+          Tổng tiền: {formatPrice(data?.total_price)}
+        </p>
+      </div>
     </>
   );
 };
