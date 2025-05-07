@@ -24,7 +24,13 @@ class OrderController extends Controller
 {
     public function admin_index()
     {
-        $orders = Order::latest()->get();
+        $orders = Order::latest()
+        ->with([
+            'orderDetails.variant.product',
+            'orderDetails.variant.color',
+            'orderDetails.variant.size',
+        ])
+        ->get();
         return response()->json($orders);
     }
     
@@ -32,9 +38,12 @@ class OrderController extends Controller
     public function admin_detail($id)
     {
         $order = Order::where('id', $id)
-            ->with([
-                'orderDetails.variant.product'
-            ])
+        ->with([
+            'orderDetails.variant.product',
+            'orderDetails.variant.color',
+            'orderDetails.variant.size',
+        ])
+        
             ->first(); 
     
         if(empty($order)){
@@ -425,8 +434,11 @@ class OrderController extends Controller
         $order = Order::where('user_id', $user->id)
         ->orderBy('created_at', 'desc')
         ->with([
-            'orderDetails.variant.product'
+            'orderDetails.variant.product',
+            'orderDetails.variant.color',
+            'orderDetails.variant.size',
         ])
+        
         ->get(); 
 
     if(empty($order)){
@@ -440,8 +452,11 @@ class OrderController extends Controller
         $order = Order::where('user_id', $user->id)
         ->where('code', $code)
         ->with([
-            'orderDetails.variant.product'
+            'orderDetails.variant.product',
+            'orderDetails.variant.color',
+            'orderDetails.variant.size',
         ])
+        
         ->first(); 
 
     if(empty($order)){
