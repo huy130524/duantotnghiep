@@ -44,7 +44,7 @@ const VNPayReturn = () => {
               Về trang chủ
             </Button>,
             <Button
-              onClick={() => navigate("/profile/order")}
+              onClick={() => navigate("/profile/orders-history")}
               type="primary"
               key="my-order"
             >

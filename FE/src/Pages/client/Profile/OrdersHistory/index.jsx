@@ -49,7 +49,7 @@ const OrdersHistory = () => {
 
   const { data } = useQuery({
     queryKey: ["ORDER_HISTORY"],
-    queryFn: () => api.get("/admin-orders"),
+    queryFn: () => api.get("/profile/orders-history"),
   });
 
   const order = useMemo(() => {
