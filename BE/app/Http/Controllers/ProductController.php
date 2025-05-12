@@ -249,29 +249,42 @@ public function search(Request $request)
 
 
     public function filterProducts(Request $request)
-{
-    $query = Product::query();
+    {
+        $query = Product::query();
 
-    // Lọc theo thời gian tạo (mới nhất, cũ nhất)
-    if ($request->has('sort_by')) {
-        switch ($request->sort_by) {
-            case 'latest':
-                $query->orderBy('created_at', 'desc');
-                break;
-            case 'oldest':
-                $query->orderBy('created_at', 'asc');
-                break;
-}
+        if ($request->has('sort_by')) {
+            switch ($request->sort_by) {
+                case 'latest':
+                    $query->orderBy('created_at', 'desc');
+                    break;
+                case 'oldest':
+                    $query->orderBy('created_at', 'asc');
+                    break;
+                case 'price_asc':
+                    $query->orderBy(
+                        DB::raw('(SELECT MIN(price) FROM product_variants WHERE product_variants.product_id = products.id)'),
+                        'asc'
+                    );
+                    break;
+                
+                case 'price_desc':
+                    $query->orderBy(
+                        DB::raw('(SELECT MAX(price) FROM product_variants WHERE product_variants.product_id = products.id)'),
+                        'desc'
+                    );
+                    break;
+                    
     }
-    $products = $query->with('productVariants')->paginate(10);
+        }
+        $products = $query->with('productVariants')->paginate(10);
 
-    return response()->json([
-        'success' => true,
-        'data' => $products
-    ]);
-}
+        return response()->json([
+            'success' => true,
+            'data' => $products
+        ]);
+    }
 public function detail($slug){
-    $product = Product::where('slug',$slug)->with(['productVariants.size', 'productVariants.color', 'category', 'comments'])->first();
+    $product = Product::where('slug',$slug)->with(['productVariants.size', 'productVariants.color', 'category', 'comments.user'])->first();
     if(!$product){
         return response()->json(["message"=>"Sản phẩm không tồn tại"]);
     }

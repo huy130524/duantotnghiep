@@ -418,9 +418,7 @@ class OrderController extends Controller
             $order->payment_status = 'Thanh toán thất bại';
             $order->status = 'Đơn hàng đã hủy';
             $order->save();
-
-
-            $order->orderDetails()->delete();
+            Cart::where('user_id', $order->user_id)->forceDelete();
             return response()->json([
                 'status' => false,
                 'message' => 'Thanh toán bị hủy. Đơn hàng chưa được xử lý.',
