@@ -47,6 +47,8 @@ import BlogDetail from "./Pages/client/BlogDetail/BlogDetail";
 import ListBanner from "./Pages/admin/Banner/ListBanner";
 import AddBanner from "./Pages/admin/Banner/AddBanner";
 import UpdateBanner from "./Pages/admin/Banner/UpdateBanner";
+import Contact from "./Pages/client/Contact/Contact";
+import ListContact from "./Pages/admin/Contact/ListContact";
 
 const router = createBrowserRouter([
   {
@@ -129,6 +131,10 @@ const router = createBrowserRouter([
           {
             path: "blog/:slug",
             element: <BlogDetail />,
+          },
+          {
+            path: "contact",
+            element: <Contact />,
           },
         ],
       },
@@ -258,6 +264,10 @@ const router = createBrowserRouter([
           {
             path: "banner/:id/edit",
             element: <UpdateBanner />,
+          },
+          {
+            path: "contact",
+            element: <ListContact />,
           },
         ],
       },
