@@ -5,6 +5,7 @@ import styles from "./index.module.scss";
 
 import { Link, Outlet } from "react-router-dom";
 import { useProfile } from "../../hooks/useProfile";
+import { getImageUrl } from "../../utils/image";
 
 const { Header, Content, Sider } = Layout;
 
@@ -94,7 +95,7 @@ const AdminLayout = () => {
         <Header className={styles.header}>
           <div className={styles.profile}>
             <img
-              src="/images/avatar-default.jpg"
+              src={profile?.avatar || "/images/avatar-default.jpg"}
               alt="Avatar"
               className={styles.avatar}
             />

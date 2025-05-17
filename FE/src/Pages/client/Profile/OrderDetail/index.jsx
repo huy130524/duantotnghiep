@@ -6,6 +6,7 @@ import dayjs from "dayjs";
 import { formatPrice } from "../../../../utils/formatPrice";
 import { useMemo } from "react";
 import { getImageUrl } from "../../../../utils/image";
+import ReviewButton from "../../../../components/ReviewButton";
 
 const OrderHistoryDetail = () => {
   const params = useParams();
@@ -68,6 +69,13 @@ const OrderHistoryDetail = () => {
             </Button>
           </Popconfirm>
         )}
+
+        <ReviewButton
+          orderId={data.id}
+          orderDetails={data.order_details}
+          status={data.status}
+          refetch={refetch}
+        />
       </Flex>
 
       <div className="tw-px-6 tw-py-4">
