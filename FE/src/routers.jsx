@@ -44,6 +44,9 @@ import OrderDetail from "./Pages/admin/OrderManagement/OrderDetail";
 import AdminRoute from "./components/AdminRoute";
 import Blog from "./Pages/client/Blog/Blog";
 import BlogDetail from "./Pages/client/BlogDetail/BlogDetail";
+import ListBanner from "./Pages/admin/Banner/ListBanner";
+import AddBanner from "./Pages/admin/Banner/AddBanner";
+import UpdateBanner from "./Pages/admin/Banner/UpdateBanner";
 
 const router = createBrowserRouter([
   {
@@ -242,6 +245,19 @@ const router = createBrowserRouter([
           {
             path: "product/:id/edit",
             element: <UpdateProduct />,
+          },
+
+          {
+            path: "banner",
+            element: <ListBanner />,
+          },
+          {
+            path: "banner/add",
+            element: <AddBanner />,
+          },
+          {
+            path: "banner/:id/edit",
+            element: <UpdateBanner />,
           },
         ],
       },

@@ -65,6 +65,11 @@ const items = [
     icon: <AppstoreOutlined />,
     label: <Link to="/admin/blog">Quản lý bài viết</Link>,
   },
+  {
+    key: "10",
+    icon: <AppstoreOutlined />,
+    label: <Link to="/admin/banner">Quản lý banner</Link>,
+  },
 ];
 
 const AdminLayout = () => {
