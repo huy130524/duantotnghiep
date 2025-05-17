@@ -144,7 +144,10 @@ const Checkout = () => {
                   selectedAddress={selectedAddress}
                   setSelectedAddress={setSelectedAddress}
                 >
-                  <button className="btn btn-theme tw-mb-4 tw-ml-auto tw-block">
+                  <button
+                    className="btn btn-theme tw-mb-4 tw-ml-auto tw-block"
+                    type="button"
+                  >
                     <PlusOutlined className="tw-mr-2" />
                     Chọn địa chỉ
                   </button>

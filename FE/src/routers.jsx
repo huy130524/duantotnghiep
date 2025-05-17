@@ -41,6 +41,7 @@ import OrdersHistory from "./Pages/client/Profile/OrdersHistory";
 import OrderHistoryDetail from "./Pages/client/Profile/OrderDetail";
 import OrderList from "./Pages/admin/OrderManagement/OrderList";
 import OrderDetail from "./Pages/admin/OrderManagement/OrderDetail";
+import AdminRoute from "./components/AdminRoute";
 
 const router = createBrowserRouter([
   {
@@ -121,7 +122,11 @@ const router = createBrowserRouter([
 
       {
         path: "admin",
-        element: <AdminLayout />,
+        element: (
+          <AdminRoute>
+            <AdminLayout />
+          </AdminRoute>
+        ),
         children: [
           {
             path: "",

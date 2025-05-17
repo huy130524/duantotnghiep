@@ -51,7 +51,7 @@ const Content = ({ isSearch, data, isCategory, sortBy, onSortChange }) => {
         )}
       </div>
 
-      {data?.length > 0 && (
+      {/* {data?.length > 0 && (
         <nav aria-label="Page navigation" className="mt-5">
           <ul className="pagination">
             <li className="page-item">
@@ -81,7 +81,7 @@ const Content = ({ isSearch, data, isCategory, sortBy, onSortChange }) => {
             </li>
           </ul>
         </nav>
-      )}
+      )} */}
     </div>
   );
 };
