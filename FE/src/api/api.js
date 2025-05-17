@@ -4,7 +4,7 @@ import { message } from "antd";
 
 export const api = axios.create({
   baseURL:
-    "https://1676-2405-4802-1d9f-f160-dd58-157a-dcd-db4d.ngrok-free.app/api",
+    "http://localhost:8000/api",
 });
 
 api.interceptors.request.use(

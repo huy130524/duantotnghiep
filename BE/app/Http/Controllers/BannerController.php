@@ -12,7 +12,7 @@ class BannerController extends Controller
     // Lấy danh sách banner
     public function index()
     {
-        $banners = Banner::orderBy('created_at', 'desc')->limit(3);
+        $banners = Banner::orderBy('created_at', 'desc')->get();
         return response()->json($banners);
     }
 
