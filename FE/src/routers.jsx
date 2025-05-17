@@ -43,6 +43,7 @@ import OrderList from "./Pages/admin/OrderManagement/OrderList";
 import OrderDetail from "./Pages/admin/OrderManagement/OrderDetail";
 import AdminRoute from "./components/AdminRoute";
 import Blog from "./Pages/client/Blog/Blog";
+import BlogDetail from "./Pages/client/BlogDetail/BlogDetail";
 
 const router = createBrowserRouter([
   {
@@ -121,6 +122,10 @@ const router = createBrowserRouter([
           {
             path: "blog",
             element: <Blog />,
+          },
+          {
+            path: "blog/:slug",
+            element: <BlogDetail />,
           },
         ],
       },
