@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Banner;
+use App\Models\Blog;
 use App\Models\Brand;
 use App\Models\Category;
 use App\Models\Product;
@@ -17,7 +18,9 @@ class HomeController extends Controller
     {
         $banners = Banner::where('is_active', 1)->get();
         $categories = Category::where('is_active', 1)->get();
-
+        $blogs = Blog::where('status', 'published')
+        ->orderBy('created_at', 'desc') // hoặc 'updated_at'
+        ->get();
         $newProducts = Product::orderBy('created_at', 'desc')
                               ->with('productVariants')
                               ->take(10)
@@ -25,6 +28,7 @@ class HomeController extends Controller
 
         return response()->json([
             'banners' => $banners,
+            'blogs' => $blogs,
             'categories' => $categories,
             'new_products' => $newProducts
         ], 200);

@@ -21,7 +21,7 @@ class Banner extends Model
     ];
 
     protected $casts = [
-        'is_active' => 'boolean',
+        'is_active' => 'integer',
         'location' => 'integer',
     ];
 }

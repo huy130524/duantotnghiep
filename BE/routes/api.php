@@ -47,6 +47,7 @@ Route::middleware('auth:sanctum')->get('profile', [UserController::class, 'profi
 Route::middleware('auth:sanctum')->post('updateprofile/{id}',[UserController::class,'UpdateProfile']);
 
 Route::get('blog-user', [BlogController::class, 'userBlog']);
+Route::get('blog/{slug}', [BlogController::class, 'blogSlug']);
 
 
 

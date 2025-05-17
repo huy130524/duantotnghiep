@@ -12,7 +12,7 @@ class BannerController extends Controller
     // Lấy danh sách banner
     public function index()
     {
-        $banners = Banner::orderBy('created_at', 'desc')->limit(3);
+        $banners = Banner::orderBy('created_at', 'desc')->get();
         return response()->json($banners);
     }
 
@@ -22,8 +22,7 @@ class BannerController extends Controller
             'title' => 'required|string|max:255',
             'image' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
             'link' => 'nullable|string|max:255',
-            'is_active' => 'required|boolean',
-            'location' => 'nullable|integer',
+            'is_active' => 'required|integer',
         ]);
 
         if ($validator->fails()) {
@@ -37,7 +36,6 @@ class BannerController extends Controller
             'image' => '/storage/' . $imagePath,
             'link' => $request->link,
             'is_active' => $request->is_active,
-            'location' => $request->location,
         ]);
 
         return response()->json(['message' => 'Banner created successfully', 'banner' => $banner], 201);
@@ -63,24 +61,18 @@ class BannerController extends Controller
         'title' => 'sometimes|string|max:255',
         'image' => 'sometimes|image|mimes:jpeg,png,jpg,gif|max:2048',
         'link' => 'nullable|string|max:255',
-        'is_active' => 'sometimes|boolean',
-        'location' => 'sometimes|integer',
+        'is_active' => 'integer',
     ]);
 
     if ($validator->fails()) {
         return response()->json(['errors' => $validator->errors()], 422);
     }
-
-    $data = $request->only(['title', 'link', 'is_active', 'location']);
-
-    // Nếu có file ảnh mới, xử lý lưu và xóa ảnh cũ
+    $data = $request->only(['title', 'link', 'is_active']);
     if ($request->hasFile('image')) {
-        // Xóa ảnh cũ nếu có và tồn tại
         if ($banner->image && Storage::disk('public')->exists(str_replace('/storage/', '', $banner->image))) {
             Storage::disk('public')->delete(str_replace('/storage/', '', $banner->image));
         }
 
-        // Lưu ảnh mới
         $path = $request->file('image')->store('banners', 'public');
         $data['image'] = '/storage/' . $path;
     }
