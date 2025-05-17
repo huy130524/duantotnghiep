@@ -10,13 +10,13 @@ const setAccessToken = (token) => {
   localStorage.setItem(TOKEN_STORAGE_KEY, token);
 };
 
+export const logout = () => {
+  localStorage.removeItem(TOKEN_STORAGE_KEY);
+
+  window.location.href = "/login";
+};
+
 export const useAuth = () => {
-  const logout = () => {
-    localStorage.removeItem(TOKEN_STORAGE_KEY);
-
-    window.location.href = "/login";
-  };
-
   return {
     setAccessToken,
     getAccessToken,

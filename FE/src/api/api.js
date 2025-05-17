@@ -1,5 +1,6 @@
 import axios from "axios";
-import { getAccessToken } from "../hooks/useAuth";
+import { getAccessToken, logout } from "../hooks/useAuth";
+import { message } from "antd";
 
 export const api = axios.create({
   baseURL: "http://localhost:8000/api",
@@ -26,6 +27,13 @@ api.interceptors.response.use(
     return response.data;
   },
   function (error) {
+    if (error.status === 401) {
+      message.error("Phiên đăng nhập đã hết hạn, vui lòng đăng nhập lại");
+
+      setTimeout(() => {
+        logout();
+      }, 1000);
+    }
     return Promise.reject(error);
   }
 );

@@ -23,7 +23,7 @@ const VNPayReturn = () => {
         },
       });
     },
-    onSuccess: () => {
+    onSettled: () => {
       client.invalidateQueries(["CART"]);
     },
   });

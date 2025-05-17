@@ -4,8 +4,13 @@ import { Dropdown, Input } from "antd";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { api } from "../../api/api";
 import { useProfile } from "../../hooks/useProfile";
-import { SearchOutlined } from "@ant-design/icons";
-import { useEffect, useState } from "react";
+import {
+  SearchOutlined,
+  UserOutlined,
+  LogoutOutlined,
+  DashboardOutlined,
+} from "@ant-design/icons";
+import { useEffect, useState, useMemo, useCallback } from "react";
 
 const ClientHeader = () => {
   const [keyword, setKeyword] = useState("");
@@ -14,12 +19,6 @@ const ClientHeader = () => {
 
   const { profile } = useProfile();
   const { isLogged, logout } = useAuth();
-
-  useEffect(() => {
-    if (location.pathname !== "/products") {
-      setKeyword("");
-    }
-  }, [location.pathname]);
 
   const navigate = useNavigate();
 
@@ -39,9 +38,44 @@ const ClientHeader = () => {
     onSuccess: logout,
   });
 
-  const onLogout = () => {
+  const onLogout = useCallback(() => {
     logoutMutation.mutate();
-  };
+  }, [logoutMutation]);
+
+  const getDropdownMenuItems = useMemo(() => {
+    const items = [
+      {
+        key: "profile",
+        label: "Trang cá nhân",
+        icon: <UserOutlined />,
+        onClick: () => navigate("/profile"),
+      },
+    ];
+
+    if (profile?.role === "admin") {
+      items.push({
+        key: "admin",
+        label: "Truy cập trang quản trị",
+        icon: <DashboardOutlined />,
+        onClick: () => navigate("/admin"),
+      });
+    }
+
+    items.push({
+      key: "logout",
+      label: "Đăng xuất",
+      icon: <LogoutOutlined />,
+      onClick: onLogout,
+    });
+
+    return items;
+  }, [profile?.role, navigate, onLogout]);
+
+  useEffect(() => {
+    if (location.pathname !== "/products") {
+      setKeyword("");
+    }
+  }, [location.pathname]);
 
   const onSearchChange = (e) => {
     const value = e.target.value;
@@ -63,7 +97,7 @@ const ClientHeader = () => {
   return (
     <>
       <header id="site-header" className="header">
-        <div className="top-bar">
+        <div className="top-bar tw-flex tw-items-center">
           <div className="container">
             <div className="row align-items-center sm-text-center">
               <div className="col-lg-6 col-md-4">
@@ -84,18 +118,13 @@ const ClientHeader = () => {
                       <li>
                         <Dropdown
                           menu={{
-                            items: [
-                              {
-                                label: "Đăng xuất",
-                                onClick: onLogout,
-                              },
-                            ],
+                            items: getDropdownMenuItems,
                           }}
                           arrow
                         >
-                          <Link to="/profile">
+                          <span className="tw-font-semibold">
                             Xin chào, {profile?.fullname}
-                          </Link>
+                          </span>
                         </Dropdown>
                       </li>
                     ) : (
@@ -125,7 +154,11 @@ const ClientHeader = () => {
                       className="img-center"
                       src="/images/logo.png"
                       alt=""
-                     style={{ width: "auto", height: "100px",textAlign: "center" }}
+                      style={{
+                        width: "auto",
+                        height: "100px",
+                        textAlign: "center",
+                      }}
                     />
                   </Link>
                   <button
