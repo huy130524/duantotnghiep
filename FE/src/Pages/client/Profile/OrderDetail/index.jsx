@@ -70,12 +70,13 @@ const OrderHistoryDetail = () => {
           </Popconfirm>
         )}
 
-        <ReviewButton
-          orderId={data.id}
-          orderDetails={data.order_details}
-          status={data.status}
-          refetch={refetch}
-        />
+        {!data?.is_review && data.status === "Đã giao hàng" && (
+          <ReviewButton
+            orderId={data.id}
+            orderDetails={data.order_details}
+            refetch={refetch}
+          />
+        )}
       </Flex>
 
       <div className="tw-px-6 tw-py-4">
