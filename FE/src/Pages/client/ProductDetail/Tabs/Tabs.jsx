@@ -1,4 +1,6 @@
-const Tabs = ({ description }) => {
+import Reviews from "./Reviews";
+
+const Tabs = ({ description, comments = [] }) => {
   return (
     <section className="grey-bg">
       <div className="container">
@@ -36,7 +38,7 @@ const Tabs = ({ description }) => {
                     role="tab"
                     aria-selected="false"
                   >
-                    Reviews (2)
+                    Reviews {comments.length > 0 && `(${comments.length})`}
                   </a>
                 </div>
               </nav>
@@ -90,141 +92,7 @@ const Tabs = ({ description }) => {
                   </table>
                 </div>
                 <div role="tabpanel" className="tab-pane fade" id="tab3-3">
-                  <h5 className="mb-3">
-                    Product <span className="text-theme">Reviews (2) </span>
-                  </h5>
-                  <div className="media-holder review-list">
-                    <div className="media">
-                      <img
-                        className="img-center rounded-circle mr-3"
-                        alt="image"
-                        src="images/product-thumb/01.jpg"
-                      />
-                      <div className="media-body">
-                        <h6>John Glemean</h6>
-                        <p>
-                          The sweeping the cloud what might be right for you may
-                          not be right for some here is the story of a man named
-                          Brady who was busy with three right for you may not be
-                          right.
-                        </p>
-                        <span className="review-rating">
-                          <i className="fas fa-star" />
-                          <i className="fas fa-star" />
-                          <i className="fas fa-star" />
-                          <i className="far fa-star" />
-                          <i className="far fa-star" />
-                        </span>
-                      </div>
-                    </div>
-                    <div className="media mt-5">
-                      <img
-                        className="img-center rounded-circle mr-3"
-                        alt="image"
-                        src="images/product-thumb/02.jpg"
-                      />
-                      <div className="media-body">
-                        <h6>John Glemean</h6>
-                        <p>
-                          The sweeping the cloud what might be right for you may
-                          not be right for some here is the story of a man named
-                          Brady who was busy with three right for you may not be
-                          right.
-                        </p>
-                        <span className="review-rating">
-                          <i className="fas fa-star" />
-                          <i className="fas fa-star" />
-                          <i className="fas fa-star" />
-                          <i className="far fa-star" />
-                          <i className="far fa-star" />
-                        </span>
-                      </div>
-                    </div>
-                  </div>
-                  <div className="post-comments mt-5 pos-r">
-                    <div className="section-title mb-3">
-                      <h5>
-                        Add <span className="text-theme">REVIEW</span>
-                      </h5>
-                    </div>
-                    <form
-                      id="contact-form"
-                      method="post"
-                      action="https://themeht.com/template/oveltyshop/html/ltr/contact.php"
-                    >
-                      <div className="messages" />
-                      <div className="row">
-                        <div className="col-md-6">
-                          <div className="form-group">
-                            <label>Name</label>
-                            <input
-                              id="form_name"
-                              type="text"
-                              name="name"
-                              className="form-control"
-                              placeholder="Type name"
-                              required="required"
-                              data-error="Name is required."
-                            />
-                            <div className="help-block with-errors" />
-                          </div>
-                        </div>
-                        <div className="col-md-6">
-                          <div className="form-group">
-                            <label>Email Address</label>
-                            <input
-                              id="form_email"
-                              type="email"
-                              name="email"
-                              className="form-control"
-                              placeholder="Type Email"
-                              required="required"
-                              data-error="Valid email is required."
-                            />
-                            <div className="help-block with-errors" />
-                          </div>
-                        </div>
-                      </div>
-                      <div className="row">
-                        <div className="col-md-12">
-                          <div className="form-group">
-                            <select className="form-control">
-                              <option value="">Rating -- Select</option>
-                              <option value={1}>1</option>
-                              <option value={2}>2</option>
-                              <option value={3}>3</option>
-                              <option value={4}>4</option>
-                              <option value={5}>5</option>
-                            </select>
-                          </div>
-                        </div>
-                        <div className="col-md-12">
-                          <div className="form-group">
-                            <label>Comment</label>
-                            <textarea
-                              id="form_message"
-                              name="message"
-                              className="form-control"
-                              placeholder="Type Comment"
-                              rows={4}
-                              required="required"
-                              data-error="Please,leave us a message."
-                              defaultValue={""}
-                            />
-                            <div className="help-block with-errors" />
-                          </div>
-                        </div>
-                        <div className="col-md-12">
-                          <button className="btn btn-theme btn-iconic">
-                            <span>
-                              Comment
-                              <i className="fas fa-long-arrow-alt-right" />
-                            </span>
-                          </button>
-                        </div>
-                      </div>
-                    </form>
-                  </div>
+                  <Reviews comments={comments} />
                 </div>
               </div>
             </div>

@@ -25,7 +25,10 @@ const ProductDetail = () => {
       <div className="page-content">
         <Content data={data?.product} />
 
-        <Tabs description={data?.product.description} />
+        <Tabs
+          description={data?.product.description}
+          comments={data?.product.comments}
+        />
 
         <RelatedProducts data={data?.related_products ?? []} />
 
