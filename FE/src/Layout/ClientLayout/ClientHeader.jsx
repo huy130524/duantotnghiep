@@ -181,19 +181,25 @@ const ClientHeader = () => {
                     <ul className="nav navbar-nav ml-auto mr-auto">
                       <NavLink to="/" className="nav-item">
                         <p className="nav-link tw-m-0">
-                          <span className="menu-label">Home</span>
+                          <span className="menu-label">Trang chủ</span>
                         </p>
                       </NavLink>
 
                       <NavLink to="/products" className="nav-item">
                         <p className="nav-link tw-m-0">
-                          <span className="menu-label">Products</span>
+                          <span className="menu-label">Sản phẩm</span>
+                        </p>
+                      </NavLink>
+
+                      <NavLink to="/blog" className="nav-item">
+                        <p className="nav-link tw-m-0">
+                          <span className="menu-label">Bài viết</span>
                         </p>
                       </NavLink>
 
                       <NavLink to="/contact" className="nav-item">
                         <p className="nav-link tw-m-0">
-                          <span className="menu-label">Contact</span>
+                          <span className="menu-label">Liên hệ</span>
                         </p>
                       </NavLink>
                     </ul>

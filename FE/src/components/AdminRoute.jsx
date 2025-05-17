@@ -1,6 +1,7 @@
 import { Navigate } from "react-router-dom";
 import { useProfile } from "../hooks/useProfile";
 import { useAuth } from "../hooks/useAuth";
+import { Spin } from "antd";
 
 const AdminRoute = ({ children }) => {
   const { profile } = useProfile();
@@ -8,6 +9,10 @@ const AdminRoute = ({ children }) => {
 
   if (!isLogged) {
     return <Navigate to="/login" replace />;
+  }
+
+  if (!profile) {
+    return <Spin />;
   }
 
   if (profile?.role !== "admin") {

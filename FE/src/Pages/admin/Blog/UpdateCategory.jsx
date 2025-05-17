@@ -7,6 +7,8 @@ import styles from "./index.module.scss";
 import { useEffect } from "react";
 import { genSlug } from "../../../utils/genSlug";
 import SunEditorFormItem from "../../../components/SunEditorFormItem/SunEditorFormItem";
+import FormItemImage from "../../../components/FormItemImage/FormItemImage";
+import { getImageUrl2 } from "../../../utils/image";
 
 const UpdateBlog = () => {
   const navigate = useNavigate();
@@ -29,6 +31,9 @@ const UpdateBlog = () => {
         slug: r.slug,
         category_id: r.category_id,
         content: r.content,
+        image: {
+          preview: getImageUrl2(r.image),
+        },
       });
     },
   });
@@ -55,10 +60,19 @@ const UpdateBlog = () => {
   }, [title]);
 
   const onSubmit = (values) => {
-    mutate({
-      ...values,
-      user_id: getBlogMutation.data.user_id,
-    });
+    const formData = new FormData();
+    formData.append("title", values.title);
+
+    if (values.image.file) {
+      formData.append("image", values.image.file);
+    }
+
+    formData.append("slug", values.slug);
+    formData.append("category_id", values.category_id);
+    formData.append("content", values.content);
+    formData.append("user_id", getBlogMutation.data.user_id);
+
+    mutate(formData);
   };
 
   return (
@@ -83,6 +97,10 @@ const UpdateBlog = () => {
           ]}
         >
           <Input placeholder="Nhập tiêu đề bài viết" />
+        </Form.Item>
+
+        <Form.Item name="image" label="Hình ảnh bài viết">
+          <FormItemImage />
         </Form.Item>
 
         <Form.Item name="slug" label="Slug bài viết">

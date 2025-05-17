@@ -3,7 +3,8 @@ import { getAccessToken, logout } from "../hooks/useAuth";
 import { message } from "antd";
 
 export const api = axios.create({
-  baseURL: "http://localhost:8000/api",
+  baseURL:
+    "https://1676-2405-4802-1d9f-f160-dd58-157a-dcd-db4d.ngrok-free.app/api",
 });
 
 api.interceptors.request.use(
@@ -13,6 +14,8 @@ api.interceptors.request.use(
     if (token) {
       config.headers["Authorization"] = `Bearer ${token}`;
     }
+
+    config.headers["ngrok-skip-browser-warning"] = "69420";
 
     return config;
   },

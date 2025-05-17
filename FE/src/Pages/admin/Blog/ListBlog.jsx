@@ -2,11 +2,12 @@ import styles from "./index.module.scss";
 
 import { Link } from "react-router-dom";
 
-import { Button, Flex, Table } from "antd";
+import { Button, Flex, Image, Table } from "antd";
 import { useQuery } from "@tanstack/react-query";
 import { api } from "../../../api/api";
 import { EditOutlined } from "@ant-design/icons";
 import dayjs from "dayjs";
+import { getImageUrl2 } from "../../../utils/image";
 
 const ListBlog = () => {
   const { data } = useQuery({
@@ -24,6 +25,20 @@ const ListBlog = () => {
       title: "Tiêu đề",
       key: "title",
       dataIndex: "title",
+    },
+    {
+      title: "Hình ảnh",
+      key: "image",
+      render: (_, record) => {
+        return (
+          <Image
+            src={getImageUrl2(record.image)}
+            width={120}
+            height={120}
+            className="tw-object-cover"
+          />
+        );
+      },
     },
     {
       title: "Danh mục",
