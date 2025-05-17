@@ -42,23 +42,22 @@ class HomeController extends Controller
     
         switch ($filter) {
             case 'week':
-                $startDate = $now->startOfWeek();
-                $endDate = $now->endOfWeek();
+                $startDate = $now->copy()->startOfWeek();
+                $endDate = $now->copy()->endOfWeek();
                 break;
             case 'year':
-                $startDate = $now->startOfYear();
-                $endDate = $now->endOfYear();
+                $startDate = $now->copy()->startOfYear();
+                $endDate = $now->copy()->endOfYear();
                 break;
             case 'month':
             default:
-                $startDate = $now->startOfMonth();
-                $endDate = $now->endOfMonth();
+                $startDate = $now->copy()->startOfMonth();
+                $endDate = $now->copy()->endOfMonth();
                 break;
         }
     
         $orders = DB::table('orders')
             ->whereBetween('created_at', [$startDate, $endDate])
-
             ->get();
     
         $totalRevenue = $orders->where('payment_status', 'Đã thanh toán')->sum('total_price');
@@ -83,14 +82,15 @@ class HomeController extends Controller
             'total_orders' => $totalOrders,
     
             'orders' => [
-                'pending' => $pendingOrders,
-                'confirmed' => $confirmedOrders,
-                'preparing' => $preparingOrders,
-                'shipping' => $shippingOrders,
-                'delivered' => $deliveredOrders,
-                'canceled' => $canceledOrders,
+                'Chờ xác nhận' => $pendingOrders,
+                'Đã xác nhận' => $confirmedOrders,
+                'Đang chuẩn bị hàng' => $preparingOrders,
+                'Đang giao hàng' => $shippingOrders,
+                'Đã giao hàng' => $deliveredOrders,
+                'Đơn hàng đã hủy' => $canceledOrders,
             ]
         ]);
     }
+    
     
 }

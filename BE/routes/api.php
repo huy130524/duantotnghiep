@@ -56,6 +56,7 @@ Route::post('/contacts/add', [ContactController::class, 'store']);
 Route::get('/contacts/detail/{id}', [ContactController::class, 'show']);
 Route::post('/contacts/update/{id}', [ContactController::class, 'update']);
 Route::delete('/contacts/delete/{id}', [ContactController::class, 'destroy']);
+Route::get('/home', [HomeController::class, 'index']);
 
 // Api admin
 Route::middleware('auth:sanctum')->group(function () {
@@ -110,7 +111,6 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('/admin-orders/detail/{id}',[OrderController::class,'admin_detail'])->middleware('role:admin,staff');
     Route::post('/admin-orders/update/{order}',[OrderController::class,'update'])->middleware('role:admin,staff');
     Route::post('/admin-order-status-update/{id}',[OrderController::class,'updateStatus'])->middleware('role:admin,staff');
-    Route::get('/home', [HomeController::class, 'index']);
 
     
     // Quản lý màu sấc
