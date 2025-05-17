@@ -3,6 +3,7 @@ import NewsLetter from "../HomePage/NewsLetter/NewsLetter";
 import { api } from "../../../api/api";
 import dayjs from "dayjs";
 import { getImageUrl2 } from "../../../utils/image";
+import { Link } from "react-router-dom";
 
 const Blog = () => {
   const { data } = useQuery({
@@ -44,10 +45,10 @@ const Blog = () => {
         {/*blog start*/}
         <section>
           <div className="container">
-            <div className="row">
+            <div className="tw-grid tw-grid-cols-12 tw-gap-5">
               {data?.data?.map((it) => (
-                <div className="col-lg-4 col-md-6" key={it.id}>
-                  <div className="post">
+                <div className="tw-col-span-4" key={it.id}>
+                  <div className="post tw-h-full">
                     <div className="post-image">
                       <img
                         className="img-fluid w-100 tw-h-[240px] tw-object-cover"
@@ -62,17 +63,14 @@ const Blog = () => {
                     <div className="post-desc">
                       <div className="post-title">
                         <h5>
-                          <a href="blog-single.html">{it.title}</a>
+                          <Link to={`/blog/${it.slug}`}>{it.title}</Link>
                         </h5>
                       </div>
-                      <p dangerouslySetInnerHTML={{ __html: it.content }}></p>
-                      <a
-                        className="post-btn tw-line-clamp-4"
-                        href="blog-single.html"
-                      >
+                      <p className="tw-line-clamp-4">{it.desc}</p>
+                      <Link className="post-btn" to={`/blog/${it.slug}`}>
                         Xem thêm
                         <i className="ml-2 fas fa-long-arrow-alt-right" />
-                      </a>
+                      </Link>
                     </div>
                   </div>
                 </div>

@@ -109,8 +109,17 @@ class BlogController extends Controller
     }
     
     public function userBlog(){
-        $blogs = Blog::with('category', 'user')->paginate(10);
+        $blogs = Blog::with('category', 'user')
+        ->orderBy('created_at', 'desc') 
+        ->paginate(10);
 
         return response()->json($blogs);
+    }
+    public function blogSlug($slug){
+        $blog = Blog::with('category', 'user')->where('slug', $slug)->first();
+        if (!$blog) {
+            return response()->json(["message" => "Bài viết không tồn tại!"], 404);
+        }
+        return response()->json($blog);
     }
 }

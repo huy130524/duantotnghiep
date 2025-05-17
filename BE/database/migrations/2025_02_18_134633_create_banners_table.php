@@ -16,8 +16,7 @@ return new class extends Migration
             $table->string('title');
             $table->string('image');
             $table->string('link')->nullable();
-            $table->boolean('is_active')->default(true);
-            $table->integer('location')->default(1);
+            $table->tinyInteger('is_active')->default(1);
             $table->timestamps();
             $table->softDeletes();
         });
