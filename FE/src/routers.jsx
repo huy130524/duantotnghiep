@@ -49,6 +49,7 @@ import AddBanner from "./Pages/admin/Banner/AddBanner";
 import UpdateBanner from "./Pages/admin/Banner/UpdateBanner";
 import Contact from "./Pages/client/Contact/Contact";
 import ListContact from "./Pages/admin/Contact/ListContact";
+import ListComment from "./Pages/admin/Comment/ListComment";
 
 const router = createBrowserRouter([
   {
@@ -268,6 +269,10 @@ const router = createBrowserRouter([
           {
             path: "contact",
             element: <ListContact />,
+          },
+          {
+            path: "comment",
+            element: <ListComment />,
           },
         ],
       },

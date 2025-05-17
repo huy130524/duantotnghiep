@@ -8,7 +8,7 @@ import { api } from "../../api/api";
 
 const { TextArea } = Input;
 
-const ReviewButton = ({ orderId, orderDetails, status, refetch }) => {
+const ReviewButton = ({ orderId, orderDetails, refetch }) => {
   const [isReviewModalVisible, setIsReviewModalVisible] = useState(false);
   const [reviews, setReviews] = useState([]);
 
@@ -72,10 +72,6 @@ const ReviewButton = ({ orderId, orderDetails, status, refetch }) => {
     newReviews[index].content = e.target.value;
     setReviews(newReviews);
   };
-
-  if (status !== "Đã giao hàng") {
-    return null;
-  }
 
   return (
     <>
