@@ -4,6 +4,7 @@ import { Layout, Menu } from "antd";
 import styles from "./index.module.scss";
 
 import { Link, Outlet } from "react-router-dom";
+import { useProfile } from "../../hooks/useProfile";
 
 const { Header, Content, Sider } = Layout;
 
@@ -67,6 +68,8 @@ const items = [
 ];
 
 const AdminLayout = () => {
+  const { profile } = useProfile();
+
   return (
     <Layout hasSider>
       <Sider style={siderStyle} width={230}>
@@ -81,14 +84,14 @@ const AdminLayout = () => {
         <Header className={styles.header}>
           <div className={styles.profile}>
             <img
-              src="https://picsum.photos/200/200"
+              src="/images/avatar-default.jpg"
               alt="Avatar"
               className={styles.avatar}
             />
 
             <div>
-              <p className={styles.name}>Admin Here</p>
-              <p className={styles.email}>admin@gmail.com</p>
+              <p className={styles.name}>{profile?.fullname}</p>
+              <p className={styles.email}>{profile?.email}</p>
             </div>
           </div>
         </Header>

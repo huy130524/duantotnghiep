@@ -42,6 +42,7 @@ import OrderHistoryDetail from "./Pages/client/Profile/OrderDetail";
 import OrderList from "./Pages/admin/OrderManagement/OrderList";
 import OrderDetail from "./Pages/admin/OrderManagement/OrderDetail";
 import AdminRoute from "./components/AdminRoute";
+import Blog from "./Pages/client/Blog/Blog";
 
 const router = createBrowserRouter([
   {
@@ -116,6 +117,10 @@ const router = createBrowserRouter([
           {
             path: "thank-you",
             element: <ThankYou />,
+          },
+          {
+            path: "blog",
+            element: <Blog />,
           },
         ],
       },

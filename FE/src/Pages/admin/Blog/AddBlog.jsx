@@ -7,6 +7,7 @@ import { useEffect } from "react";
 import { genSlug } from "../../../utils/genSlug";
 import SunEditorFormItem from "../../../components/SunEditorFormItem/SunEditorFormItem";
 import { useProfile } from "../../../hooks/useProfile";
+import FormItemImage from "../../../components/FormItemImage/FormItemImage";
 
 const AddBlog = () => {
   const { profile } = useProfile();
@@ -38,10 +39,15 @@ const AddBlog = () => {
   }, [title]);
 
   const onSubmit = (values) => {
-    mutate({
-      ...values,
-      user_id: profile.id,
-    });
+    const formData = new FormData();
+    formData.append("title", values.title);
+    formData.append("image", values.image.file);
+    formData.append("slug", values.slug);
+    formData.append("category_id", values.category_id);
+    formData.append("content", values.content);
+    formData.append("user_id", profile.id);
+
+    mutate(formData);
   };
 
   return (
@@ -66,6 +72,19 @@ const AddBlog = () => {
           ]}
         >
           <Input placeholder="Nhập tiêu đề bài viết" />
+        </Form.Item>
+
+        <Form.Item
+          name="image"
+          label="Hình ảnh bài viết"
+          rules={[
+            {
+              required: true,
+              message: "Vui lòng chọn hình ảnh bài viết",
+            },
+          ]}
+        >
+          <FormItemImage />
         </Form.Item>
 
         <Form.Item name="slug" label="Slug bài viết">

@@ -13,7 +13,7 @@ const Sidebar = () => {
     <aside className="tw-bg-white tw-rounded tw-h-full">
       <header className="tw-p-4 tw-flex tw-items-center tw-m-0 tw-border-solid tw-border-x-0 tw-border-t-0 tw-gap-x-6 tw-border-b tw-border-b-[#CFCFCF] tw-mb-1.5">
         <img
-          src={profile?.avatar ?? "https://picsum.photos/200/200"}
+          src={profile?.avatar ?? "/images/avatar-default.jpg"}
           alt="Avatar"
           className="tw-w-[48px] tw-h-[48px] tw-rounded-full tw-object-cover"
         />
