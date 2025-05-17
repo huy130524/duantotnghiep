@@ -8,6 +8,7 @@ import { genSlug } from "../../../utils/genSlug";
 import SunEditorFormItem from "../../../components/SunEditorFormItem/SunEditorFormItem";
 import { useProfile } from "../../../hooks/useProfile";
 import FormItemImage from "../../../components/FormItemImage/FormItemImage";
+import TextArea from "antd/es/input/TextArea";
 
 const AddBlog = () => {
   const { profile } = useProfile();
@@ -44,6 +45,7 @@ const AddBlog = () => {
     formData.append("image", values.image.file);
     formData.append("slug", values.slug);
     formData.append("category_id", values.category_id);
+    formData.append("desc", values.desc);
     formData.append("content", values.content);
     formData.append("user_id", profile.id);
 
@@ -104,6 +106,25 @@ const AddBlog = () => {
           <Select
             options={data?.map((it) => ({ label: it.name, value: it.id }))}
             placeholder="Chọn danh mục bài viết"
+          />
+        </Form.Item>
+
+        <Form.Item
+          name="desc"
+          label="Mô tả bài viết"
+          rules={[
+            {
+              required: true,
+              message: "Vui lòng nhập mô tả bài viết",
+            },
+          ]}
+        >
+          <TextArea
+            placeholder="Nhập mô tả bài viết"
+            autoSize={{
+              minRows: 6,
+              maxRows: 10,
+            }}
           />
         </Form.Item>
 

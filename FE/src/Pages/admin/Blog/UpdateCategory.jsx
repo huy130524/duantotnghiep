@@ -9,6 +9,7 @@ import { genSlug } from "../../../utils/genSlug";
 import SunEditorFormItem from "../../../components/SunEditorFormItem/SunEditorFormItem";
 import FormItemImage from "../../../components/FormItemImage/FormItemImage";
 import { getImageUrl2 } from "../../../utils/image";
+import TextArea from "antd/es/input/TextArea";
 
 const UpdateBlog = () => {
   const navigate = useNavigate();
@@ -30,6 +31,7 @@ const UpdateBlog = () => {
         title: r.title,
         slug: r.slug,
         category_id: r.category_id,
+        desc: r.desc,
         content: r.content,
         image: {
           preview: getImageUrl2(r.image),
@@ -69,6 +71,7 @@ const UpdateBlog = () => {
 
     formData.append("slug", values.slug);
     formData.append("category_id", values.category_id);
+    formData.append("desc", values.desc);
     formData.append("content", values.content);
     formData.append("user_id", getBlogMutation.data.user_id);
 
@@ -120,6 +123,25 @@ const UpdateBlog = () => {
           <Select
             options={data?.map((it) => ({ label: it.name, value: it.id }))}
             placeholder="Chọn danh mục bài viết"
+          />
+        </Form.Item>
+
+        <Form.Item
+          name="desc"
+          label="Mô tả bài viết"
+          rules={[
+            {
+              required: true,
+              message: "Vui lòng nhập mô tả bài viết",
+            },
+          ]}
+        >
+          <TextArea
+            placeholder="Nhập mô tả bài viết"
+            autoSize={{
+              minRows: 6,
+              maxRows: 10,
+            }}
           />
         </Form.Item>
 
