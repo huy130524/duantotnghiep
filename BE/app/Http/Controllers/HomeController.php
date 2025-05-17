@@ -40,24 +40,33 @@ class HomeController extends Controller
                             ->count();
         $totalProduct = Product::where('is_active', 1)->count();
         $totalBrand = Brand::count();
-        
-        $filter = $request->input('filter', 'month'); 
+    
+        $filter = $request->input('filter', 'month');
+        $startDateInput = $request->input('start_date');
+        $endDateInput = $request->input('end_date');
         $now = Carbon::now();
     
-        switch ($filter) {
-            case 'week':
-                $startDate = $now->copy()->startOfWeek();
-                $endDate = $now->copy()->endOfWeek();
-                break;
-            case 'year':
-                $startDate = $now->copy()->startOfYear();
-                $endDate = $now->copy()->endOfYear();
-                break;
-            case 'month':
-            default:
-                $startDate = $now->copy()->startOfMonth();
-                $endDate = $now->copy()->endOfMonth();
-                break;
+        if ($startDateInput && $endDateInput) {
+            // Ưu tiên lọc theo ngày truyền vào
+            $startDate = Carbon::parse($startDateInput)->startOfDay();
+            $endDate = Carbon::parse($endDateInput)->endOfDay();
+            $filter = 'custom'; // để hiển thị rằng đang dùng custom date
+        } else {
+            switch ($filter) {
+                case 'week':
+                    $startDate = $now->copy()->startOfWeek();
+                    $endDate = $now->copy()->endOfWeek();
+                    break;
+                case 'year':
+                    $startDate = $now->copy()->startOfYear();
+                    $endDate = $now->copy()->endOfYear();
+                    break;
+                case 'month':
+                default:
+                    $startDate = $now->copy()->startOfMonth();
+                    $endDate = $now->copy()->endOfMonth();
+                    break;
+            }
         }
     
         $orders = DB::table('orders')

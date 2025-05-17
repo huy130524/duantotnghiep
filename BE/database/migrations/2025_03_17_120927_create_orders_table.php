@@ -28,6 +28,7 @@ return new class extends Migration
             $table->string('voucher_code')->nullable();
             $table->double('total_price');
             $table->text('note')->nullable();
+            $table->boolean('is_review')->default(false);
             $table->foreignId('user_id')->constrained('users');
             $table->softDeletes();
             $table->timestamps();

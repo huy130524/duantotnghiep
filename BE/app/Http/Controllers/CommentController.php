@@ -11,9 +11,9 @@ class CommentController extends Controller
 {
     public function index()
     {
-        $comments = Comment::where('status', 'approved')
-            ->with(['user', 'product'])
-            ->paginate(9);
+        $comments = Comment::
+            with(['user', 'product'])
+            ->get();
 
         return response()->json([
             'success' => true,
@@ -44,6 +44,8 @@ class CommentController extends Controller
             'rating' => $request->rating,
         ]);
 
+        $order->is_review = 1;
+        $order->save();
         return response()->json([
             "message" => "Đánh giá thành công"
         ]);
