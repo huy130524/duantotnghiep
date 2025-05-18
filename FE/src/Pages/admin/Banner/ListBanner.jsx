@@ -43,7 +43,7 @@ const ListBanner = () => {
       key: "image",
       dataIndex: "image",
       render: (image) => {
-        const url = getImageUrl2(image);
+        const url = getImageUrl2(image.slice(1));
 
         return (
           <Image src={url} width={100} height={100} className={styles.image} />
