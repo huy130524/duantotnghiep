@@ -60,4 +60,18 @@ class SizeController extends Controller
             'message' => 'Cập nhật kích cỡ thành công!'
         ], 200);
     }
+    public function delete($id)
+    {
+        $size = Size::find($id);
+
+        if(!$size){
+            return response()->json(["message"=> "Kích cỡ không tồn tai!"]);
+        }
+        $size->delete();
+    
+        return response()->json([
+            'status' => 1,
+            'message' => 'Xóa kích cỡ thành công!'
+        ], 200);
+    }
 }

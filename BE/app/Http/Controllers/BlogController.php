@@ -63,6 +63,21 @@ class BlogController extends Controller
 
         return response()->json($blog);
     }
+    public function delete($id)
+    {
+        $blog = Blog::find($id);
+
+        if (!$blog) {
+            return response()->json(["message" => "Bài viết không tồn tại!"], 404);
+        }
+
+        $blog->delete();
+
+        return response()->json([
+            'status' => 1,
+            'message' => 'Xóa bài viết thành công!',
+        ], 200);
+    }
 
     public function update(Request $request, $id)
     {

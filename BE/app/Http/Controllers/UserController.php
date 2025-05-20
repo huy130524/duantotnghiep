@@ -49,7 +49,7 @@ class UserController extends Controller
         }
 
         if (!Auth::attempt($request->only('email', 'password'))) {
-            return response()->json(['status' => 0, 'message' => 'Sai tài khoản hoặc mật khẩu!'], 401);
+            return response()->json(['status' => 0, 'message' => 'Sai tài khoản hoặc mật khẩu!'], 404);
         }
 
         $user = Auth::user();
@@ -178,7 +178,7 @@ class UserController extends Controller
         ]);
       }
   
-      public function destroy($id)
+      public function delete($id)
       {
           $user = User::findOrFail($id);
           $user->delete();

@@ -105,7 +105,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('/users/show/{id}', [UserController::class, 'show'])->middleware('role:admin,staff');
     Route::post('/users/update/{id}', [UserController::class, 'update'])->middleware('role:admin');
     Route::post('/users/change/{id}', [UserController::class, 'change'])->middleware('role:admin');
-    Route::delete('/users/{id}', [UserController::class, 'destroy'])->middleware('role:admin');
+    Route::delete('/users/delete/{id}', [UserController::class, 'delete'])->middleware('role:admin');
 
     // Quản lý đơn hàng Admin
     Route::get('/admin-orders',[OrderController::class,'admin_index'])->middleware('role:admin,staff');
@@ -119,6 +119,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('/color/add', [ColorController::class, 'store'])->middleware('role:admin,staff');
     Route::get('/color/detail/{id}', [ColorController::class, 'detail'])->middleware('role:admin,staff');
     Route::post('/color/update/{id}', [ColorController::class, 'update'])->middleware('role:admin,staff');
+    Route::delete('/color/delete/{id}', [ColorController::class, 'delete'])->middleware('role:admin,staff');
 
     // Quản lý kích cỡ
 
@@ -126,6 +127,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('/size/add', [SizeController::class, 'store'])->middleware('role:admin,staff');
     Route::get('/size/detail/{id}', [SizeController::class, 'detail'])->middleware('role:admin,staff');
     Route::post('/size/update/{id}', [SizeController::class, 'update'])->middleware('role:admin,staff');
+    Route::delete('/size/delete/{id}', [SizeController::class, 'delete'])->middleware('role:admin,staff');
 
 
     // Quản lý mã giảm giá
@@ -133,6 +135,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('/coupon/add', [CouponController::class, 'store'])->middleware('role:admin');
     Route::get('/coupon/detail/{id}', [CouponController::class, 'detail'])->middleware('role:admin');
     Route::post('/coupon/update/{id}', [CouponController::class, 'update'])->middleware('role:admin');
+    Route::delete('/coupon/delete/{id}', [CouponController::class, 'delete'])->middleware('role:admin');
     Route::post('/coupon/apply', [OrderController::class, 'checkVC']);
 
     // Quản lý bài viết
@@ -141,6 +144,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('/blog/add', [BlogController::class, 'store'])->middleware('role:admin,staff');
     Route::get('/blog/detail/{id}', [BlogController::class, 'detail'])->middleware('role:admin,staff');
     Route::post('/blog/update/{id}', [BlogController::class, 'update'])->middleware('role:admin,staff');
+    Route::delete('/blog/delete/{id}', [BlogController::class, 'delete'])->middleware('role:admin,staff');
     
     // Quản lý thương hiẹu
 
@@ -148,12 +152,14 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('/brand/add', [BrandController::class, 'store'])->middleware('role:admin,staff');
     Route::get('/brand/detail/{id}', [BrandController::class, 'brandDetail'])->middleware('role:admin,staff');
     Route::post('/brand/update/{id}', [BrandController::class, 'update'])->middleware('role:admin,staff');
+    Route::delete('/brand/delete/{id}', [BrandController::class, 'delete'])->middleware('role:admin,staff');
 
     // Quản lý sản phẩm
     Route::get('/products', [ProductController::class, 'index'])->middleware('role:admin,staff');
     Route::post('/product/add', [ProductController::class, 'store'])->middleware('role:admin,staff');
     Route::get('/product/detail/{id}', [ProductController::class, 'ProductDetail'])->middleware('role:admin,staff');
     Route::post('/product/update/{id}', [ProductController::class, 'update'])->middleware('role:admin,staff');
+    Route::delete('/product/delete/{id}', [ProductController::class, 'delete'])->middleware('role:admin,staff');
     
     // Quản lý danh mục
     Route::get('/categories', [CategoryController::class, 'index'])->middleware('role:admin,staff');
@@ -161,6 +167,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('/category/delete/{id}', [CategoryController::class, 'deleteCategory'])->middleware('role:admin,staff');
     Route::get('/category/detail/{id}', [CategoryController::class, 'edit'])->middleware('role:admin,staff');
     Route::post('/category/update/{id}', [CategoryController::class, 'update'])->middleware('role:admin,staff');
+    Route::delete('/category/delete/{id}', [CategoryController::class, 'delete'])->middleware('role:admin,staff');
     // Dashboard
     Route::get('dashboard',[HomeController::class,'dashboard']);
 

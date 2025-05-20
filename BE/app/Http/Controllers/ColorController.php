@@ -64,5 +64,19 @@ class ColorController extends Controller
             'message' => 'Cập nhật màu thành công!'
         ], 200);
     }
+    public function delete($id)
+    {
+        $color = Color::find($id);
+
+        if(!$color){
+            return response()->json(["message"=> "Thương hiệu không tồn tai!"]);
+        }
+        $color->delete();
+
+        return response()->json([
+            'status' => 1,
+            'message' => 'Xóa màu thành công!'
+        ], 200);
+    }
 
 }

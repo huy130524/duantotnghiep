@@ -33,7 +33,7 @@ class BannerController extends Controller
 
         $banner = Banner::create([
             'title' => $request->title,
-            'image' => '/storage/' . $imagePath,
+            'image' => $imagePath,
             'link' => $request->link,
             'is_active' => $request->is_active,
         ]);
@@ -51,39 +51,45 @@ class BannerController extends Controller
     }
 
     public function update(Request $request, $id)
-{
-    $banner = Banner::find($id);
-    if (!$banner) {
-        return response()->json(['message' => 'Banner not found'], 404);
-    }
-
-    $validator = Validator::make($request->all(), [
-        'title' => 'sometimes|string|max:255',
-        'image' => 'sometimes|image|mimes:jpeg,png,jpg,gif|max:2048',
-        'link' => 'nullable|string|max:255',
-        'is_active' => 'integer',
-    ]);
-
-    if ($validator->fails()) {
-        return response()->json(['errors' => $validator->errors()], 422);
-    }
-    $data = $request->only(['title', 'link', 'is_active']);
-    if ($request->hasFile('image')) {
-        if ($banner->image && Storage::disk('public')->exists(str_replace('/storage/', '', $banner->image))) {
-            Storage::disk('public')->delete(str_replace('/storage/', '', $banner->image));
+    {
+        $banner = Banner::find($id);
+        if (!$banner) {
+            return response()->json(['message' => 'Banner not found'], 404);
         }
-
-        $path = $request->file('image')->store('banners', 'public');
-        $data['image'] = '/storage/' . $path;
+    
+        $validator = Validator::make($request->all(), [
+            'title' => 'sometimes|string|max:255',
+            'image' => 'sometimes|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'link' => 'nullable|string|max:255',
+            'is_active' => 'sometimes|boolean',
+        ]);
+    
+        if ($validator->fails()) {
+            return response()->json(['errors' => $validator->errors()], 422);
+        }
+    
+        $data = $request->only(['title', 'link', 'is_active']);
+    
+        if ($request->hasFile('image')) {
+            // Xóa ảnh cũ nếu tồn tại
+            if ($banner->image && Storage::disk('public')->exists($banner->image)) {
+                Storage::disk('public')->delete($banner->image);
+            }
+    
+            // Lưu ảnh mới
+            $path = $request->file('image')->store('banners', 'public');
+            $data['image'] = $path;
+        }
+    
+        // Cập nhật dữ liệu
+        $banner->update($data);
+    
+        return response()->json([
+            'message' => 'Banner updated successfully',
+            'banner' => $banner
+        ]);
     }
-
-    $banner->update($data);
-
-    return response()->json([
-        'message' => 'Banner updated successfully',
-        'banner' => $banner
-    ]);
-}
+    
 
     // Xóa banner
     public function destroy($id)

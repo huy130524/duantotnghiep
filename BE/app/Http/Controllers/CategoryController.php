@@ -81,4 +81,19 @@ class CategoryController extends Controller
         }
     }
 
+    public function delete($id)
+    {
+        $category = Category::find($id);
+        if (!$category) {
+            return response()->json(["error" => "Danh mục không tồn tại"], 404);
+        }
+
+        if ($category->image) {
+            Storage::disk('public')->delete($category->image);
+        }
+
+        $category->delete();
+        return response()->json(["success" => "Xóa danh mục thành công"], 200);
+    }
+
 }

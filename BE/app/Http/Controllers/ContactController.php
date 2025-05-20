@@ -58,7 +58,7 @@ class ContactController extends Controller
     }
 
     // Xóa liên hệ (soft delete)
-    public function destroy($id)
+    public function delete($id)
     {
         $contact = Contact::findOrFail($id);
         $contact->delete();
