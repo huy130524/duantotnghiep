@@ -96,5 +96,19 @@ class BrandController extends Controller
             'message' => 'Brand updated successfully.'
         ], 200);
     }
-    
+    public function delete($id)
+    {
+        $brand = Brand::find($id);
+
+        if (!$brand) {
+            return response()->json(["message" => "Thương hiệu không tồn tại!"], 404);
+        }
+
+        $brand->delete();
+
+        return response()->json([
+            'status' => 1,
+            'message' => 'Xóa thương hiệu thành công!'
+        ], 200);
+    }
 }

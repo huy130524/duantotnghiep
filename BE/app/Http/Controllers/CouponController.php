@@ -74,5 +74,16 @@ public function store(Request $request)
     
         return response()->json(['message' => 'Cập nhật mã giảm giá thành công!', 'coupon' => $coupon], 200);
     }
+    public function delete($id)
+    {
+        $coupon = Coupon::find($id);
+
+        if(!$coupon){
+            return response()->json(["message"=> "Mã giảm giá không tồn tại!"]);
+        }
+        $coupon->delete();
+
+        return response()->json(['message' => 'Xóa mã giảm giá thành công!']);
+    }
     
 }
