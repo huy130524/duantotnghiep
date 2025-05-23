@@ -56,8 +56,8 @@ const Blog = () => {
                         alt=""
                       />
                       <div className="post-date">
-                        {dayjs(it.createdAt).date()}{" "}
-                        <span>{dayjs(it.createdAt).format("MMM")}</span>
+                        {dayjs(it.created_at).date()}{" "}
+                        <span>{dayjs(it.created_at).format("MMM")}</span>
                       </div>
                     </div>
                     <div className="post-desc">
