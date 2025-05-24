@@ -32,49 +32,64 @@ const AddCategory = () => {
   return (
     <>
       <div className={styles.pageTitle}>
-        <p className={styles.title}>Thêm danh mục</p>
+        <p className={styles.title}>➕ Thêm danh mục</p>
 
         <Link to="/admin/category">
-          <Button type="primary">Danh sách danh mục</Button>
+          <Button type="primary" size="large">
+            📁 Danh sách danh mục
+          </Button>
         </Link>
       </div>
 
-      <Form layout="vertical" onFinish={onSubmit}>
-        <Form.Item
-          name="name"
-          label="Tên danh mục"
-          rules={[
-            {
-              required: true,
-              message: "Vui lòng nhập tên danh mục",
-            },
-          ]}
-        >
-          <Input placeholder="Nhập tên danh mục" />
-        </Form.Item>
+      <div className={styles.formContainer}>
+        <Form layout="vertical" onFinish={onSubmit}>
+          <div className={styles.formSection}>
+            <h3 className={styles.sectionTitle}>Thông tin danh mục</h3>
+            <div className={styles.formGrid}>
+              <Form.Item
+                name="name"
+                label="Tên danh mục"
+                rules={[
+                  {
+                    required: true,
+                    message: "Vui lòng nhập tên danh mục",
+                  },
+                ]}
+              >
+                <Input placeholder="Nhập tên danh mục" size="large" />
+              </Form.Item>
 
-        <Form.Item
-          name="image"
-          label="Ảnh danh mục"
-          rules={[
-            {
-              required: true,
-              message: "Vui lòng chọn ảnh danh mục",
-            },
-          ]}
-        >
-          <FormItemImage />
-        </Form.Item>
+              <div className={styles.fullWidth}>
+                <Form.Item
+                  name="image"
+                  label="Ảnh danh mục"
+                  rules={[
+                    {
+                      required: true,
+                      message: "Vui lòng chọn ảnh danh mục",
+                    },
+                  ]}
+                >
+                  <FormItemImage />
+                </Form.Item>
+              </div>
+            </div>
+          </div>
 
-        <Button
-          type="primary"
-          htmlType="submit"
-          disabled={isPending}
-          loading={isPending}
-        >
-          Thêm danh mục
-        </Button>
-      </Form>
+          <div style={{ textAlign: "center", marginTop: "32px" }}>
+            <Button
+              type="primary"
+              htmlType="submit"
+              disabled={isPending}
+              loading={isPending}
+              size="large"
+              className={styles.submitButton}
+            >
+              {isPending ? "Đang xử lý..." : "➕ Thêm danh mục"}
+            </Button>
+          </div>
+        </Form>
+      </div>
     </>
   );
 };
