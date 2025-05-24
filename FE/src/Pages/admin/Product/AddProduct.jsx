@@ -61,14 +61,17 @@ const AddProduct = () => {
     form.setFieldValue("slug", genSlug(name));
   }, [name, form]);
 
-  const onSubmit = ({ image, ...values }) => {
+  const onSubmit = (values) => {
     const formData = new FormData();
-    formData.append("image", image.file);
     Object.entries(values).forEach(([key, value]) => {
       if (key === "variants") {
         value.forEach((variant, index) => {
           Object.entries(variant).forEach(([k, v]) => {
-            formData.append(`variants[${index}][${k}]`, v ? +v : 0);
+            if (k === "image") {
+              formData.append(`variants[${index}][${k}]`, v.file);
+            } else {
+              formData.append(`variants[${index}][${k}]`, v ? +v : 0);
+            }
           });
         });
       } else {
@@ -176,19 +179,7 @@ const AddProduct = () => {
           </div>
 
           <div className={styles.formSection}>
-            <h3 className={styles.sectionTitle}>Hình ảnh & Mô tả</h3>
-            <Form.Item
-              name="image"
-              label="Ảnh sản phẩm"
-              rules={[
-                {
-                  required: true,
-                  message: "Vui lòng chọn ảnh sản phẩm",
-                },
-              ]}
-            >
-              <FormItemImage />
-            </Form.Item>
+            <h3 className={styles.sectionTitle}>Mô tả</h3>
 
             <Form.Item
               name="description"
@@ -218,106 +209,158 @@ const AddProduct = () => {
               <Form.List name="variants">
                 {(fields, { add, remove }) => (
                   <>
-                    {fields.map((field) => (
-                      <div key={field.key} className={styles.variantGrid}>
-                        <Form.Item
-                          name={[field.name, "size_id"]}
-                          label="Size"
-                          rules={[
-                            {
-                              required: true,
-                              message: "Chọn size",
-                            },
-                          ]}
-                        >
-                          <Select
-                            placeholder="Chọn size"
-                            size="large"
-                            options={listSize?.map((it) => ({
-                              label: it.name,
-                              value: it.id,
-                            }))}
-                          />
-                        </Form.Item>
+                    {fields.map((field, index) => (
+                      <div key={field.key} className={styles.variantCard}>
+                        <div className={styles.variantHeader}>
+                          <span className={styles.variantNumber}>
+                            Biến thể #{index + 1}
+                          </span>
+                          {fields.length > 1 && (
+                            <MinusCircleOutlined
+                              className={styles.removeIcon}
+                              onClick={() => remove(field.name)}
+                              title="Xóa biến thể"
+                            />
+                          )}
+                        </div>
 
-                        <Form.Item
-                          name={[field.name, "color_id"]}
-                          label="Màu sắc"
-                          rules={[
-                            {
-                              required: true,
-                              message: "Chọn màu",
-                            },
-                          ]}
-                        >
-                          <Select
-                            placeholder="Chọn màu"
-                            size="large"
-                            options={listColor?.map((it) => ({
-                              label: it.name,
-                              value: it.id,
-                            }))}
-                          />
-                        </Form.Item>
+                        <div className={styles.variantImageSection}>
+                          <Form.Item
+                            name={[field.name, "image"]}
+                            label="🖼️ Ảnh biến thể"
+                            rules={[
+                              {
+                                required: true,
+                                message: "Vui lòng chọn ảnh biến thể",
+                              },
+                            ]}
+                          >
+                            <FormItemImage />
+                          </Form.Item>
+                        </div>
 
-                        <Form.Item
-                          name={[field.name, "price"]}
-                          label="Giá gốc"
-                          rules={[
-                            {
-                              required: true,
-                              message: "Nhập giá",
-                            },
-                          ]}
-                        >
-                          <InputNumber
-                            placeholder="Nhập giá"
-                            size="large"
-                            style={{ width: "100%" }}
-                            formatter={(value) =>
-                              `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ",")
-                            }
-                            parser={(value) => value.replace(/\$\s?|(,*)/g, "")}
-                          />
-                        </Form.Item>
+                        <div className={styles.variantGrid}>
+                          <Form.Item
+                            name={[field.name, "size_id"]}
+                            label="📏 Size"
+                            rules={[
+                              {
+                                required: true,
+                                message: "Chọn size",
+                              },
+                            ]}
+                          >
+                            <Select
+                              placeholder="Chọn size"
+                              size="large"
+                              options={listSize?.map((it) => ({
+                                label: it.name,
+                                value: it.id,
+                              }))}
+                            />
+                          </Form.Item>
 
-                        <Form.Item
-                          name={[field.name, "sale_price"]}
-                          label="Giá giảm"
-                        >
-                          <InputNumber
-                            placeholder="Giá giảm"
-                            size="large"
-                            style={{ width: "100%" }}
-                            formatter={(value) =>
-                              `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ",")
-                            }
-                            parser={(value) => value.replace(/\$\s?|(,*)/g, "")}
-                          />
-                        </Form.Item>
+                          <Form.Item
+                            name={[field.name, "color_id"]}
+                            label="🎨 Màu sắc"
+                            rules={[
+                              {
+                                required: true,
+                                message: "Chọn màu",
+                              },
+                            ]}
+                          >
+                            <Select
+                              placeholder="Chọn màu"
+                              size="large"
+                              options={listColor?.map((it) => ({
+                                label: it.name,
+                                value: it.id,
+                              }))}
+                            />
+                          </Form.Item>
 
-                        <Form.Item
-                          name={[field.name, "quantity"]}
-                          label="Số lượng"
-                          rules={[
-                            {
-                              required: true,
-                              message: "Nhập số lượng",
-                            },
-                          ]}
-                        >
-                          <InputNumber
-                            placeholder="Số lượng"
-                            size="large"
-                            style={{ width: "100%" }}
-                            min={0}
-                          />
-                        </Form.Item>
+                          <Form.Item
+                            name={[field.name, "quantity"]}
+                            label="📦 Số lượng"
+                            rules={[
+                              {
+                                required: true,
+                                message: "Nhập số lượng",
+                              },
+                            ]}
+                          >
+                            <InputNumber
+                              placeholder="Số lượng"
+                              size="large"
+                              style={{ width: "100%" }}
+                              min={0}
+                            />
+                          </Form.Item>
 
-                        <MinusCircleOutlined
-                          className={styles.removeIcon}
-                          onClick={() => remove(field.name)}
-                        />
+                          <Form.Item
+                            name={[field.name, "price"]}
+                            label="💰 Giá gốc"
+                            rules={[
+                              {
+                                required: true,
+                                message: "Nhập giá",
+                              },
+                            ]}
+                          >
+                            <InputNumber
+                              placeholder="Nhập giá"
+                              size="large"
+                              style={{ width: "100%" }}
+                              formatter={(value) =>
+                                `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ",")
+                              }
+                              parser={(value) =>
+                                value.replace(/\$\s?|(,*)/g, "")
+                              }
+                            />
+                          </Form.Item>
+
+                          <Form.Item
+                            name={[field.name, "sale_price"]}
+                            label="🏷️ Giá giảm"
+                            dependencies={[["variants", field.name, "price"]]}
+                            rules={[
+                              ({ getFieldValue }) => ({
+                                validator(_, value) {
+                                  if (!value) {
+                                    return Promise.resolve();
+                                  }
+                                  const originalPrice = getFieldValue([
+                                    "variants",
+                                    field.name,
+                                    "price",
+                                  ]);
+                                  if (value > originalPrice) {
+                                    return Promise.reject(
+                                      new Error(
+                                        "Giá giảm không được lớn hơn giá gốc"
+                                      )
+                                    );
+                                  }
+                                  return Promise.resolve();
+                                },
+                              }),
+                            ]}
+                          >
+                            <InputNumber
+                              placeholder="Giá giảm (tùy chọn)"
+                              size="large"
+                              style={{ width: "100%" }}
+                              formatter={(value) =>
+                                `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ",")
+                              }
+                              parser={(value) =>
+                                value.replace(/\$\s?|(,*)/g, "")
+                              }
+                            />
+                          </Form.Item>
+                        </div>
                       </div>
                     ))}
 
@@ -328,7 +371,7 @@ const AddProduct = () => {
                         block
                         className={styles.addVariantButton}
                       >
-                        ➕ Thêm biến thể
+                        ➕ Thêm biến thể mới
                       </Button>
                     </Form.Item>
                   </>

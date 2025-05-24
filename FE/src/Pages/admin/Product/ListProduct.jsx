@@ -2,8 +2,7 @@ import styles from "./index.module.scss";
 
 import { Link } from "react-router-dom";
 
-import { Button, Flex, Image, Table } from "antd";
-import { getImageUrl } from "../../../utils/image";
+import { Button, Flex, Table } from "antd";
 import { useQuery } from "@tanstack/react-query";
 import { api } from "../../../api/api";
 import { EditOutlined } from "@ant-design/icons";
@@ -29,26 +28,6 @@ const ListProduct = () => {
       ellipsis: true,
     },
     {
-      title: "Hình ảnh",
-      key: "image",
-      dataIndex: "image",
-      width: 120,
-      align: "center",
-      render: (image) => {
-        const url = getImageUrl(image);
-
-        return (
-          <Image
-            src={url}
-            width={80}
-            height={80}
-            className={styles.productImage}
-            style={{ objectFit: "cover", borderRadius: "8px" }}
-          />
-        );
-      },
-    },
-    {
       title: "Danh mục",
       key: "category",
       dataIndex: "category",
@@ -62,6 +41,22 @@ const ListProduct = () => {
       dataIndex: "brand",
       render: (brand) => {
         return <span className={styles.brandTag}>{brand.name}</span>;
+      },
+    },
+    {
+      title: "Số lượng",
+      key: "quantity",
+      dataIndex: "product_variants",
+      width: 120,
+      align: "center",
+      render: (variants) => {
+        const totalQuantity =
+          variants?.reduce(
+            (sum, variant) => sum + (variant.quantity || 0),
+            0
+          ) || 0;
+
+        return totalQuantity.toLocaleString();
       },
     },
     {
