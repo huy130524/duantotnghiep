@@ -58,101 +58,127 @@ const AddBlog = () => {
         <p className={styles.title}>Thêm bài viết</p>
 
         <Link to="/admin/blog">
-          <Button type="primary">Danh sách bài viết</Button>
+          <Button type="primary" size="large">
+            📋 Danh sách bài viết
+          </Button>
         </Link>
       </div>
 
-      <Form form={form} layout="vertical" onFinish={onSubmit}>
-        <Form.Item
-          name="title"
-          label="Tiêu đề bài viết"
-          rules={[
-            {
-              required: true,
-              message: "Vui lòng nhập tiêu đề bài viết",
-            },
-          ]}
-        >
-          <Input placeholder="Nhập tiêu đề bài viết" />
-        </Form.Item>
+      <div className={styles.formContainer}>
+        <Form form={form} layout="vertical" onFinish={onSubmit}>
+          <div className={styles.formSection}>
+            <h3 className={styles.sectionTitle}>Thông tin cơ bản</h3>
+            <div className={styles.formGrid}>
+              <Form.Item
+                name="title"
+                label="Tiêu đề bài viết"
+                rules={[
+                  {
+                    required: true,
+                    message: "Vui lòng nhập tiêu đề bài viết",
+                  },
+                ]}
+              >
+                <Input 
+                  placeholder="Nhập tiêu đề bài viết" 
+                  size="large"
+                />
+              </Form.Item>
 
-        <Form.Item
-          name="image"
-          label="Hình ảnh bài viết"
-          rules={[
-            {
-              required: true,
-              message: "Vui lòng chọn hình ảnh bài viết",
-            },
-          ]}
-        >
-          <FormItemImage />
-        </Form.Item>
+              <Form.Item
+                name="category_id"
+                label="Danh mục bài viết"
+                rules={[
+                  {
+                    required: true,
+                    message: "Vui lòng chọn danh mục bài viết",
+                  },
+                ]}
+              >
+                <Select
+                  options={data?.map((it) => ({ label: it.name, value: it.id }))}
+                  placeholder="Chọn danh mục bài viết"
+                  size="large"
+                />
+              </Form.Item>
 
-        <Form.Item name="slug" label="Slug bài viết">
-          <Input readOnly />
-        </Form.Item>
+              <div className={styles.fullWidth}>
+                <Form.Item name="slug" label="Slug bài viết">
+                  <Input readOnly size="large" />
+                </Form.Item>
+              </div>
+            </div>
+          </div>
 
-        <Form.Item
-          name="category_id"
-          label="Danh mục bài viết"
-          rules={[
-            {
-              required: true,
-              message: "Vui lòng chọn danh mục bài viết",
-            },
-          ]}
-        >
-          <Select
-            options={data?.map((it) => ({ label: it.name, value: it.id }))}
-            placeholder="Chọn danh mục bài viết"
-          />
-        </Form.Item>
+          <div className={styles.formSection}>
+            <h3 className={styles.sectionTitle}>Hình ảnh & Mô tả</h3>
+            <Form.Item
+              name="image"
+              label="Hình ảnh bài viết"
+              rules={[
+                {
+                  required: true,
+                  message: "Vui lòng chọn hình ảnh bài viết",
+                },
+              ]}
+            >
+              <FormItemImage />
+            </Form.Item>
 
-        <Form.Item
-          name="desc"
-          label="Mô tả bài viết"
-          rules={[
-            {
-              required: true,
-              message: "Vui lòng nhập mô tả bài viết",
-            },
-          ]}
-        >
-          <TextArea
-            placeholder="Nhập mô tả bài viết"
-            autoSize={{
-              minRows: 6,
-              maxRows: 10,
-            }}
-          />
-        </Form.Item>
+            <Form.Item
+              name="desc"
+              label="Mô tả bài viết"
+              rules={[
+                {
+                  required: true,
+                  message: "Vui lòng nhập mô tả bài viết",
+                },
+              ]}
+            >
+              <TextArea
+                placeholder="Nhập mô tả bài viết..."
+                autoSize={{
+                  minRows: 4,
+                  maxRows: 8,
+                }}
+                size="large"
+              />
+            </Form.Item>
+          </div>
 
-        <Form.Item
-          name="content"
-          label="Nội dung bài viết"
-          rules={[
-            {
-              required: true,
-              message: "Vui lòng nhập nội dung bài viết",
-            },
-          ]}
-        >
-          <SunEditorFormItem
-            placeholder="Nhập nội dung bài viết"
-            height={300}
-          />
-        </Form.Item>
+          <div className={styles.formSection}>
+            <h3 className={styles.sectionTitle}>Nội dung bài viết</h3>
+            <Form.Item
+              name="content"
+              label="Nội dung chi tiết"
+              rules={[
+                {
+                  required: true,
+                  message: "Vui lòng nhập nội dung bài viết",
+                },
+              ]}
+            >
+              <SunEditorFormItem
+                placeholder="Nhập nội dung bài viết..."
+                height={400}
+              />
+            </Form.Item>
+          </div>
 
-        <Button
-          type="primary"
-          htmlType="submit"
-          disabled={isPending}
-          loading={isPending}
-        >
-          Thêm bài viết
-        </Button>
-      </Form>
+          <div style={{ textAlign: "center", marginTop: "32px" }}>
+            <Button
+              type="primary"
+              htmlType="submit"
+              disabled={isPending}
+              loading={isPending}
+              size="large"
+              className={styles.submitButton}
+            >
+              {isPending ? "Đang xử lý..." : "🚀 Thêm bài viết"}
+            </Button>
+          </div>
+        </Form>
+      </div>
     </>
   );
 };
