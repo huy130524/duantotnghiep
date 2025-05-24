@@ -55,7 +55,7 @@ const UpdateBlog = () => {
 
   useEffect(() => {
     getBlogMutation.mutate();
-  }, [getBlogMutation]);
+  }, []);
 
   useEffect(() => {
     if (title) {
