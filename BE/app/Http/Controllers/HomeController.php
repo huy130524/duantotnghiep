@@ -40,12 +40,12 @@ class HomeController extends Controller
                             ->count();
         $totalProduct = Product::where('is_active', 1)->count();
         $totalBrand = Brand::count();
-    
+
         $filter = $request->input('filter', 'month');
         $startDateInput = $request->input('start_date');
         $endDateInput = $request->input('end_date');
         $now = Carbon::now();
-    
+
         if ($startDateInput && $endDateInput) {
             // Ưu tiên lọc theo ngày truyền vào
             $startDate = Carbon::parse($startDateInput)->startOfDay();
@@ -68,11 +68,12 @@ class HomeController extends Controller
                     break;
             }
         }
-    
+
+        // Lấy đơn hàng trong khoảng thời gian lọc
         $orders = DB::table('orders')
             ->whereBetween('created_at', [$startDate, $endDate])
             ->get();
-    
+
         $totalRevenue = $orders->where('payment_status', 'Đã thanh toán')->sum('total_price');
         $totalOrders = $orders->count();
         $pendingOrders = $orders->where('status', 'Chờ xác nhận')->count();
@@ -81,19 +82,34 @@ class HomeController extends Controller
         $shippingOrders = $orders->where('status', 'Đang giao hàng')->count();
         $deliveredOrders = $orders->where('status', 'Đã giao hàng')->count();
         $canceledOrders = $orders->where('status', 'Đơn hàng đã hủy')->count();
-    
+
+        $rawMonthly = DB::table('orders')
+            ->select(
+                DB::raw('MONTH(created_at) as month'),
+                DB::raw('SUM(total_price) as revenue')
+            )
+            ->whereYear('created_at', $now->year)
+            ->where('payment_status', 'Đã thanh toán')
+            ->groupBy(DB::raw('MONTH(created_at)'))
+            ->pluck('revenue', 'month');
+
+        $monthlyRevenue = [];
+        for ($i = 1; $i <= 12; $i++) {
+            $monthlyRevenue[$i] = isset($rawMonthly[$i]) ? $rawMonthly[$i] : 0;
+        }
+
+
         return response()->json([
             'filter' => $filter,
             'start_date' => $startDate->toDateString(),
             'end_date' => $endDate->toDateString(),
-    
             'total_user' => $totalUser,
             'total_product' => $totalProduct,
             'total_brand' => $totalBrand,
-    
+            'monthly_revenue' => $monthlyRevenue,
             'total_revenue' => $totalRevenue,
             'total_orders' => $totalOrders,
-    
+
             'orders' => [
                 'Chờ xác nhận' => $pendingOrders,
                 'Đã xác nhận' => $confirmedOrders,
@@ -101,9 +117,11 @@ class HomeController extends Controller
                 'Đang giao hàng' => $shippingOrders,
                 'Đã giao hàng' => $deliveredOrders,
                 'Đơn hàng đã hủy' => $canceledOrders,
-            ]
+            ],
+
         ]);
     }
+
     
     
 }
