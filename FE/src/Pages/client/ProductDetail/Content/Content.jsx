@@ -45,9 +45,15 @@ const Content = ({ data }) => {
 
   useEffect(() => {
     if (size && color && !selectedVariant) {
-      message.error("No variant found for the selected size and color");
+      message.error(
+        "Không tìm thấy biến thể sản phẩm với kích thước và màu sắc đã chọn"
+      );
+      setSize(uniqueSizes[0]?.size_id);
+      setColor(uniqueColors[0]?.color_id);
+      setQuantity(1);
+      return;
     }
-  }, [color, selectedVariant, size]);
+  }, [color, selectedVariant, size, uniqueColors, uniqueSizes]);
 
   const addCartMutation = useMutation({
     mutationKey: ["ADD_CART"],
@@ -84,6 +90,46 @@ const Content = ({ data }) => {
     return <span className="mr-3">{formatPrice(originalPrice)}</span>;
   };
 
+  const renderRating = () => {
+    const comments = data?.comments || [];
+
+    if (comments.length === 0) {
+      return (
+        <span className="review-rating">
+          <i className="far fa-star" />
+          <i className="far fa-star" />
+          <i className="far fa-star" />
+          <i className="far fa-star" />
+          <i className="far fa-star" />
+        </span>
+      );
+    }
+
+    const totalRating = comments.reduce(
+      (sum, comment) => sum + (comment.rating || 0),
+      0
+    );
+    const averageRating = totalRating / comments.length;
+
+    const fullStars = Math.floor(averageRating);
+    const hasHalfStar = averageRating % 1 >= 0.5;
+    const emptyStars = 5 - fullStars - (hasHalfStar ? 1 : 0);
+
+    return (
+      <span className="review-rating">
+        {Array.from({ length: fullStars }, (_, i) => (
+          <i key={`full-${i}`} className="fas fa-star" />
+        ))}
+
+        {hasHalfStar && <i className="fas fa-star-half-alt" />}
+
+        {Array.from({ length: emptyStars }, (_, i) => (
+          <i key={`empty-${i}`} className="far fa-star" />
+        ))}
+      </span>
+    );
+  };
+
   const handleAddCart = () => {
     if (!selectedVariant) {
       message.error("Variant not found");
@@ -110,7 +156,7 @@ const Content = ({ data }) => {
             <div className="tw-flex tw-justify-center tw-items-center tw-h-full tw-border tw-border-solid tw-border-[#ececec] tw-rounded-md">
               <img
                 className="img-fluid w-100 tw-block"
-                src={getImageUrl(data?.image)}
+                src={getImageUrl(selectedVariant?.image)}
                 alt=""
               />
             </div>
@@ -121,13 +167,7 @@ const Content = ({ data }) => {
               <div className="product-price my-4">
                 {renderPrice()}
 
-                <span className="review-rating">
-                  <i className="fas fa-star" />
-                  <i className="fas fa-star" />
-                  <i className="fas fa-star" />
-                  <i className="far fa-star" />
-                  <i className="far fa-star" />
-                </span>
+                {renderRating()}
               </div>
               <ul className="portfolio-meta list-unstyled mb-4">
                 <li>

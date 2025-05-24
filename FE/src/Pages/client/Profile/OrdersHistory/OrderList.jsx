@@ -27,7 +27,7 @@ const OrderCard = ({ data }) => {
               <div className="tw-p-2 tw-w-3/4 tw-flex tw-items-center tw-gap-x-2">
                 <div className="tw-w-[90px] tw-h-[90px] tw-border tw-border-[#eee] tw-border-solid tw-rounded tw-overflow-hidden tw-relative">
                   <img
-                    src={getImageUrl(product?.image)}
+                    src={getImageUrl(it.variant?.image)}
                     alt="Product image"
                     className="tw-block tw-w-full tw-h-full tw-object-cover"
                   />

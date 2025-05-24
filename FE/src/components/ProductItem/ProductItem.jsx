@@ -36,7 +36,7 @@ const ProductItem = ({ data }) => {
         <div className="product-img">
           <img
             className="img-fluid tw-h-[400px] tw-object-cover"
-            src={getImageUrl(data.image)}
+            src={getImageUrl(data.product_variants[0].image)}
             alt=""
           />
           <div className="product-overlay">
