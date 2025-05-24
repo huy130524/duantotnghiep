@@ -49,7 +49,6 @@ class ProductController extends Controller
             'variants.*.sale_price' => 'nullable|numeric|min:0',
             'variants.*.quantity' => 'required|integer|min:0',
             'variants.*.image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
-            'variants.*.index' => 'required|integer',
         ]);
 
         // Xử lý upload ảnh sản phẩm chính
