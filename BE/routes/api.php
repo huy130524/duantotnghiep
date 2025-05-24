@@ -56,13 +56,14 @@ Route::get('/contacts', [ContactController::class, 'index']);
 Route::post('/contacts/add', [ContactController::class, 'store']);
 Route::get('/contacts/detail/{id}', [ContactController::class, 'show']);
 Route::post('/contacts/update/{id}', [ContactController::class, 'update']);
-Route::delete('/contacts/delete/{id}', [ContactController::class, 'destroy']);
+Route::delete('/contacts/delete/{id}', [ContactController::class, 'delete']);
 Route::get('/home', [HomeController::class, 'index']);
 
 // Api admin
 Route::middleware('auth:sanctum')->group(function () {
     // Hủy đơn tại client
-    Route::post('/orders/{id}/cancel',[OrderController::class,'cancelOrder'])->middleware('role:admin,staff');
+    Route::post('/orders/{id}/cancel',[OrderController::class,'cancelOrder']);
+    Route::post('/order/{id}/confirm',[OrderController::class,'confirmOrder']);
 
 
 

@@ -5,17 +5,14 @@ namespace App\Http\Controllers;
 
 
 use App\Http\Controllers\Controller;
-use App\Mail\OrderCreatedMail;
-use App\Models\BankAccount;
+use App\Jobs\AutoConfirmReceived;
 use App\Models\Cart;
 use App\Models\Coupon;
 use App\Models\Order;
 use App\Models\OrderDetail;
-use App\Models\ProductVariant;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Str;
 
@@ -102,33 +99,45 @@ class OrderController extends Controller
     public function updateStatus(Request $request, $id)
     {
         $order = Order::findOrFail($id);
-   
-        if (in_array($order->status, ['Đã giao hàng', 'Đơn hàng đã hủy'])) {
+
+        if (in_array($order->status, ['Xác nhận đã nhận', 'Đơn hàng đã hủy'])) {
             return response()->json([
-                'message' => 'Không thể thay đổi trạng thái của đơn hàng đã giao hoặc đã hủy!',
+                'message' => 'Không thể thay đổi trạng thái của đơn hàng đã hoàn tất hoặc đã hủy!',
             ], 400);
         }
-   
+
         $request->validate([
-            'status' => 'nullable|in:Chờ xác nhận,Đã xác nhận,Đang chuẩn bị hàng,Đang giao hàng,Đã giao hàng,Đơn hàng đã hủy',
-            'payment_status' => 'nullable|in:Chưa thanh toán,Đã thanh toán',
+            'status' => 'nullable|in:Chờ xác nhận,Đã xác nhận,Đang chuẩn bị hàng,Đang giao hàng,Xác nhận đã giao,Xác nhận đã nhận,Đã giao hàng,Đơn hàng đã hủy',
+            'payment_status' => 'nullable|in:Chưa thanh toán,Đã thanh toán,Thanh toán thất bại',
         ]);
-   
+
         if ($request->has('status')) {
-            if ($request->input('status') === 'Đã giao hàng') {
+            $newStatus = $request->input('status');
+
+            if ($newStatus === 'Xác nhận đã giao') {
+                $order->confirmed_delivered_at = now();
+
+                // AutoConfirmReceived::dispatch($order->id)->delay(now()->addDays(3));
+                AutoConfirmReceived::dispatch($order->id)->delay(now()->addMinutes(1));
+
                 $order->payment_status = 'Đã thanh toán';
             }
-            $order->status = $request->input('status');
+
+            if ($newStatus === 'Đã giao hàng') {
+                $order->payment_status = 'Đã thanh toán';
+            }
+
+            $order->status = $newStatus;
         }
-   
+
         if ($request->has('payment_status')) {
             $order->payment_status = $request->input('payment_status');
         }
-   
+
         $order->save();
-   
+
         return response()->json([
-            'message' => 'Cập nhật thành công!',
+            'message' => 'Cập nhật trạng thái đơn hàng thành công!',
             'order' => $order
         ]);
     }
@@ -328,7 +337,7 @@ class OrderController extends Controller
    
         } catch (\Exception $e) {
             DB::rollBack();
-            \Log::error('Order Store Error: ' . $e->getMessage(), ['trace' => $e->getTraceAsString()]);
+            Log::error('Order Store Error: ' . $e->getMessage(), ['trace' => $e->getTraceAsString()]);
             return response()->json(['error' => 'Có lỗi xảy ra.'], 500);
         }
     }
@@ -461,6 +470,23 @@ class OrderController extends Controller
         return response()->json(["message"=>"Không có đơn hàng nào"]);
     }
     return response()->json($order);
+    }
+    public function confirmOrder($id)
+    {
+        $order = Order::findOrFail($id);
+        if ($order->user_id !== auth()->id()) {
+            return response()->json(['error' => 'Bạn không có quyền xác nhận đơn hàng này'], 403);
+        }
+        if ($order->status !== 'Xác nhận đã giao') {
+            return response()->json(['error' => 'Chỉ có thể xác nhận đơn khi trạng thái là "Xác nhận đã giao"'], 400);
+        }
+        $order->status = 'Xác nhận đã nhận';
+        $order->confirmed_delivered_at = now();
+        $order->save();
+        return response()->json([
+            'message' => 'Đã xác nhận bạn đã nhận hàng. Cảm ơn bạn!',
+            'data' => $order
+        ]);
     }
     
    

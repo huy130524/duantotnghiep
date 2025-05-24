@@ -35,4 +35,7 @@ class Order extends Model
     // {
     //     return $this->hasMany(Comment::class,'order_id');
     // }
+    protected $casts = [
+        'confirmed_delivered_at' => 'datetime',
+    ];
 }
