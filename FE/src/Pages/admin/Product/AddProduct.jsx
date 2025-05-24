@@ -306,12 +306,18 @@ const AddProduct = () => {
                                 required: true,
                                 message: "Nhập giá",
                               },
+                              {
+                                type: "number",
+                                min: 0,
+                                message: "Giá không được âm",
+                              },
                             ]}
                           >
                             <InputNumber
                               placeholder="Nhập giá"
                               size="large"
                               style={{ width: "100%" }}
+                              min={0}
                               formatter={(value) =>
                                 `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ",")
                               }
@@ -326,6 +332,11 @@ const AddProduct = () => {
                             label="🏷️ Giá giảm"
                             dependencies={[["variants", field.name, "price"]]}
                             rules={[
+                              {
+                                type: "number",
+                                min: 0,
+                                message: "Giá không được âm",
+                              },
                               ({ getFieldValue }) => ({
                                 validator(_, value) {
                                   if (!value) {
