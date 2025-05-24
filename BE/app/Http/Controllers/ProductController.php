@@ -32,7 +32,7 @@ class ProductController extends Controller
 
         return response()->json($product);
     }
-    public function store(Request $request)
+   public function store(Request $request)
     {
         $data = $request->validate([
             'code' => 'required|unique:products,code',
@@ -42,9 +42,9 @@ class ProductController extends Controller
             'description' => 'nullable|string',
             'category_id' => 'required|exists:categories,id',
             'brand_id' => 'required|exists:brands,id',
-            'variants' => 'nullable|array', // Mảng biến thể
-            'variants.*.color_id' => 'required|exists:colors,id', // Kiểm tra color_id có tồn tại không
-            'variants.*.size_id' => 'required|exists:sizes,id', // Kiểm tra size_id có tồn tại không
+            'variants' => 'nullable|array',
+            'variants.*.color_id' => 'required|exists:colors,id',
+            'variants.*.size_id' => 'required|exists:sizes,id',
             'variants.*.price' => 'required|numeric|min:0',
             'variants.*.sale_price' => 'nullable|numeric|min:0',
             'variants.*.quantity' => 'required|integer|min:0',
@@ -68,12 +68,15 @@ class ProductController extends Controller
 
             // Xử lý biến thể nếu có
             if (!empty($data['variants'])) {
-                foreach ($data['variants'] as $variant) {
-                    // Xử lý ảnh biến thể (nếu có)
-                    if (!empty($variant['image']) && $request->hasFile("variants.{$variant['index']}.image")) {
+                foreach ($data['variants'] as $index => $variant) {
+
+                    // Xử lý ảnh biến thể nếu có
+                    if ($request->hasFile("variants.$index.image")) {
                         try {
-                            $variant['image'] = $request->file("variants.{$variant['index']}.image")->store('uploads/variants', 'public');
+                            $variantImagePath = $request->file("variants.$index.image")->store('uploads/variants', 'public');
+                            $variant['image'] = $variantImagePath;
                         } catch (\Exception $e) {
+                            DB::rollBack();
                             return response()->json(["error" => "Lỗi upload ảnh biến thể: " . $e->getMessage()], 500);
                         }
                     }
@@ -97,6 +100,7 @@ class ProductController extends Controller
             return response()->json(["error" => "Lỗi khi lưu vào database: " . $e->getMessage()], 500);
         }
     }
+
 
 
     public function update(Request $request, $product_id)
