@@ -30,6 +30,16 @@ const OrderHistoryDetail = () => {
     },
   });
 
+  const confirmReceivedMutation = useMutation({
+    mutationKey: ["CONFIRM_RECEIVED_ORDER"],
+    mutationFn: () => api.post(`/order/${data.id}/confirm`),
+    onSuccess: () => {
+      message.success("Đã xác nhận đã nhận hàng");
+
+      refetch();
+    },
+  });
+
   const totalPrice = useMemo(() => {
     if (!data) return 0;
     return data.order_details.reduce((acc, it) => {
@@ -70,6 +80,18 @@ const OrderHistoryDetail = () => {
           </Popconfirm>
         )}
 
+        {data.status === "Xác nhận đã giao" && (
+          <Popconfirm
+            title="Đã nhận hàng"
+            description="Bạn chắc chắn đã nhận đơn hàng này?"
+            okText="Xác nhận"
+            cancelText="Huỷ"
+            onConfirm={confirmReceivedMutation.mutate}
+          >
+            <Button type="primary">Đã nhận hàng</Button>
+          </Popconfirm>
+        )}
+
         {!data?.is_review && data.status === "Đã giao hàng" && (
           <ReviewButton
             orderId={data.id}
@@ -102,10 +124,16 @@ const OrderHistoryDetail = () => {
               <p className="tw-flex-1 tw-mb-0">{data.address}</p>
             </div>
 
-            <div className="tw-flex tw-items-center tw-mb-3 tw-gap-x-3">
-              <p className="tw-w-1/3 tw-mb-0">Thời gian nhận hàng:</p>
-              <p className="tw-flex-1 tw-mb-0"></p>
-            </div>
+            {data?.confirmed_delivered_at && (
+              <div className="tw-flex tw-items-center tw-mb-3 tw-gap-x-3">
+                <p className="tw-w-1/3 tw-mb-0">Thời gian nhận hàng:</p>
+                <p className="tw-flex-1 tw-mb-0">
+                  {dayjs(data.confirmed_delivered_at).format(
+                    "DD/MM/YYYY HH:mm:ss"
+                  )}
+                </p>
+              </div>
+            )}
           </div>
 
           <div className="tw-col-span-4 tw-pt-3 tw-px-4 tw-pb-4 tw-border tw-border-[#CFCFCF] tw-border-solid tw-rounded">

@@ -144,9 +144,9 @@ const OrderDetail = () => {
       case "Đang giao hàng": {
         return (
           <ConfirmPopup
-            onConfirm={() => updateOrderStatus({ status: "Đã giao hàng" })}
+            onConfirm={() => updateOrderStatus({ status: "Xác nhận đã giao" })}
           >
-            <Button type="primary">Đã giao hàng</Button>
+            <Button type="primary">Xác nhận đã giao</Button>
           </ConfirmPopup>
         );
       }

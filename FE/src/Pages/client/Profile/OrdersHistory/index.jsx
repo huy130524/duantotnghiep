@@ -33,6 +33,11 @@ const TABS = [
     status: "Đang giao hàng",
   },
   {
+    id: 8,
+    label: "Xác nhận đã giao",
+    status: "Xác nhận đã giao",
+  },
+  {
     id: 6,
     label: "Đã giao",
     status: "Đã giao hàng",
