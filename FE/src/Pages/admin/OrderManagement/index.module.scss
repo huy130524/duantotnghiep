@@ -2,12 +2,122 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  margin-bottom: 12px;
+  margin-bottom: 32px;
+  padding: 20px 0;
+  border-bottom: 2px solid #f0f0f0;
 
   .title {
-    font-size: 20px;
-    font-weight: 500;
+    font-size: 28px;
+    font-weight: 600;
+    color: #1890ff;
     margin: 0;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+}
+
+// Table container styling
+.tableContainer {
+  background: white;
+  border-radius: 12px;
+  padding: 24px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+  border: 1px solid #f0f0f0;
+}
+
+.customTable {
+  :global(.ant-table-thead > tr > th) {
+    background: linear-gradient(135deg, #f6f7fa 0%, #f1f3f6 100%);
+    font-weight: 600;
+    color: #262626;
+    border-bottom: 2px solid #e8e8e8;
+    padding: 16px 12px;
+  }
+
+  :global(.ant-table-tbody > tr > td) {
+    padding: 16px 12px;
+    border-bottom: 1px solid #f5f5f5;
+  }
+
+  :global(.ant-table-tbody > tr:hover > td) {
+    background: #f9f9f9;
+  }
+}
+
+// Order code styling
+.orderCode {
+  background: linear-gradient(135deg, #e6f7ff 0%, #bae7ff 100%);
+  color: #0050b3;
+  padding: 4px 12px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 600;
+  border: 1px solid #91d5ff;
+}
+
+// Customer info styling
+.customerInfo {
+  p {
+    margin: 0;
+    line-height: 1.4;
+  }
+}
+
+// Price tag styling
+.priceTag {
+  background: linear-gradient(135deg, #fff2e8 0%, #ffdfbf 100%);
+  color: #d46b08;
+  padding: 6px 12px;
+  border-radius: 20px;
+  font-size: 14px;
+  font-weight: 600;
+  border: 1px solid #ffc069;
+}
+
+// Payment method tag
+.paymentTag {
+  background: linear-gradient(135deg, #f6ffed 0%, #d9f7be 100%);
+  color: #389e0d;
+  padding: 4px 12px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 500;
+  border: 1px solid #b7eb8f;
+}
+
+// Status tags
+.statusTag {
+  font-weight: 500;
+  border-radius: 20px;
+  font-size: 12px;
+}
+
+.paymentStatusTag {
+  font-weight: 500;
+  border-radius: 20px;
+  font-size: 12px;
+}
+
+// Date info styling
+.dateInfo {
+  p {
+    margin: 0;
+    line-height: 1.3;
+  }
+}
+
+// View button styling
+.viewButton {
+  background: linear-gradient(135deg, #1890ff 0%, #096dd9 100%);
+  border: none;
+  box-shadow: 0 2px 8px rgba(24, 144, 255, 0.3);
+  border-radius: 6px;
+
+  &:hover {
+    background: linear-gradient(135deg, #40a9ff 0%, #1890ff 100%);
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(24, 144, 255, 0.4);
   }
 }
 
@@ -25,4 +135,373 @@
 
 .deleteIcon {
   color: #ff0000;
+}
+
+.actionButtons {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+}
+
+.cancelButton {
+  background: linear-gradient(135deg, #ff4d4f 0%, #cf1322 100%);
+  border: none;
+  color: white;
+  font-weight: 600;
+  box-shadow: 0 2px 8px rgba(255, 77, 79, 0.3);
+  border-radius: 8px;
+
+  &:hover {
+    background: linear-gradient(135deg, #ff7875 0%, #ff4d4f 100%);
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(255, 77, 79, 0.4);
+  }
+}
+
+.confirmButton {
+  background: linear-gradient(135deg, #52c41a 0%, #389e0d 100%);
+  border: none;
+  font-weight: 600;
+  box-shadow: 0 2px 8px rgba(82, 196, 26, 0.3);
+  border-radius: 8px;
+
+  &:hover {
+    background: linear-gradient(135deg, #73d13d 0%, #52c41a 100%);
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(82, 196, 26, 0.4);
+  }
+}
+
+.prepareButton {
+  background: linear-gradient(135deg, #fa8c16 0%, #d46b08 100%);
+  border: none;
+  font-weight: 600;
+  box-shadow: 0 2px 8px rgba(250, 140, 22, 0.3);
+  border-radius: 8px;
+
+  &:hover {
+    background: linear-gradient(135deg, #ffa940 0%, #fa8c16 100%);
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(250, 140, 22, 0.4);
+  }
+}
+
+.deliveryButton {
+  background: linear-gradient(135deg, #1890ff 0%, #096dd9 100%);
+  border: none;
+  font-weight: 600;
+  box-shadow: 0 2px 8px rgba(24, 144, 255, 0.3);
+  border-radius: 8px;
+
+  &:hover {
+    background: linear-gradient(135deg, #40a9ff 0%, #1890ff 100%);
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(24, 144, 255, 0.4);
+  }
+}
+
+.completeButton {
+  background: linear-gradient(135deg, #52c41a 0%, #389e0d 100%);
+  border: none;
+  font-weight: 600;
+  box-shadow: 0 2px 8px rgba(82, 196, 26, 0.3);
+  border-radius: 8px;
+
+  &:hover {
+    background: linear-gradient(135deg, #73d13d 0%, #52c41a 100%);
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(82, 196, 26, 0.4);
+  }
+}
+
+.customerInfoCard {
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+  border: 1px solid #f0f0f0;
+  margin-bottom: 32px;
+  overflow: hidden;
+}
+
+.cardHeader {
+  background: linear-gradient(135deg, #f6f7fa 0%, #f1f3f6 100%);
+  padding: 20px 24px;
+  border-bottom: 2px solid #e8e8e8;
+}
+
+.cardTitle {
+  margin: 0;
+  font-size: 20px;
+  font-weight: 600;
+  color: #1890ff;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.cardContent {
+  padding: 24px;
+}
+
+.infoSection {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.infoItem {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  padding: 16px;
+  background: #fafafa;
+  border-radius: 8px;
+  border: 1px solid #f0f0f0;
+  transition: all 0.3s ease;
+
+  &:hover {
+    background: #f5f5f5;
+    border-color: #d9d9d9;
+  }
+}
+
+.infoIcon {
+  color: #1890ff;
+  font-size: 16px;
+  margin-top: 2px;
+}
+
+.infoLabel {
+  display: block;
+  font-size: 12px;
+  color: #8c8c8c;
+  font-weight: 500;
+  margin-bottom: 4px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.infoValue {
+  font-size: 14px;
+  color: #262626;
+  font-weight: 500;
+  line-height: 1.4;
+}
+
+.dateValue {
+  font-size: 14px;
+  color: #1890ff;
+  font-weight: 600;
+}
+
+.productsSection {
+  margin-bottom: 32px;
+}
+
+.sectionTitle {
+  font-size: 20px;
+  font-weight: 600;
+  color: #1890ff;
+  margin-bottom: 16px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.indexNumber {
+  background: linear-gradient(135deg, #e6f7ff 0%, #bae7ff 100%);
+  color: #0050b3;
+  padding: 4px 8px;
+  border-radius: 12px;
+  font-size: 12px;
+  font-weight: 600;
+  border: 1px solid #91d5ff;
+}
+
+.productInfo {
+  .tw-font-semibold {
+    color: #262626;
+    margin-bottom: 8px;
+  }
+}
+
+.productVariants {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+
+.variantTag {
+  font-size: 11px;
+  font-weight: 500;
+  border-radius: 12px;
+  margin-right: 0;
+}
+
+.priceText {
+  background: linear-gradient(135deg, #fff2e8 0%, #ffdfbf 100%);
+  color: #d46b08;
+  padding: 6px 12px;
+  border-radius: 16px;
+  font-size: 13px;
+  font-weight: 600;
+  border: 1px solid #ffc069;
+}
+
+.quantityBadge {
+  background: linear-gradient(135deg, #f6ffed 0%, #d9f7be 100%);
+  color: #389e0d;
+  padding: 6px 12px;
+  border-radius: 16px;
+  font-size: 14px;
+  font-weight: 600;
+  border: 1px solid #b7eb8f;
+}
+
+.totalPrice {
+  background: linear-gradient(135deg, #fff1f0 0%, #ffccc7 100%);
+  color: #cf1322;
+  padding: 8px 16px;
+  border-radius: 16px;
+  font-size: 14px;
+  font-weight: 700;
+  border: 1px solid #ffa39e;
+}
+
+.orderSummary {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 32px;
+}
+
+.summaryCard {
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+  border: 1px solid #f0f0f0;
+  min-width: 400px;
+  overflow: hidden;
+}
+
+.summaryTitle {
+  background: linear-gradient(135deg, #f6f7fa 0%, #f1f3f6 100%);
+  color: #1890ff;
+  font-size: 18px;
+  font-weight: 600;
+  margin: 0;
+  padding: 16px 20px;
+  border-bottom: 2px solid #e8e8e8;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.summaryContent {
+  padding: 20px;
+}
+
+.summaryRow {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 12px;
+  padding: 8px 0;
+}
+
+.summaryLabel {
+  font-size: 14px;
+  color: #595959;
+  font-weight: 500;
+}
+
+.summaryValue {
+  font-size: 14px;
+  color: #262626;
+  font-weight: 600;
+}
+
+.voucherCode {
+  background: linear-gradient(135deg, #f6ffed 0%, #d9f7be 100%);
+  color: #389e0d;
+  padding: 4px 8px;
+  border-radius: 12px;
+  font-size: 12px;
+  font-weight: 600;
+  border: 1px solid #b7eb8f;
+}
+
+.discountValue {
+  color: #52c41a;
+  font-weight: 600;
+  font-size: 14px;
+}
+
+.summaryDivider {
+  height: 1px;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    #d9d9d9 20%,
+    #d9d9d9 80%,
+    transparent 100%
+  );
+  margin: 16px 0;
+}
+
+.summaryRowTotal {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 16px 0 8px 0;
+}
+
+.totalLabel {
+  font-size: 16px;
+  color: #262626;
+  font-weight: 600;
+}
+
+.totalValue {
+  background: linear-gradient(135deg, #1890ff 0%, #096dd9 100%);
+  color: white;
+  padding: 12px 20px;
+  border-radius: 20px;
+  font-size: 18px;
+  font-weight: 700;
+  box-shadow: 0 2px 8px rgba(24, 144, 255, 0.3);
+}
+
+@media (max-width: 768px) {
+  .actionButtons {
+    flex-direction: column;
+    gap: 8px;
+    width: 100%;
+
+    button {
+      width: 100%;
+    }
+  }
+
+  .pageTitle {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 16px;
+  }
+
+  .infoSection {
+    gap: 16px;
+  }
+
+  .infoItem {
+    padding: 12px;
+  }
+
+  .orderSummary {
+    justify-content: stretch;
+  }
+
+  .summaryCard {
+    min-width: auto;
+    width: 100%;
+  }
 }
