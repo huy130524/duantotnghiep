@@ -3,7 +3,8 @@ import { LeftOutlined, RightOutlined } from "@ant-design/icons";
 import { useRef } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { api } from "../../../../api/api";
-import { getImageUrl2 } from "../../../../utils/image";
+import { getImageUrl } from "../../../../utils/image";
+import { Link } from "react-router-dom";
 
 const Banner = () => {
   const carouselRef = useRef(null);
@@ -19,13 +20,18 @@ const Banner = () => {
         <div className="tw-relative tw-group">
           <Carousel ref={carouselRef} draggable arrows={false}>
             {data?.map((it) => (
-              <div className="tw-h-[400px] tw-outline-none" key={it.id}>
+              <Link
+                className="tw-h-[400px] tw-outline-none tw-cursor-pointer tw-block"
+                key={it.id}
+                to={it.link}
+                target="_blank"
+              >
                 <img
-                  src={getImageUrl2(it.image.slice(1))}
+                  src={getImageUrl(it.image)}
                   alt="Banner"
                   className="tw-w-full tw-h-full tw-object-cover tw-rounded-md tw-block"
                 />
-              </div>
+              </Link>
             ))}
           </Carousel>
 
