@@ -20,7 +20,9 @@ const PostItem = ({ data }) => {
         <div className="post-desc">
           <div className="post-title">
             <h5>
-              <Link to={`/blog/${data.slug}`}>{data.title}</Link>
+              <Link to={`/blog/${data.slug}`} className="tw-line-clamp-1">
+                {data.title}
+              </Link>
             </h5>
           </div>
           <p className="tw-line-clamp-4 tw-whitespace-pre-line">{data.desc}</p>
