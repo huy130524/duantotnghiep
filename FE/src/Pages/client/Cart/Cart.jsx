@@ -171,7 +171,9 @@ const Cart = () => {
                                       <img
                                         className="img-center tw-w-[100px] tw-h-[100px] tw-object-cover tw-border tw-border-solid tw-border-[#eee]"
                                         alt=""
-                                        src={getImageUrl(it.product.image)}
+                                        src={getImageUrl(
+                                          it.product_variant.image
+                                        )}
                                       />
                                     </a>
                                   </div>

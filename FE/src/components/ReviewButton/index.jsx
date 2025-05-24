@@ -39,7 +39,7 @@ const ReviewButton = ({ orderId, orderDetails, refetch }) => {
     const initialReviews = orderDetails.map((item) => ({
       productId: item.variant?.product?.id,
       productName: item.variant?.product?.name,
-      productImage: item.variant?.product?.image,
+      productImage: item.variant?.image,
       variantId: item.variant?.id,
       color: item.variant?.color?.name,
       size: item.variant?.size?.name,

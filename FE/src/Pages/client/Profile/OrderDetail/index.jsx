@@ -141,7 +141,7 @@ const OrderHistoryDetail = () => {
               <div className="tw-p-2 tw-flex tw-gap-x-4" key={idx}>
                 <div className="tw-w-3/4 tw-flex tw-gap-x-3 tw-items-center">
                   <img
-                    src={getImageUrl(product?.image)}
+                    src={getImageUrl(it.variant?.image)}
                     alt="Product image"
                     className="tw-w-[60px] tw-h-[60px] tw-object-cover"
                   />
