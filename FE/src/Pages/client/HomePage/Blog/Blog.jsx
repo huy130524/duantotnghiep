@@ -3,6 +3,7 @@ import { api } from "../../../../api/api";
 import dayjs from "dayjs";
 import { Link } from "react-router-dom";
 import { getImageUrl2 } from "../../../../utils/image";
+import PostItem from "../../../../components/PostItem/PostItem";
 
 const Blog = () => {
   const { data } = useQuery({
@@ -26,39 +27,9 @@ const Blog = () => {
             </div>
           </div>
         </div>
-        <div className="row">
+        <div className="tw-grid tw-grid-cols-12 tw-gap-5">
           {data?.map((it) => (
-            <div className="col-lg-4 col-md-12" key={it.id}>
-              <div className="post">
-                <div className="post-image">
-                  <img
-                    className="img-fluid w-100 tw-h-[240px] tw-object-cover"
-                    src={getImageUrl2(it.image)}
-                    alt=""
-                  />
-                  <div className="post-date">
-                    {dayjs(it.created_at).date()}{" "}
-                    <span>{dayjs(it.created_at).format("MMM")}</span>
-                  </div>
-                </div>
-                <div className="post-desc">
-                  <div className="post-title">
-                    <h5>
-                      <Link to={`/blog/${it.slug}`}>{it.title}</Link>
-                    </h5>
-                  </div>
-                  <p>{it.desc}</p>{" "}
-                  <Link
-                    to={`/blog/${it.slug}`}
-                    className="post-btn"
-                    href="blog-single.html"
-                  >
-                    Read More
-                    <i className="ml-2 fas fa-long-arrow-alt-right" />
-                  </Link>
-                </div>
-              </div>
-            </div>
+            <PostItem key={it.id} data={it} />
           ))}
         </div>
       </div>
