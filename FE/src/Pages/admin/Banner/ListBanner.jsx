@@ -3,7 +3,7 @@ import styles from "./index.module.scss";
 import { Link } from "react-router-dom";
 
 import { Button, Flex, Image, message, Popconfirm, Table } from "antd";
-import { getImageUrl2 } from "../../../utils/image";
+import { getImageUrl } from "../../../utils/image";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { api } from "../../../api/api";
 import { DeleteOutlined, EditOutlined } from "@ant-design/icons";
@@ -43,7 +43,7 @@ const ListBanner = () => {
       key: "image",
       dataIndex: "image",
       render: (image) => {
-        const url = getImageUrl2(image.slice(1));
+        const url = getImageUrl(image);
 
         return (
           <Image src={url} width={100} height={100} className={styles.image} />
