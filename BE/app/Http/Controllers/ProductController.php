@@ -274,7 +274,7 @@ public function search(Request $request)
                 
                 case 'price_desc':
                     $query->orderBy(
-                        DB::raw('(SELECT MAX(price) FROM product_variants WHERE product_variants.product_id = products.id)'),
+                        DB::raw('(SELECT MIN(price) FROM product_variants WHERE product_variants.product_id = products.id)'),
                         'desc'
                     );
                     break;
