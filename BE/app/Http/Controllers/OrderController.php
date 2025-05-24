@@ -100,14 +100,14 @@ class OrderController extends Controller
     {
         $order = Order::findOrFail($id);
 
-        if (in_array($order->status, ['Xác nhận đã nhận', 'Đơn hàng đã hủy'])) {
+        if (in_array($order->status, ['Đã giao hàng', 'Đơn hàng đã hủy'])) {
             return response()->json([
                 'message' => 'Không thể thay đổi trạng thái của đơn hàng đã hoàn tất hoặc đã hủy!',
             ], 400);
         }
 
         $request->validate([
-            'status' => 'nullable|in:Chờ xác nhận,Đã xác nhận,Đang chuẩn bị hàng,Đang giao hàng,Xác nhận đã giao,Xác nhận đã nhận,Đã giao hàng,Đơn hàng đã hủy',
+            'status' => 'nullable|in:Chờ xác nhận,Đã xác nhận,Đang chuẩn bị hàng,Đang giao hàng,Xác nhận đã giao,Đã giao hàng,Đơn hàng đã hủy',
             'payment_status' => 'nullable|in:Chưa thanh toán,Đã thanh toán,Thanh toán thất bại',
         ]);
 
@@ -117,8 +117,9 @@ class OrderController extends Controller
             if ($newStatus === 'Xác nhận đã giao') {
                 $order->confirmed_delivered_at = now();
 
-                // AutoConfirmReceived::dispatch($order->id)->delay(now()->addDays(3));
-                AutoConfirmReceived::dispatch($order->id)->delay(now()->addMinutes(1));
+                // AutoConfirmReceived::dispatch($order->id)->delay(now()->addDays(3));  // Chạy sau 3 ngày
+                // AutoConfirmReceived::dispatch($order->id)->delay(now()->addMinutes(1));  // Chạy sau 1 phút
+                AutoConfirmReceived::dispatch($order->id)->delay(now()->addSeconds(10));  // Chạy sau 10 giây
 
                 $order->payment_status = 'Đã thanh toán';
             }
@@ -480,7 +481,7 @@ class OrderController extends Controller
         if ($order->status !== 'Xác nhận đã giao') {
             return response()->json(['error' => 'Chỉ có thể xác nhận đơn khi trạng thái là "Xác nhận đã giao"'], 400);
         }
-        $order->status = 'Xác nhận đã nhận';
+        $order->status = 'Đã giao hàng';
         $order->confirmed_delivered_at = now();
         $order->save();
         return response()->json([

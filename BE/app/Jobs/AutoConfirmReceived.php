@@ -41,13 +41,18 @@ class AutoConfirmReceived implements ShouldQueue
         if (!$order->confirmed_delivered_at) {
             return;
         }
-        // if ($order->confirmed_delivered_at->diffInDays(now()) >= 3) {
-        //     $order->status = 'Xác nhận đã nhận';
+        // if ($order->confirmed_delivered_at->diffInDays(now()) >= 3) {  // Chạy sau 3 ngày
+        //     $order->status = 'Đã giao hàng';
         //     $order->save();
         // }
-        if ($order->confirmed_delivered_at->diffInMinutes(now()) >= 1) {
-            $order->status = 'Xác nhận đã nhận';
+        // if ($order->confirmed_delivered_at->diffInMinutes(now()) >= 1) { //    // Chạy sau 1 phút
+        //     $order->status = 'Đã giao hàng';
+        //     $order->save();
+        // }
+        if ($order->confirmed_delivered_at->diffInSeconds(now()) >= 10) {  // Chạy sau 10 giây
+            $order->status = 'Đã giao hàng';
             $order->save();
         }
+
     }
 }

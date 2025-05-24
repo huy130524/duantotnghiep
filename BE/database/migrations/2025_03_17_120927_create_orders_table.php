@@ -21,7 +21,7 @@ return new class extends Migration
             $table->string('address', 199);
             $table->string('email', 199);
             $table->enum('payment' ,['Thanh toán khi nhận hàng' , 'Thanh toán bằng thẻ' , 'Thanh toán qua VNPay'])->default('Thanh toán khi nhận hàng');
-            $table->enum('status' , ['Chờ xác nhận', 'Đã xác nhận' ,'Đang chuẩn bị hàng', 'Đang giao hàng', 'Xác nhận đã giao','Xác nhận đã nhận','Đã giao hàng', 'Đơn hàng đã hủy'])->default('Chờ xác nhận');
+            $table->enum('status' , ['Chờ xác nhận', 'Đã xác nhận' ,'Đang chuẩn bị hàng', 'Đang giao hàng', 'Xác nhận đã giao','Đã giao hàng', 'Đơn hàng đã hủy'])->default('Chờ xác nhận');
             $table->timestamp('confirmed_delivered_at')->nullable();
             $table->enum('payment_status' ,['Chưa thanh toán', 'Đã thanh toán','Thanh toán thất bại' ]);
             $table->double('shiping')->nullable();
