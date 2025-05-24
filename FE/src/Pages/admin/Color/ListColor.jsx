@@ -6,7 +6,6 @@ import { Button, ColorPicker, Flex, Table, message, Popconfirm } from "antd";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { api } from "../../../api/api";
 import { EditOutlined, DeleteOutlined } from "@ant-design/icons";
-import classNames from "classnames";
 
 const ListColor = () => {
   const { data, refetch } = useQuery({
@@ -42,14 +41,21 @@ const ListColor = () => {
       key: "color_code",
       dataIndex: "color_code",
       render: (code) => {
-        return <ColorPicker value={code} disabled />;
+        return (
+          <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
+            <ColorPicker value={code} disabled size="small" />
+            <span className={styles.colorTag}>{code}</span>
+          </div>
+        );
       },
     },
     {
       title: "Hành động",
       key: "actions",
+      width: 150,
+      align: "center",
       render: (_, record) => (
-        <Flex align="center" gap={12}>
+        <Flex align="center" justify="center" gap={12}>
           <Popconfirm
             title="Xoá màu"
             description="Xác nhận xoá màu"
@@ -57,13 +63,20 @@ const ListColor = () => {
             okText="Xác nhận"
             onConfirm={() => removeColorMutation.mutate(record.id)}
           >
-            <DeleteOutlined
-              className={classNames(styles.icon, styles.deleteIcon)}
-            />
+            <Button danger size="small" icon={<DeleteOutlined />}>
+              Xoá
+            </Button>
           </Popconfirm>
 
           <Link to={`/admin/color/${record.id}/edit`}>
-            <EditOutlined className={styles.icon} />
+            <Button
+              type="primary"
+              size="small"
+              icon={<EditOutlined />}
+              className={styles.editButton}
+            >
+              Sửa
+            </Button>
           </Link>
         </Flex>
       ),
@@ -76,16 +89,21 @@ const ListColor = () => {
         <p className={styles.title}>Danh sách màu</p>
 
         <Link to="/admin/color/add">
-          <Button type="primary">Thêm màu</Button>
+          <Button type="primary" size="large" className={styles.addButton}>
+            Thêm màu
+          </Button>
         </Link>
       </div>
 
-      <Table
-        columns={columns}
-        dataSource={data}
-        pagination={{ hideOnSinglePage: true }}
-        rowKey="id"
-      />
+      <div className={styles.tableContainer}>
+        <Table
+          columns={columns}
+          dataSource={data}
+          pagination={{ hideOnSinglePage: true }}
+          rowKey="id"
+          className={styles.customTable}
+        />
+      </div>
     </>
   );
 };
