@@ -7,7 +7,6 @@ import { getImageUrl } from "../../../utils/image";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { api } from "../../../api/api";
 import { DeleteOutlined, EditOutlined } from "@ant-design/icons";
-import classNames from "classnames";
 
 const ListBanner = () => {
   const { data, refetch } = useQuery({
@@ -65,8 +64,10 @@ const ListBanner = () => {
     {
       title: "Hành động",
       key: "actions",
+      width: 150,
+      align: "center",
       render: (_, record) => (
-        <Flex align="center" gap={12}>
+        <Flex align="center" justify="center" gap={12}>
           <Popconfirm
             title="Xoá banner?"
             description="Xác nhận xoá banner"
@@ -74,13 +75,20 @@ const ListBanner = () => {
             okText="Xác nhận"
             onConfirm={() => removeBannerMutation.mutate(record.id)}
           >
-            <DeleteOutlined
-              className={classNames(styles.icon, styles.deleteIcon)}
-            />
+            <Button danger size="small" icon={<DeleteOutlined />}>
+              Xoá
+            </Button>
           </Popconfirm>
 
           <Link to={`/admin/banner/${record.id}/edit`}>
-            <EditOutlined className={styles.icon} />
+            <Button
+              type="primary"
+              size="small"
+              icon={<EditOutlined />}
+              className={styles.editButton}
+            >
+              Sửa
+            </Button>
           </Link>
         </Flex>
       ),
@@ -93,16 +101,21 @@ const ListBanner = () => {
         <p className={styles.title}>Danh sách banner</p>
 
         <Link to="/admin/banner/add">
-          <Button type="primary">Thêm banner</Button>
+          <Button type="primary" className={styles.addButton} size="large">
+            Thêm banner
+          </Button>
         </Link>
       </div>
 
-      <Table
-        columns={columns}
-        dataSource={data}
-        pagination={{ hideOnSinglePage: true }}
-        rowKey="id"
-      />
+      <div className={styles.tableContainer}>
+        <Table
+          columns={columns}
+          dataSource={data}
+          pagination={{ hideOnSinglePage: true }}
+          rowKey="id"
+          className={styles.customTable}
+        />
+      </div>
     </>
   );
 };

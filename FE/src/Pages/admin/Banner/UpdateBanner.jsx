@@ -6,7 +6,7 @@ import FormItemImage from "../../../components/FormItemImage/FormItemImage";
 
 import styles from "./index.module.scss";
 import { useEffect } from "react";
-import { getImageUrl2 } from "../../../utils/image";
+import { getImageUrl } from "../../../utils/image";
 
 const UpdateBanner = () => {
   const navigate = useNavigate();
@@ -22,7 +22,7 @@ const UpdateBanner = () => {
         title: r.title,
         link: r.link,
         image: {
-          preview: getImageUrl2(r.image),
+          preview: getImageUrl(r.image),
         },
         is_active: !!r.is_active,
       });
@@ -62,70 +62,83 @@ const UpdateBanner = () => {
   return (
     <>
       <div className={styles.pageTitle}>
-        <p className={styles.title}>Cập nhật banner</p>
+        <p className={styles.title + " " + styles.updateTitle}>
+          Cập nhật banner
+        </p>
 
         <Link to="/admin/banner">
-          <Button type="primary">Danh sách banner</Button>
+          <Button type="primary" className={styles.addButton} size="large">
+            Danh sách banner
+          </Button>
         </Link>
       </div>
 
-      <Form layout="vertical" onFinish={onSubmit} form={form}>
-        <Form.Item
-          name="title"
-          label="Tên banner"
-          rules={[
-            {
-              required: true,
-              message: "Vui lòng nhập tên banner",
-            },
-          ]}
-        >
-          <Input placeholder="Nhập tên banner" />
-        </Form.Item>
+      <div className={styles.formContainer}>
+        <h3 className={styles.sectionTitle}>Thông tin banner</h3>
 
-        <Form.Item
-          name="link"
-          label="Link banner"
-          rules={[
-            {
-              required: true,
-              message: "Vui lòng nhập link",
-            },
-            {
-              type: "url",
-              message: "Vui lòng nhập link hợp lệ",
-            },
-          ]}
-        >
-          <Input placeholder="Nhập link banner" />
-        </Form.Item>
+        <Form layout="vertical" onFinish={onSubmit} form={form}>
+          <Form.Item
+            name="title"
+            label="Tên banner"
+            rules={[
+              {
+                required: true,
+                message: "Vui lòng nhập tên banner",
+              },
+            ]}
+          >
+            <Input placeholder="Nhập tên banner" />
+          </Form.Item>
 
-        <Form.Item
-          name="image"
-          label="Image"
-          rules={[
-            {
-              required: true,
-              message: "Vui lòng chọn ảnh",
-            },
-          ]}
-        >
-          <FormItemImage />
-        </Form.Item>
+          <Form.Item
+            name="link"
+            label="Link banner"
+            rules={[
+              {
+                required: true,
+                message: "Vui lòng nhập link",
+              },
+              {
+                type: "url",
+                message: "Vui lòng nhập link hợp lệ",
+              },
+            ]}
+          >
+            <Input placeholder="Nhập link banner" />
+          </Form.Item>
 
-        <Form.Item name="is_active" label="Trạng thái" valuePropName="checked">
-          <Switch />
-        </Form.Item>
+          <Form.Item
+            name="image"
+            label="Image"
+            rules={[
+              {
+                required: true,
+                message: "Vui lòng chọn ảnh",
+              },
+            ]}
+          >
+            <FormItemImage />
+          </Form.Item>
 
-        <Button
-          type="primary"
-          htmlType="submit"
-          disabled={isPending}
-          loading={isPending}
-        >
-          Cập nhật banner
-        </Button>
-      </Form>
+          <Form.Item
+            name="is_active"
+            label="Trạng thái"
+            valuePropName="checked"
+          >
+            <Switch />
+          </Form.Item>
+
+          <Button
+            type="primary"
+            htmlType="submit"
+            disabled={isPending}
+            loading={isPending}
+            className={styles.submitButton}
+          >
+            Cập nhật banner
+          </Button>
+        </Form>
+      </div>
     </>
   );
 };
