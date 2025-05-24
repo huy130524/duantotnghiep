@@ -79,10 +79,7 @@ const AddBlog = () => {
                   },
                 ]}
               >
-                <Input 
-                  placeholder="Nhập tiêu đề bài viết" 
-                  size="large"
-                />
+                <Input placeholder="Nhập tiêu đề bài viết" size="large" />
               </Form.Item>
 
               <Form.Item
@@ -96,7 +93,10 @@ const AddBlog = () => {
                 ]}
               >
                 <Select
-                  options={data?.map((it) => ({ label: it.name, value: it.id }))}
+                  options={data?.map((it) => ({
+                    label: it.name,
+                    value: it.id,
+                  }))}
                   placeholder="Chọn danh mục bài viết"
                   size="large"
                 />

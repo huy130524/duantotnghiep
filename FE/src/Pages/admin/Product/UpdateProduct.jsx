@@ -3,7 +3,6 @@ import { Link, useNavigate, useParams } from "react-router-dom";
 import { api } from "../../../api/api";
 import {
   Button,
-  Flex,
   Form,
   Input,
   InputNumber,
@@ -90,15 +89,11 @@ const UpdateProduct = () => {
 
   useEffect(() => {
     form.setFieldValue("slug", genSlug(name));
-  }, [name]);
-
-  useEffect(() => {
-    form.setFieldValue("slug", genSlug(name));
-  }, [name]);
+  }, [name, form]);
 
   useEffect(() => {
     getProductMutation.mutate();
-  }, []);
+  }, [getProductMutation]);
 
   const onSubmit = ({ image, ...values }) => {
     const formData = new FormData();
@@ -125,219 +120,270 @@ const UpdateProduct = () => {
   return (
     <>
       <div className={styles.pageTitle}>
-        <p className={styles.title}>Cập nhật sản phẩm</p>
+        <p className={styles.updateTitle}>✏️ Cập nhật sản phẩm</p>
 
         <Link to="/admin/product">
-          <Button type="primary">Danh sách sản phẩm</Button>
+          <Button type="primary" size="large">
+            📋 Danh sách sản phẩm
+          </Button>
         </Link>
       </div>
 
-      <Form form={form} layout="vertical" onFinish={onSubmit}>
-        <Form.Item
-          name="code"
-          label="Mã sản phẩm"
-          rules={[
-            {
-              required: true,
-              message: "Vui lòng nhập mã sản phẩm",
-            },
-          ]}
-        >
-          <Input placeholder="Nhập mã sản phẩm" />
-        </Form.Item>
-
-        <Form.Item
-          name="name"
-          label="Tên sản phẩm"
-          rules={[
-            {
-              required: true,
-              message: "Vui lòng nhập tên sản phẩm",
-            },
-          ]}
-        >
-          <Input placeholder="Nhập tên sản phẩm" />
-        </Form.Item>
-
-        <Form.Item name="slug" label="Slug">
-          <Input readOnly />
-        </Form.Item>
-
-        <Form.Item
-          name="category_id"
-          label="Danh mục"
-          rules={[
-            {
-              required: true,
-              message: "Vui lòng chọn danh mục",
-            },
-          ]}
-        >
-          <Select
-            placeholder="Chọn danh mục"
-            options={categories?.map((it) => ({
-              label: it.name,
-              value: it.id,
-            }))}
-          />
-        </Form.Item>
-
-        <Form.Item
-          name="brand_id"
-          label="Hãng"
-          rules={[
-            {
-              required: true,
-              message: "Vui lòng chọn hãng",
-            },
-          ]}
-        >
-          <Select
-            placeholder="Chọn hãng"
-            options={brands?.map((it) => ({
-              label: it.name,
-              value: it.id,
-            }))}
-          />
-        </Form.Item>
-
-        <Typography className={styles.variantTitle}>
-          <span style={{ color: "red" }}>* </span>
-
-          <span>Biến thể</span>
-        </Typography>
-        <Form.List name="variants" label="Biến thể">
-          {(fields, { add, remove }) => (
-            <>
-              {fields.map((field) => (
-                <Flex key={field.key} gap="12px">
-                  <Form.Item
-                    name={[field.name, "size_id"]}
-                    rules={[
-                      {
-                        required: true,
-                        message: "Vui lòng chọn size",
-                      },
-                    ]}
-                    className={styles.col}
-                  >
-                    <Select
-                      placeholder="Chọn size"
-                      options={listSize?.map((it) => ({
-                        label: it.name,
-                        value: it.id,
-                      }))}
-                    />
-                  </Form.Item>
-
-                  <Form.Item
-                    name={[field.name, "color_id"]}
-                    rules={[
-                      {
-                        required: true,
-                        message: "Vui lòng chọn màu",
-                      },
-                    ]}
-                    className={styles.col}
-                  >
-                    <Select
-                      placeholder="Chọn màu"
-                      options={listColor?.map((it) => ({
-                        label: it.name,
-                        value: it.id,
-                      }))}
-                    />
-                  </Form.Item>
-
-                  <Form.Item
-                    name={[field.name, "price"]}
-                    rules={[
-                      {
-                        required: true,
-                        message: "Vui lòng nhập giá",
-                      },
-                    ]}
-                    className={styles.col}
-                  >
-                    <InputNumber placeholder="Nhập giá" />
-                  </Form.Item>
-
-                  <Form.Item
-                    name={[field.name, "sale_price"]}
-                    className={styles.col}
-                  >
-                    <InputNumber placeholder="Nhập giá giảm" />
-                  </Form.Item>
-
-                  <Form.Item
-                    name={[field.name, "quantity"]}
-                    className={styles.col}
-                    rules={[
-                      {
-                        required: true,
-                        message: "Vui lòng nhập số lượng",
-                      },
-                    ]}
-                  >
-                    <InputNumber placeholder="Nhập số lượng" />
-                  </Form.Item>
-
-                  <MinusCircleOutlined
-                    className={styles.removeIcon}
-                    onClick={() => remove(field.name)}
-                  />
-                </Flex>
-              ))}
-
-              <Form.Item>
-                <Button
-                  type="dashed"
-                  onClick={() => add()}
-                  block
-                  style={{ width: "100%" }}
-                >
-                  Thêm biến thể
-                </Button>
+      <div className={styles.formContainer}>
+        <Form form={form} layout="vertical" onFinish={onSubmit}>
+          <div className={styles.formSection}>
+            <h3 className={styles.sectionTitle}>Thông tin cơ bản</h3>
+            <div className={styles.formGrid}>
+              <Form.Item
+                name="code"
+                label="Mã sản phẩm"
+                rules={[
+                  {
+                    required: true,
+                    message: "Vui lòng nhập mã sản phẩm",
+                  },
+                ]}
+              >
+                <Input placeholder="Nhập mã sản phẩm" size="large" />
               </Form.Item>
-            </>
-          )}
-        </Form.List>
 
-        <Form.Item
-          name="image"
-          label="Ảnh sản phẩm"
-          rules={[
-            {
-              required: true,
-              message: "Vui lòng chọn ảnh sản phẩm",
-            },
-          ]}
-        >
-          <FormItemImage />
-        </Form.Item>
+              <Form.Item
+                name="name"
+                label="Tên sản phẩm"
+                rules={[
+                  {
+                    required: true,
+                    message: "Vui lòng nhập tên sản phẩm",
+                  },
+                ]}
+              >
+                <Input placeholder="Nhập tên sản phẩm" size="large" />
+              </Form.Item>
 
-        <Form.Item
-          name="description"
-          label="Mô tả"
-          rules={[
-            {
-              required: true,
-              message: "Vui lòng nhập mô tả",
-            },
-          ]}
-        >
-          <TextArea placeholder="Nhập mô tả" rows={6} />
-        </Form.Item>
+              <div className={styles.fullWidth}>
+                <Form.Item name="slug" label="Slug">
+                  <Input readOnly size="large" />
+                </Form.Item>
+              </div>
 
-        <Button
-          type="primary"
-          htmlType="submit"
-          disabled={isPending}
-          loading={isPending}
-        >
-          Cập nhật sản phẩm
-        </Button>
-      </Form>
+              <Form.Item
+                name="category_id"
+                label="Danh mục"
+                rules={[
+                  {
+                    required: true,
+                    message: "Vui lòng chọn danh mục",
+                  },
+                ]}
+              >
+                <Select
+                  placeholder="Chọn danh mục"
+                  size="large"
+                  options={categories?.map((it) => ({
+                    label: it.name,
+                    value: it.id,
+                  }))}
+                />
+              </Form.Item>
+
+              <Form.Item
+                name="brand_id"
+                label="Thương hiệu"
+                rules={[
+                  {
+                    required: true,
+                    message: "Vui lòng chọn thương hiệu",
+                  },
+                ]}
+              >
+                <Select
+                  placeholder="Chọn thương hiệu"
+                  size="large"
+                  options={brands?.map((it) => ({
+                    label: it.name,
+                    value: it.id,
+                  }))}
+                />
+              </Form.Item>
+            </div>
+          </div>
+
+          <div className={styles.formSection}>
+            <h3 className={styles.sectionTitle}>Hình ảnh & Mô tả</h3>
+            <Form.Item
+              name="image"
+              label="Ảnh sản phẩm"
+              rules={[
+                {
+                  required: true,
+                  message: "Vui lòng chọn ảnh sản phẩm",
+                },
+              ]}
+            >
+              <FormItemImage />
+            </Form.Item>
+
+            <Form.Item
+              name="description"
+              label="Mô tả sản phẩm"
+              rules={[
+                {
+                  required: true,
+                  message: "Vui lòng nhập mô tả",
+                },
+              ]}
+            >
+              <TextArea
+                placeholder="Nhập mô tả sản phẩm..."
+                rows={6}
+                size="large"
+              />
+            </Form.Item>
+          </div>
+
+          <div className={styles.formSection}>
+            <div className={styles.variantSection}>
+              <Typography className={styles.variantTitle}>
+                <span style={{ color: "red" }}>* </span>
+                <span>Biến thể sản phẩm</span>
+              </Typography>
+
+              <Form.List name="variants">
+                {(fields, { add, remove }) => (
+                  <>
+                    {fields.map((field) => (
+                      <div key={field.key} className={styles.variantGrid}>
+                        <Form.Item
+                          name={[field.name, "size_id"]}
+                          label="Size"
+                          rules={[
+                            {
+                              required: true,
+                              message: "Chọn size",
+                            },
+                          ]}
+                        >
+                          <Select
+                            placeholder="Chọn size"
+                            size="large"
+                            options={listSize?.map((it) => ({
+                              label: it.name,
+                              value: it.id,
+                            }))}
+                          />
+                        </Form.Item>
+
+                        <Form.Item
+                          name={[field.name, "color_id"]}
+                          label="Màu sắc"
+                          rules={[
+                            {
+                              required: true,
+                              message: "Chọn màu",
+                            },
+                          ]}
+                        >
+                          <Select
+                            placeholder="Chọn màu"
+                            size="large"
+                            options={listColor?.map((it) => ({
+                              label: it.name,
+                              value: it.id,
+                            }))}
+                          />
+                        </Form.Item>
+
+                        <Form.Item
+                          name={[field.name, "price"]}
+                          label="Giá gốc"
+                          rules={[
+                            {
+                              required: true,
+                              message: "Nhập giá",
+                            },
+                          ]}
+                        >
+                          <InputNumber
+                            placeholder="Nhập giá"
+                            size="large"
+                            style={{ width: "100%" }}
+                            formatter={(value) =>
+                              `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ",")
+                            }
+                            parser={(value) => value.replace(/\$\s?|(,*)/g, "")}
+                          />
+                        </Form.Item>
+
+                        <Form.Item
+                          name={[field.name, "sale_price"]}
+                          label="Giá giảm"
+                        >
+                          <InputNumber
+                            placeholder="Giá giảm"
+                            size="large"
+                            style={{ width: "100%" }}
+                            formatter={(value) =>
+                              `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ",")
+                            }
+                            parser={(value) => value.replace(/\$\s?|(,*)/g, "")}
+                          />
+                        </Form.Item>
+
+                        <Form.Item
+                          name={[field.name, "quantity"]}
+                          label="Số lượng"
+                          rules={[
+                            {
+                              required: true,
+                              message: "Nhập số lượng",
+                            },
+                          ]}
+                        >
+                          <InputNumber
+                            placeholder="Số lượng"
+                            size="large"
+                            style={{ width: "100%" }}
+                            min={0}
+                          />
+                        </Form.Item>
+
+                        <MinusCircleOutlined
+                          className={styles.removeIcon}
+                          onClick={() => remove(field.name)}
+                        />
+                      </div>
+                    ))}
+
+                    <Form.Item>
+                      <Button
+                        type="dashed"
+                        onClick={() => add()}
+                        block
+                        className={styles.addVariantButton}
+                      >
+                        ➕ Thêm biến thể
+                      </Button>
+                    </Form.Item>
+                  </>
+                )}
+              </Form.List>
+            </div>
+          </div>
+
+          <div style={{ textAlign: "center", marginTop: "32px" }}>
+            <Button
+              type="primary"
+              htmlType="submit"
+              disabled={isPending}
+              loading={isPending}
+              size="large"
+              className={styles.submitButton}
+            >
+              {isPending ? "Đang xử lý..." : "💾 Cập nhật sản phẩm"}
+            </Button>
+          </div>
+        </Form>
+      </div>
     </>
   );
 };

@@ -83,7 +83,9 @@ const UpdateBlog = () => {
   return (
     <>
       <div className={styles.pageTitle}>
-        <p className={`${styles.title} ${styles.updateTitle}`}>Cập nhật bài viết</p>
+        <p className={`${styles.title} ${styles.updateTitle}`}>
+          Cập nhật bài viết
+        </p>
 
         <Link to="/admin/blog">
           <Button type="primary" size="large">
@@ -107,10 +109,7 @@ const UpdateBlog = () => {
                   },
                 ]}
               >
-                <Input 
-                  placeholder="Nhập tiêu đề bài viết" 
-                  size="large"
-                />
+                <Input placeholder="Nhập tiêu đề bài viết" size="large" />
               </Form.Item>
 
               <Form.Item
@@ -124,7 +123,10 @@ const UpdateBlog = () => {
                 ]}
               >
                 <Select
-                  options={data?.map((it) => ({ label: it.name, value: it.id }))}
+                  options={data?.map((it) => ({
+                    label: it.name,
+                    value: it.id,
+                  }))}
                   placeholder="Chọn danh mục bài viết"
                   size="large"
                 />
