@@ -2,17 +2,30 @@ import styles from "./index.module.scss";
 
 import { Link } from "react-router-dom";
 
-import { Button, Flex, Image, Table } from "antd";
-import { useQuery } from "@tanstack/react-query";
+import { Button, Flex, Image, Table, message, Popconfirm } from "antd";
+import { useMutation, useQuery } from "@tanstack/react-query";
 import { api } from "../../../api/api";
-import { EditOutlined } from "@ant-design/icons";
+import { EditOutlined, DeleteOutlined } from "@ant-design/icons";
+import classNames from "classnames";
 import dayjs from "dayjs";
 import { getImageUrl2 } from "../../../utils/image";
 
 const ListBlog = () => {
-  const { data } = useQuery({
+  const { data, refetch } = useQuery({
     queryKey: ["LIST_BLOG"],
     queryFn: () => api.get("/blogs"),
+  });
+
+  const removeBlogMutation = useMutation({
+    mutationKey: ["REMOVE_BLOG"],
+    mutationFn: (id) => api.delete("/blog/delete/" + id),
+    onSuccess: () => {
+      message.success("Xoá bài viết thành công");
+      refetch();
+    },
+    onError: () => {
+      message.error("Có lỗi xảy ra, vui lòng thử lại");
+    },
   });
 
   const columns = [
@@ -72,10 +85,27 @@ const ListBlog = () => {
     {
       title: "Hành động",
       key: "actions",
-      width: 100,
+      width: 150,
       align: "center",
       render: (_, record) => (
         <Flex align="center" justify="center" gap={12}>
+          <Popconfirm
+            title="Xoá bài viết"
+            description="Xác nhận xoá bài viết"
+            cancelText="Huỷ"
+            okText="Xác nhận"
+            onConfirm={() => removeBlogMutation.mutate(record.id)}
+          >
+            <Button
+              danger
+              size="small"
+              icon={<DeleteOutlined />}
+              className={classNames(styles.deleteButton)}
+            >
+              Xoá
+            </Button>
+          </Popconfirm>
+
           <Link to={`/admin/blog/${record.id}/edit`}>
             <Button
               type="primary"

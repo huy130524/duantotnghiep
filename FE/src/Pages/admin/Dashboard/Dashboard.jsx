@@ -20,6 +20,29 @@ import weekday from "dayjs/plugin/weekday";
 import localeData from "dayjs/plugin/localeData";
 import viVN from "antd/locale/vi_VN";
 import { formatPrice } from "../../../utils/formatPrice";
+import {
+  Chart as ChartJS,
+  CategoryScale,
+  LinearScale,
+  BarElement,
+  Title,
+  Tooltip,
+  Legend,
+  LineElement,
+  PointElement,
+} from "chart.js";
+import { Bar } from "react-chartjs-2";
+
+ChartJS.register(
+  CategoryScale,
+  LinearScale,
+  BarElement,
+  Title,
+  Tooltip,
+  Legend,
+  LineElement,
+  PointElement
+);
 
 dayjs.extend(updateLocale);
 dayjs.extend(weekday);
@@ -96,6 +119,89 @@ const Dashboard = () => {
     }));
   };
 
+  const getMonthlyRevenueChartData = () => {
+    if (!statistics?.monthly_revenue) return null;
+
+    const monthNames = [
+      "Tháng 1",
+      "Tháng 2",
+      "Tháng 3",
+      "Tháng 4",
+      "Tháng 5",
+      "Tháng 6",
+      "Tháng 7",
+      "Tháng 8",
+      "Tháng 9",
+      "Tháng 10",
+      "Tháng 11",
+      "Tháng 12",
+    ];
+
+    const data = [];
+    const labels = [];
+
+    for (let i = 1; i <= 12; i++) {
+      labels.push(monthNames[i - 1]);
+      data.push(statistics.monthly_revenue[i] || 0);
+    }
+
+    return {
+      labels,
+      datasets: [
+        {
+          label: "Doanh thu (VNĐ)",
+          data,
+          backgroundColor: "rgba(54, 162, 235, 0.6)",
+          borderColor: "rgba(54, 162, 235, 1)",
+          borderWidth: 1,
+        },
+      ],
+    };
+  };
+
+  const chartOptions = {
+    responsive: true,
+    maintainAspectRatio: false,
+    plugins: {
+      legend: {
+        display: false,
+      },
+      title: {
+        display: false,
+        text: "Doanh thu theo tháng",
+      },
+      tooltip: {
+        callbacks: {
+          label: function (context) {
+            return `${context.dataset.label}: ${formatPrice(context.parsed.y)}`;
+          },
+        },
+      },
+    },
+    scales: {
+      x: {
+        ticks: {
+          maxRotation: window.innerWidth < 768 ? 45 : 0,
+          minRotation: window.innerWidth < 768 ? 45 : 0,
+          font: {
+            size: window.innerWidth < 768 ? 10 : 12,
+          },
+        },
+      },
+      y: {
+        beginAtZero: true,
+        ticks: {
+          callback: function (value) {
+            return formatPrice(value);
+          },
+          font: {
+            size: window.innerWidth < 768 ? 10 : 12,
+          },
+        },
+      },
+    },
+  };
+
   const orderColumns = [
     {
       title: "Trạng thái",
@@ -150,32 +256,41 @@ const Dashboard = () => {
     }
   };
 
+  const monthlyRevenueData = getMonthlyRevenueChartData();
+
   if (isLoading) {
     return <Spin />;
   }
 
   return (
     <ConfigProvider locale={viVN}>
-      <Flex align="center" className="tw-mb-2" gap="12px">
+      <Flex
+        align="center"
+        className="tw-mb-2"
+        gap="12px"
+        wrap="wrap"
+        justify="space-between"
+      >
         <h1 className="tw-text-2xl tw-font-semibold tw-text-black tw-font-[inherit]">
           Thống kê
         </h1>
 
-        <Radio.Group
-          value={filter}
-          onChange={(e) => setFilter(e.target.value)}
-          className="tw-ml-auto"
-        >
-          <Radio.Button value="week">Tuần</Radio.Button>
-          <Radio.Button value="month">Tháng</Radio.Button>
-          <Radio.Button value="year">Năm</Radio.Button>
-        </Radio.Group>
+        <Flex gap="12px" align="center" wrap="wrap">
+          <Radio.Group
+            value={filter}
+            onChange={(e) => setFilter(e.target.value)}
+          >
+            <Radio.Button value="week">Tuần</Radio.Button>
+            <Radio.Button value="month">Tháng</Radio.Button>
+            <Radio.Button value="year">Năm</Radio.Button>
+          </Radio.Group>
 
-        {renderDatePicker()}
+          {renderDatePicker()}
+        </Flex>
       </Flex>
 
       <Row gutter={[8, 8]} className="tw-mb-2">
-        <Col span={6}>
+        <Col xs={24} sm={12} md={6}>
           <Card>
             <Statistic
               title="Tổng doanh thu"
@@ -184,7 +299,7 @@ const Dashboard = () => {
             />
           </Card>
         </Col>
-        <Col span={6}>
+        <Col xs={24} sm={12} md={6}>
           <Card>
             <Statistic
               title="Tổng đơn hàng"
@@ -192,7 +307,7 @@ const Dashboard = () => {
             />
           </Card>
         </Col>
-        <Col span={6}>
+        <Col xs={24} sm={12} md={6}>
           <Card>
             <Statistic
               title="Tổng người dùng"
@@ -200,7 +315,7 @@ const Dashboard = () => {
             />
           </Card>
         </Col>
-        <Col span={6}>
+        <Col xs={24} sm={12} md={6}>
           <Card>
             <Statistic
               title="Tổng sản phẩm"
@@ -209,6 +324,14 @@ const Dashboard = () => {
           </Card>
         </Col>
       </Row>
+
+      <Card title="Biểu đồ doanh thu theo tháng" className="tw-mb-2 tw-mt-2">
+        {monthlyRevenueData && (
+          <div style={{ height: window.innerWidth < 768 ? "400px" : "500px" }}>
+            <Bar data={monthlyRevenueData} options={chartOptions} />
+          </div>
+        )}
+      </Card>
 
       <Card title="Trạng thái đơn hàng" className="tw-mb-2">
         <Table
@@ -219,7 +342,7 @@ const Dashboard = () => {
       </Card>
 
       <Row gutter={[8, 8]}>
-        <Col span={12}>
+        <Col xs={24} sm={12}>
           <Card>
             <Statistic
               title="Tổng thương hiệu"
@@ -227,7 +350,7 @@ const Dashboard = () => {
             />
           </Card>
         </Col>
-        <Col span={12}>
+        <Col xs={24} sm={12}>
           <Card>
             <Statistic
               title="Thời gian thống kê"

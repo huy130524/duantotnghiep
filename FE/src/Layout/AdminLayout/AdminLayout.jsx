@@ -1,11 +1,23 @@
-import { AppstoreOutlined, BarChartOutlined } from "@ant-design/icons";
+import {
+  BarChartOutlined,
+  ShoppingCartOutlined,
+  TagsOutlined,
+  ShoppingOutlined,
+  CrownOutlined,
+  BgColorsOutlined,
+  ColumnWidthOutlined,
+  GiftOutlined,
+  FileTextOutlined,
+  PictureOutlined,
+  PhoneOutlined,
+  CommentOutlined,
+} from "@ant-design/icons";
 import { Layout, Menu } from "antd";
 
 import styles from "./index.module.scss";
 
 import { Link, Outlet } from "react-router-dom";
 import { useProfile } from "../../hooks/useProfile";
-import { getImageUrl } from "../../utils/image";
 
 const { Header, Content, Sider } = Layout;
 
@@ -28,57 +40,57 @@ const items = [
   },
   {
     key: "9",
-    icon: <AppstoreOutlined />,
+    icon: <ShoppingCartOutlined />,
     label: <Link to="/admin/orders">Quản lý đơn hàng</Link>,
   },
   {
     key: "2",
-    icon: <AppstoreOutlined />,
+    icon: <TagsOutlined />,
     label: <Link to="/admin/category">Quản lý danh mục</Link>,
   },
   {
     key: "3",
-    icon: <AppstoreOutlined />,
+    icon: <ShoppingOutlined />,
     label: <Link to="/admin/product">Quản lý sản phẩm</Link>,
   },
   {
     key: "4",
-    icon: <AppstoreOutlined />,
+    icon: <CrownOutlined />,
     label: <Link to="/admin/brand">Quản lý thương hiệu</Link>,
   },
   {
     key: "5",
-    icon: <AppstoreOutlined />,
+    icon: <BgColorsOutlined />,
     label: <Link to="/admin/color">Quản lý màu sắc</Link>,
   },
   {
     key: "6",
-    icon: <AppstoreOutlined />,
+    icon: <ColumnWidthOutlined />,
     label: <Link to="/admin/size">Quản lý kích thước</Link>,
   },
   {
     key: "8",
-    icon: <AppstoreOutlined />,
+    icon: <GiftOutlined />,
     label: <Link to="/admin/coupon">Quản lý mã giảm giá</Link>,
   },
   {
     key: "7",
-    icon: <AppstoreOutlined />,
+    icon: <FileTextOutlined />,
     label: <Link to="/admin/blog">Quản lý bài viết</Link>,
   },
   {
     key: "10",
-    icon: <AppstoreOutlined />,
+    icon: <PictureOutlined />,
     label: <Link to="/admin/banner">Quản lý banner</Link>,
   },
   {
     key: "11",
-    icon: <AppstoreOutlined />,
+    icon: <PhoneOutlined />,
     label: <Link to="/admin/contact">Quản lý liên hệ</Link>,
   },
   {
     key: "12",
-    icon: <AppstoreOutlined />,
+    icon: <CommentOutlined />,
     label: <Link to="/admin/comment">Quản lý bình luận</Link>,
   },
 ];

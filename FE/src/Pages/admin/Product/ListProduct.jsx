@@ -2,15 +2,28 @@ import styles from "./index.module.scss";
 
 import { Link } from "react-router-dom";
 
-import { Button, Flex, Table } from "antd";
-import { useQuery } from "@tanstack/react-query";
+import { Button, Flex, Table, message, Popconfirm } from "antd";
+import { useMutation, useQuery } from "@tanstack/react-query";
 import { api } from "../../../api/api";
-import { EditOutlined } from "@ant-design/icons";
+import { EditOutlined, DeleteOutlined } from "@ant-design/icons";
+import classNames from "classnames";
 
 const ListProduct = () => {
-  const { data } = useQuery({
+  const { data, refetch } = useQuery({
     queryKey: ["LIST_PRODUCT"],
     queryFn: () => api.get("/products"),
+  });
+
+  const removeProductMutation = useMutation({
+    mutationKey: ["REMOVE_PRODUCT"],
+    mutationFn: (id) => api.delete("/product/delete/" + id),
+    onSuccess: () => {
+      message.success("Xoá sản phẩm thành công");
+      refetch();
+    },
+    onError: () => {
+      message.error("Có lỗi xảy ra, vui lòng thử lại");
+    },
   });
 
   const columns = [
@@ -62,10 +75,27 @@ const ListProduct = () => {
     {
       title: "Hành động",
       key: "actions",
-      width: 100,
+      width: 150,
       align: "center",
       render: (_, record) => (
         <Flex align="center" justify="center" gap={12}>
+          <Popconfirm
+            title="Xoá sản phẩm"
+            description="Xác nhận xoá sản phẩm"
+            cancelText="Huỷ"
+            okText="Xác nhận"
+            onConfirm={() => removeProductMutation.mutate(record.id)}
+          >
+            <Button
+              danger
+              size="small"
+              icon={<DeleteOutlined />}
+              className={classNames(styles.deleteButton)}
+            >
+              Xoá
+            </Button>
+          </Popconfirm>
+
           <Link to={`/admin/product/${record.id}/edit`}>
             <Button
               type="primary"

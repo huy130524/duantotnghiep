@@ -2,16 +2,29 @@ import styles from "./index.module.scss";
 
 import { Link } from "react-router-dom";
 
-import { Button, Flex, Image, Table } from "antd";
+import { Button, Flex, Image, Table, message, Popconfirm } from "antd";
 import { getImageUrl2 } from "../../../utils/image";
-import { useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery } from "@tanstack/react-query";
 import { api } from "../../../api/api";
-import { EditOutlined } from "@ant-design/icons";
+import { EditOutlined, DeleteOutlined } from "@ant-design/icons";
+import classNames from "classnames";
 
 const ListBrand = () => {
-  const { data } = useQuery({
+  const { data, refetch } = useQuery({
     queryKey: ["LIST_BRAND"],
     queryFn: () => api.get("/brands"),
+  });
+
+  const removeBrandMutation = useMutation({
+    mutationKey: ["REMOVE_BRAND"],
+    mutationFn: (id) => api.delete("/brand/delete/" + id),
+    onSuccess: () => {
+      message.success("Xoá thương hiệu thành công");
+      refetch();
+    },
+    onError: () => {
+      message.error("Có lỗi xảy ra, vui lòng thử lại");
+    },
   });
 
   const columns = [
@@ -42,16 +55,17 @@ const ListBrand = () => {
       key: "actions",
       render: (_, record) => (
         <Flex align="center" gap={12}>
-          {/* <Popconfirm
-            title="Xoá danh mục"
-            description="Xác nhận xoá danh mục sản phẩm"
+          <Popconfirm
+            title="Xoá thương hiệu"
+            description="Xác nhận xoá thương hiệu"
             cancelText="Huỷ"
             okText="Xác nhận"
+            onConfirm={() => removeBrandMutation.mutate(record.id)}
           >
             <DeleteOutlined
-              className={classnames(styles.icon, styles.deleteIcon)}
+              className={classNames(styles.icon, styles.deleteIcon)}
             />
-          </Popconfirm> */}
+          </Popconfirm>
 
           <Link to={`/admin/brand/${record.id}/edit`}>
             <EditOutlined className={styles.icon} />

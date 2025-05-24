@@ -2,15 +2,28 @@ import styles from "./index.module.scss";
 
 import { Link } from "react-router-dom";
 
-import { Button, Flex, Image, Table } from "antd";
-import { useQuery } from "@tanstack/react-query";
+import { Button, Flex, Image, Table, message, Popconfirm } from "antd";
+import { useMutation, useQuery } from "@tanstack/react-query";
 import { api } from "../../../api/api";
-import { EditOutlined } from "@ant-design/icons";
+import { EditOutlined, DeleteOutlined } from "@ant-design/icons";
+import classNames from "classnames";
 
 const ListCategory = () => {
-  const { data } = useQuery({
+  const { data, refetch } = useQuery({
     queryKey: ["LIST_CATEGORY"],
     queryFn: () => api.get("/categories"),
+  });
+
+  const removeCategoryMutation = useMutation({
+    mutationKey: ["REMOVE_CATEGORY"],
+    mutationFn: (id) => api.delete("/category/delete/" + id),
+    onSuccess: () => {
+      message.success("Xoá danh mục thành công");
+      refetch();
+    },
+    onError: () => {
+      message.error("Có lỗi xảy ra, vui lòng thử lại");
+    },
   });
 
   const columns = [
@@ -44,16 +57,17 @@ const ListCategory = () => {
       key: "actions",
       render: (_, record) => (
         <Flex align="center" gap={12}>
-          {/* <Popconfirm
+          <Popconfirm
             title="Xoá danh mục"
-            description="Xác nhận xoá danh mục sản phẩm"
+            description="Xác nhận xoá danh mục"
             cancelText="Huỷ"
             okText="Xác nhận"
+            onConfirm={() => removeCategoryMutation.mutate(record.id)}
           >
             <DeleteOutlined
-              className={classnames(styles.icon, styles.deleteIcon)}
+              className={classNames(styles.icon, styles.deleteIcon)}
             />
-          </Popconfirm> */}
+          </Popconfirm>
 
           <Link to={`/admin/category/${record.id}/edit`}>
             <EditOutlined className={styles.icon} />
