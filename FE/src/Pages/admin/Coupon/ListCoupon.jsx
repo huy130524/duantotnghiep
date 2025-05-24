@@ -2,16 +2,30 @@ import styles from "./index.module.scss";
 
 import { Link } from "react-router-dom";
 
-import { Button, Flex, Table } from "antd";
-import { useQuery } from "@tanstack/react-query";
+import { Button, Flex, Table, message, Popconfirm } from "antd";
+import { useMutation, useQuery } from "@tanstack/react-query";
 import { api } from "../../../api/api";
-import { EditOutlined } from "@ant-design/icons";
+import { EditOutlined, DeleteOutlined } from "@ant-design/icons";
+import classNames from "classnames";
 import dayjs from "dayjs";
+import { formatPrice } from "../../../utils/formatPrice";
 
 const ListCoupon = () => {
-  const { data } = useQuery({
+  const { data, refetch } = useQuery({
     queryKey: ["LIST_COUPON"],
     queryFn: () => api.get("/coupons"),
+  });
+
+  const removeCouponMutation = useMutation({
+    mutationKey: ["REMOVE_COUPON"],
+    mutationFn: (id) => api.delete("/coupon/delete/" + id),
+    onSuccess: () => {
+      message.success("Xoá mã giảm giá thành công");
+      refetch();
+    },
+    onError: () => {
+      message.error("Có lỗi xảy ra, vui lòng thử lại");
+    },
   });
 
   const columns = [
@@ -30,8 +44,8 @@ const ListCoupon = () => {
       key: "discount",
       render: (_, record) => {
         return record.discount_type === "percentage"
-          ? `${record.discount}%`
-          : `${record.discount.toLocaleString()}đ`;
+          ? `${parseFloat(record.discount)}%`
+          : formatPrice(record.discount);
       },
     },
     {
@@ -69,6 +83,18 @@ const ListCoupon = () => {
       key: "actions",
       render: (_, record) => (
         <Flex align="center" gap={12}>
+          <Popconfirm
+            title="Xoá mã giảm giá"
+            description="Xác nhận xoá mã giảm giá"
+            cancelText="Huỷ"
+            okText="Xác nhận"
+            onConfirm={() => removeCouponMutation.mutate(record.id)}
+          >
+            <DeleteOutlined
+              className={classNames(styles.icon, styles.deleteIcon)}
+            />
+          </Popconfirm>
+
           <Link to={`/admin/coupon/${record.id}/edit`}>
             <EditOutlined className={styles.icon} />
           </Link>
