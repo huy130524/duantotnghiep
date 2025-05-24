@@ -324,6 +324,29 @@ const AddProduct = () => {
                           <Form.Item
                             name={[field.name, "sale_price"]}
                             label="🏷️ Giá giảm"
+                            dependencies={[["variants", field.name, "price"]]}
+                            rules={[
+                              ({ getFieldValue }) => ({
+                                validator(_, value) {
+                                  if (!value) {
+                                    return Promise.resolve();
+                                  }
+                                  const originalPrice = getFieldValue([
+                                    "variants",
+                                    field.name,
+                                    "price",
+                                  ]);
+                                  if (value > originalPrice) {
+                                    return Promise.reject(
+                                      new Error(
+                                        "Giá giảm không được lớn hơn giá gốc"
+                                      )
+                                    );
+                                  }
+                                  return Promise.resolve();
+                                },
+                              }),
+                            ]}
                           >
                             <InputNumber
                               placeholder="Giá giảm (tùy chọn)"
