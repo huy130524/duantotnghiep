@@ -1,0 +1,266 @@
+// User Management Styles - Clean consistent styling matching other admin components
+.pageTitle {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 32px;
+  padding: 20px 0;
+  border-bottom: 2px solid #f0f0f0;
+
+  .title {
+    font-size: 28px;
+    font-weight: 600;
+    color: #1890ff;
+    margin: 0;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+}
+
+// Table styling
+.tableContainer {
+  background: white;
+  border-radius: 12px;
+  padding: 24px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+  border: 1px solid #f0f0f0;
+}
+
+.customTable {
+  :global(.ant-table-thead > tr > th) {
+    background: linear-gradient(135deg, #f6f7fa 0%, #f1f3f6 100%);
+    font-weight: 600;
+    color: #262626;
+    border-bottom: 2px solid #e8e8e8;
+    padding: 16px 12px;
+  }
+
+  :global(.ant-table-tbody > tr > td) {
+    padding: 16px 12px;
+    border-bottom: 1px solid #f5f5f5;
+  }
+
+  :global(.ant-table-tbody > tr:hover > td) {
+    background: #f9f9f9;
+  }
+}
+
+// User info styling
+.userInfo {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+
+  .avatar {
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 2px solid #f0f0f0;
+  }
+
+  .userDetails {
+    .userName {
+      font-weight: 600;
+      color: #262626;
+      margin: 0 0 4px 0;
+      font-size: 14px;
+    }
+
+    .userEmail {
+      font-size: 12px;
+      color: #8c8c8c;
+      margin: 0;
+    }
+  }
+}
+
+// Status and role tags
+.statusTag {
+  font-weight: 500;
+  font-size: 12px;
+  border-radius: 12px;
+}
+
+.roleTag {
+  font-weight: 500;
+  font-size: 12px;
+  border-radius: 12px;
+}
+
+// Action buttons - Consistent with other admin components
+.addButton {
+  background: linear-gradient(135deg, #52c41a 0%, #73d13d 100%);
+  border: none;
+  box-shadow: 0 2px 8px rgba(82, 196, 26, 0.3);
+
+  &:hover {
+    background: linear-gradient(135deg, #73d13d 0%, #95de64 100%);
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(82, 196, 26, 0.4);
+  }
+}
+
+.editButton {
+  background: linear-gradient(135deg, #ff7a00 0%, #ff9500 100%);
+  border: none;
+  box-shadow: 0 2px 8px rgba(255, 122, 0, 0.3);
+
+  &:hover {
+    background: linear-gradient(135deg, #ff9500 0%, #ffad33 100%);
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(255, 122, 0, 0.4);
+  }
+}
+
+.deleteButton {
+  background: linear-gradient(135deg, #ff4d4f 0%, #cf1322 100%);
+  border: none;
+  box-shadow: 0 2px 8px rgba(255, 77, 79, 0.3);
+
+  &:hover {
+    background: linear-gradient(135deg, #ff7875 0%, #ff4d4f 100%);
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(255, 77, 79, 0.4);
+  }
+}
+
+.inactiveButton {
+  background: linear-gradient(135deg, #faad14 0%, #d48806 100%);
+  border: none;
+  color: white;
+  box-shadow: 0 2px 8px rgba(250, 173, 20, 0.3);
+
+  &:hover {
+    background: linear-gradient(135deg, #ffc53d 0%, #faad14 100%);
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(250, 173, 20, 0.4);
+    color: white;
+  }
+}
+
+// Form styling
+.formContainer {
+  background: white;
+  border-radius: 12px;
+  padding: 32px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+  margin-bottom: 24px;
+  border: 1px solid #f0f0f0;
+}
+
+.formSection {
+  margin-bottom: 32px;
+
+  &:last-child {
+    margin-bottom: 0;
+  }
+}
+
+.sectionTitle {
+  font-size: 18px;
+  font-weight: 600;
+  color: #262626;
+  margin-bottom: 16px;
+  padding-bottom: 8px;
+  border-bottom: 2px solid #1890ff;
+  display: inline-block;
+}
+
+.formGrid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 24px;
+
+  @media (max-width: 768px) {
+    grid-template-columns: 1fr;
+  }
+}
+
+.fullWidth {
+  grid-column: 1 / -1;
+}
+
+.submitButton {
+  background: linear-gradient(135deg, #1890ff 0%, #096dd9 100%) !important;
+  border: none !important;
+  border-radius: 8px !important;
+  height: 44px !important;
+  font-size: 16px !important;
+  font-weight: 600 !important;
+  box-shadow: 0 4px 12px rgba(24, 144, 255, 0.3) !important;
+  transition: all 0.3s ease !important;
+
+  &:hover {
+    transform: translateY(-2px) !important;
+    box-shadow: 0 6px 20px rgba(24, 144, 255, 0.4) !important;
+  }
+
+  &:disabled {
+    opacity: 0.7 !important;
+    transform: none !important;
+  }
+}
+
+.updateTitle {
+  font-size: 28px;
+  font-weight: 600;
+  color: #fa8c16;
+  margin: 0;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+// Custom form styling
+:global {
+  .ant-form-item-label > label {
+    font-weight: 600 !important;
+    color: #262626 !important;
+    font-size: 14px !important;
+  }
+
+  .ant-input,
+  .ant-input-number,
+  .ant-select .ant-select-selector {
+    border-radius: 8px !important;
+    border: 1px solid #d9d9d9 !important;
+    transition: all 0.3s ease !important;
+
+    &:hover {
+      border-color: #40a9ff !important;
+    }
+
+    &:focus {
+      border-color: #1890ff !important;
+      box-shadow: 0 0 0 2px rgba(24, 144, 255, 0.2) !important;
+    }
+  }
+
+  .ant-select.ant-select-focused .ant-select-selector {
+    border-color: #1890ff !important;
+    box-shadow: 0 0 0 2px rgba(24, 144, 255, 0.2) !important;
+  }
+}
+
+// Responsive design
+@media (max-width: 768px) {
+  .pageTitle {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 16px;
+
+    .title {
+      font-size: 24px;
+    }
+  }
+
+  .tableContainer {
+    padding: 16px;
+  }
+
+  .formContainer {
+    padding: 20px;
+  }
+}

@@ -11,6 +11,7 @@ import {
   PictureOutlined,
   PhoneOutlined,
   CommentOutlined,
+  UserOutlined,
 } from "@ant-design/icons";
 import { Layout, Menu } from "antd";
 
@@ -77,6 +78,11 @@ const items = [
     key: "7",
     icon: <FileTextOutlined />,
     label: <Link to="/admin/blog">Quản lý bài viết</Link>,
+  },
+  {
+    key: "13",
+    icon: <UserOutlined />,
+    label: <Link to="/admin/user">Quản lý người dùng</Link>,
   },
   {
     key: "10",
