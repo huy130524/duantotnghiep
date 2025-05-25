@@ -14,8 +14,8 @@ import { useMutation, useQuery } from "@tanstack/react-query";
 import { api } from "../../../api/api";
 import { useEffect } from "react";
 import { genSlug } from "../../../utils/genSlug";
-import TextArea from "antd/es/input/TextArea";
 import { MinusCircleOutlined } from "@ant-design/icons";
+import TextArea from "antd/es/input/TextArea";
 
 const AddProduct = () => {
   const navigate = useNavigate();
