@@ -133,12 +133,7 @@ const OrderDetail = () => {
             <ConfirmPopup
               onConfirm={() => updateOrderStatus({ status: "Đơn hàng đã hủy" })}
             >
-              <Button
-                danger
-                size="large"
-                icon={<ClockCircleOutlined />}
-                className={styles.cancelButton}
-              >
+              <Button danger size="large" icon={<ClockCircleOutlined />}>
                 Huỷ đơn hàng
               </Button>
             </ConfirmPopup>

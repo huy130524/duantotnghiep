@@ -108,6 +108,7 @@ const ClientHeader = () => {
                     value={keyword}
                     onChange={onSearchChange}
                     onPressEnter={onSearch}
+                    className="input-search"
                   />
                 </div>
               </div>

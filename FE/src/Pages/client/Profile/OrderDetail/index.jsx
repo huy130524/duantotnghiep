@@ -22,7 +22,7 @@ const OrderHistoryDetail = () => {
 
   const cancelOrderMutation = useMutation({
     mutationKey: ["CANCEL_ORDER"],
-    mutationFn: () => api.post(`/orders/${params.id}/cancel`),
+    mutationFn: () => api.post(`/orders/${data.id}/cancel`),
     onSuccess: () => {
       message.success("Huỷ đơn hàng thành công");
 

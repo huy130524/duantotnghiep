@@ -23,3 +23,8 @@ body {
 .ant-input.ant-input {
   height: auto !important;
 }
+
+.input-search input {
+  border: none !important;
+  border-radius: unset !important;
+}
