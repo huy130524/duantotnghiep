@@ -50,6 +50,9 @@ import UpdateBanner from "./Pages/admin/Banner/UpdateBanner";
 import Contact from "./Pages/client/Contact/Contact";
 import ListContact from "./Pages/admin/Contact/ListContact";
 import ListComment from "./Pages/admin/Comment/ListComment";
+import ListUser from "./Pages/admin/User/ListUser";
+import AddUser from "./Pages/admin/User/AddUser";
+import UpdateUser from "./Pages/admin/User/UpdateUser";
 
 const router = createBrowserRouter([
   {
@@ -273,6 +276,18 @@ const router = createBrowserRouter([
           {
             path: "comment",
             element: <ListComment />,
+          },
+          {
+            path: "user",
+            element: <ListUser />,
+          },
+          {
+            path: "user/add",
+            element: <AddUser />,
+          },
+          {
+            path: "user/:id/edit",
+            element: <UpdateUser />,
           },
         ],
       },
