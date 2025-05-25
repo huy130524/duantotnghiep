@@ -2,7 +2,7 @@ import styles from "./index.module.scss";
 
 import { Link } from "react-router-dom";
 
-import { Button, Flex, Image, Table, message, Popconfirm } from "antd";
+import { Button, Flex, Image, Table, message, Popconfirm, Tag } from "antd";
 import { getImageUrl2 } from "../../../utils/image";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { api } from "../../../api/api";
@@ -37,6 +37,7 @@ const ListBrand = () => {
       title: "Tên thương hiệu",
       key: "name",
       dataIndex: "name",
+      render: (name) => <Tag className={styles.brandTag}>{name}</Tag>,
     },
     {
       title: "Logo",
@@ -46,15 +47,22 @@ const ListBrand = () => {
         const url = getImageUrl2(image);
 
         return (
-          <Image src={url} width={100} height={100} className={styles.image} />
+          <Image
+            src={url}
+            width={100}
+            height={100}
+            className={styles.brandImage}
+          />
         );
       },
     },
     {
       title: "Hành động",
       key: "actions",
+      width: 150,
+      align: "center",
       render: (_, record) => (
-        <Flex align="center" gap={12}>
+        <Flex align="center" justify="center" gap={12}>
           <Popconfirm
             title="Xoá thương hiệu"
             description="Xác nhận xoá thương hiệu"
@@ -62,13 +70,25 @@ const ListBrand = () => {
             okText="Xác nhận"
             onConfirm={() => removeBrandMutation.mutate(record.id)}
           >
-            <DeleteOutlined
-              className={classNames(styles.icon, styles.deleteIcon)}
-            />
+            <Button
+              danger
+              size="small"
+              icon={<DeleteOutlined />}
+              className={classNames(styles.deleteButton)}
+            >
+              Xoá
+            </Button>
           </Popconfirm>
 
           <Link to={`/admin/brand/${record.id}/edit`}>
-            <EditOutlined className={styles.icon} />
+            <Button
+              type="primary"
+              size="small"
+              icon={<EditOutlined />}
+              className={styles.editButton}
+            >
+              Sửa
+            </Button>
           </Link>
         </Flex>
       ),
@@ -81,16 +101,21 @@ const ListBrand = () => {
         <p className={styles.title}>Danh sách thương hiệu</p>
 
         <Link to="/admin/brand/add">
-          <Button type="primary">Thêm thương hiệu</Button>
+          <Button type="primary" size="large" className={styles.addButton}>
+            Thêm thương hiệu
+          </Button>
         </Link>
       </div>
 
-      <Table
-        columns={columns}
-        dataSource={data}
-        pagination={{ hideOnSinglePage: true }}
-        rowKey="id"
-      />
+      <div className={styles.tableContainer}>
+        <Table
+          className={styles.customTable}
+          columns={columns}
+          dataSource={data}
+          pagination={{ hideOnSinglePage: true }}
+          rowKey="id"
+        />
+      </div>
     </>
   );
 };

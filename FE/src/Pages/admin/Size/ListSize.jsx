@@ -40,8 +40,10 @@ const ListSize = () => {
     {
       title: "Hành động",
       key: "actions",
+      width: 150,
+      align: "center",
       render: (_, record) => (
-        <Flex align="center" gap={12}>
+        <Flex align="center" justify="center" gap={12}>
           <Popconfirm
             title="Xoá size"
             description="Xác nhận xoá size"
@@ -49,13 +51,25 @@ const ListSize = () => {
             okText="Xác nhận"
             onConfirm={() => removeSizeMutation.mutate(record.id)}
           >
-            <DeleteOutlined
-              className={classNames(styles.icon, styles.deleteIcon)}
-            />
+            <Button
+              danger
+              size="small"
+              icon={<DeleteOutlined />}
+              className={classNames(styles.deleteButton)}
+            >
+              Xoá
+            </Button>
           </Popconfirm>
 
           <Link to={`/admin/size/${record.id}/edit`}>
-            <EditOutlined className={styles.icon} />
+            <Button
+              type="primary"
+              size="small"
+              icon={<EditOutlined />}
+              className={styles.editButton}
+            >
+              Sửa
+            </Button>
           </Link>
         </Flex>
       ),
@@ -65,19 +79,31 @@ const ListSize = () => {
   return (
     <>
       <div className={styles.pageTitle}>
-        <p className={styles.title}>Danh sách size</p>
+        <p className={styles.title}>📏 Danh sách kích thước</p>
 
         <Link to="/admin/size/add">
-          <Button type="primary">Thêm size</Button>
+          <Button type="primary" size="large" className={styles.addButton}>
+            ➕ Thêm kích thước
+          </Button>
         </Link>
       </div>
 
-      <Table
-        columns={columns}
-        dataSource={data}
-        pagination={{ hideOnSinglePage: true }}
-        rowKey="id"
-      />
+      <div className={styles.tableContainer}>
+        <Table
+          columns={columns}
+          dataSource={data}
+          pagination={{
+            hideOnSinglePage: true,
+            showSizeChanger: true,
+            showQuickJumper: true,
+            showTotal: (total, range) =>
+              `${range[0]}-${range[1]} của ${total} kích thước`,
+          }}
+          rowKey="id"
+          className={styles.customTable}
+          size="large"
+        />
+      </div>
     </>
   );
 };

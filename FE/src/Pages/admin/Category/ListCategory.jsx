@@ -6,7 +6,6 @@ import { Button, Flex, Image, Table, message, Popconfirm } from "antd";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { api } from "../../../api/api";
 import { EditOutlined, DeleteOutlined } from "@ant-design/icons";
-import classNames from "classnames";
 
 const ListCategory = () => {
   const { data, refetch } = useQuery({
@@ -36,18 +35,21 @@ const ListCategory = () => {
       title: "Tên danh mục",
       key: "name",
       dataIndex: "name",
+      render: (name) => <span className={styles.categoryTag}>{name}</span>,
     },
     {
       title: "Hình ảnh",
       key: "image",
       dataIndex: "image",
+      align: "center",
       render: (image) => {
         return (
           <Image
             src={image}
-            width={100}
-            height={100}
+            width={80}
+            height={80}
             className={styles.image}
+            style={{ borderRadius: "8px" }}
           />
         );
       },
@@ -55,8 +57,9 @@ const ListCategory = () => {
     {
       title: "Hành động",
       key: "actions",
+      align: "center",
       render: (_, record) => (
-        <Flex align="center" gap={12}>
+        <Flex align="center" justify="center" gap={12}>
           <Popconfirm
             title="Xoá danh mục"
             description="Xác nhận xoá danh mục"
@@ -64,13 +67,20 @@ const ListCategory = () => {
             okText="Xác nhận"
             onConfirm={() => removeCategoryMutation.mutate(record.id)}
           >
-            <DeleteOutlined
-              className={classNames(styles.icon, styles.deleteIcon)}
-            />
+            <Button danger size="small" icon={<DeleteOutlined />}>
+              Xoá
+            </Button>
           </Popconfirm>
 
           <Link to={`/admin/category/${record.id}/edit`}>
-            <EditOutlined className={styles.icon} />
+            <Button
+              type="primary"
+              size="small"
+              icon={<EditOutlined />}
+              className={styles.editButton}
+            >
+              Sửa
+            </Button>
           </Link>
         </Flex>
       ),
@@ -80,19 +90,30 @@ const ListCategory = () => {
   return (
     <>
       <div className={styles.pageTitle}>
-        <p className={styles.title}>Danh sách danh mục</p>
+        <p className={styles.title}>📁 Danh sách danh mục</p>
 
         <Link to="/admin/category/add">
-          <Button type="primary">Thêm danh mục</Button>
+          <Button type="primary" size="large" className={styles.addButton}>
+            ➕ Thêm danh mục
+          </Button>
         </Link>
       </div>
 
-      <Table
-        columns={columns}
-        dataSource={data}
-        pagination={{ hideOnSinglePage: true }}
-        rowKey="id"
-      />
+      <div className={styles.tableContainer}>
+        <Table
+          columns={columns}
+          dataSource={data}
+          pagination={{
+            hideOnSinglePage: true,
+            showSizeChanger: true,
+            showQuickJumper: true,
+            showTotal: (total, range) =>
+              `${range[0]}-${range[1]} của ${total} danh mục`,
+          }}
+          rowKey="id"
+          className={styles.customTable}
+        />
+      </div>
     </>
   );
 };

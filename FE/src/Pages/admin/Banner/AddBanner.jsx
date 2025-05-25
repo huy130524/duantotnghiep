@@ -38,67 +38,78 @@ const AddBanner = () => {
         <p className={styles.title}>Thêm banner</p>
 
         <Link to="/admin/banner">
-          <Button type="primary">Danh sách banner</Button>
+          <Button type="primary" className={styles.addButton}>
+            Danh sách banner
+          </Button>
         </Link>
       </div>
 
-      <Form layout="vertical" onFinish={onSubmit}>
-        <Form.Item
-          name="title"
-          label="Tên banner"
-          rules={[
-            {
-              required: true,
-              message: "Vui lòng nhập tên banner",
-            },
-          ]}
-        >
-          <Input placeholder="Nhập tên banner" />
-        </Form.Item>
+      <div className={styles.formContainer}>
+        <h3 className={styles.sectionTitle}>Thông tin banner</h3>
 
-        <Form.Item
-          name="link"
-          label="Link banner"
-          rules={[
-            {
-              required: true,
-              message: "Vui lòng nhập link",
-            },
-            {
-              type: "url",
-              message: "Vui lòng nhập link hợp lệ",
-            },
-          ]}
-        >
-          <Input placeholder="Nhập link banner" />
-        </Form.Item>
+        <Form layout="vertical" onFinish={onSubmit}>
+          <Form.Item
+            name="title"
+            label="Tên banner"
+            rules={[
+              {
+                required: true,
+                message: "Vui lòng nhập tên banner",
+              },
+            ]}
+          >
+            <Input placeholder="Nhập tên banner" />
+          </Form.Item>
 
-        <Form.Item
-          name="image"
-          label="Image"
-          rules={[
-            {
-              required: true,
-              message: "Vui lòng chọn ảnh",
-            },
-          ]}
-        >
-          <FormItemImage />
-        </Form.Item>
+          <Form.Item
+            name="link"
+            label="Link banner"
+            rules={[
+              {
+                required: true,
+                message: "Vui lòng nhập link",
+              },
+              {
+                type: "url",
+                message: "Vui lòng nhập link hợp lệ",
+              },
+            ]}
+          >
+            <Input placeholder="Nhập link banner" />
+          </Form.Item>
 
-        <Form.Item name="is_active" label="Trạng thái" valuePropName="checked">
-          <Switch />
-        </Form.Item>
+          <Form.Item
+            name="image"
+            label="Image"
+            rules={[
+              {
+                required: true,
+                message: "Vui lòng chọn ảnh",
+              },
+            ]}
+          >
+            <FormItemImage />
+          </Form.Item>
 
-        <Button
-          type="primary"
-          htmlType="submit"
-          disabled={isPending}
-          loading={isPending}
-        >
-          Thêm banner
-        </Button>
-      </Form>
+          <Form.Item
+            name="is_active"
+            label="Trạng thái"
+            valuePropName="checked"
+          >
+            <Switch />
+          </Form.Item>
+
+          <Button
+            type="primary"
+            htmlType="submit"
+            disabled={isPending}
+            loading={isPending}
+            className={styles.submitButton}
+          >
+            Thêm banner
+          </Button>
+        </Form>
+      </div>
     </>
   );
 };

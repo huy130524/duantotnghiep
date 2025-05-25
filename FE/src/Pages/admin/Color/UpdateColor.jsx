@@ -54,49 +54,59 @@ const UpdateColor = () => {
   return (
     <>
       <div className={styles.pageTitle}>
-        <p className={styles.title}>Cập nhật màu</p>
+        <p className={`${styles.title} ${styles.updateTitle}`}>Cập nhật màu</p>
 
-        <Link to="/admin/category">
-          <Button type="primary">Danh sách màu</Button>
+        <Link to="/admin/color">
+          <Button type="primary" size="large" className={styles.navButton}>
+            Danh sách màu
+          </Button>
         </Link>
       </div>
 
-      <Form layout="vertical" onFinish={onSubmit} form={form}>
-        <Form.Item
-          name="name"
-          label="Tên màu"
-          rules={[
-            {
-              required: true,
-              message: "Vui lòng nhập tên màu",
-            },
-          ]}
-        >
-          <Input placeholder="Nhập tên màu" />
-        </Form.Item>
+      <div className={styles.formContainer}>
+        <Form layout="vertical" onFinish={onSubmit} form={form}>
+          <div className={styles.formSection}>
+            <h3 className={styles.sectionTitle}>Thông tin màu</h3>
 
-        <Form.Item
-          name="code"
-          label="Mã màu"
-          rules={[
-            {
-              required: true,
-              message: "Vui lòng chọn mã màu",
-            },
-          ]}
-        >
-          <ColorPicker showText />
-        </Form.Item>
+            <Form.Item
+              name="name"
+              label="Tên màu"
+              rules={[
+                {
+                  required: true,
+                  message: "Vui lòng nhập tên màu",
+                },
+              ]}
+            >
+              <Input placeholder="Nhập tên màu" size="large" />
+            </Form.Item>
 
-        <Button
-          type="primary"
-          htmlType="submit"
-          disabled={isPending}
-          loading={isPending}
-        >
-          Cập nhật màu
-        </Button>
-      </Form>
+            <Form.Item
+              name="code"
+              label="Mã màu"
+              rules={[
+                {
+                  required: true,
+                  message: "Vui lòng chọn mã màu",
+                },
+              ]}
+            >
+              <ColorPicker showText size="large" />
+            </Form.Item>
+          </div>
+
+          <Button
+            type="primary"
+            htmlType="submit"
+            disabled={isPending}
+            loading={isPending}
+            className={styles.submitButton}
+            size="large"
+          >
+            Cập nhật màu
+          </Button>
+        </Form>
+      </div>
     </>
   );
 };

@@ -1,8 +1,19 @@
 import { useMutation, useQuery } from "@tanstack/react-query";
-import { Button, Card, message, Popconfirm, Spin, Table } from "antd";
+import { Button, message, Popconfirm, Spin, Table, Tag } from "antd";
 import { useParams } from "react-router-dom";
 import { api } from "../../../api/api";
 import { formatPrice } from "../../../utils/formatPrice";
+import {
+  UserOutlined,
+  PhoneOutlined,
+  MailOutlined,
+  HomeOutlined,
+  CreditCardOutlined,
+  ShoppingCartOutlined,
+  CheckCircleOutlined,
+  ClockCircleOutlined,
+} from "@ant-design/icons";
+import dayjs from "dayjs";
 
 import styles from "./index.module.scss";
 import { useMemo } from "react";
@@ -53,24 +64,29 @@ const OrderDetail = () => {
     {
       title: "STT",
       dataIndex: "stt",
-      render: (_, __, index) => ++index,
+      align: "center",
+      render: (_, __, index) => (
+        <span className={styles.indexNumber}>{++index}</span>
+      ),
     },
-
     {
       title: "Sản phẩm",
       key: "product",
       render: (_, record) => {
         return (
-          <>
-            <p className="tw-mb-0">{record.variant?.product?.name}</p>
-
-            <p className="tw-text-[14px] tw-text-[#535353] tw-mt-1 tw-mb-0">
-              Màu: {record.variant?.color?.name}
+          <div className={styles.productInfo}>
+            <p className="tw-mb-1 tw-font-semibold tw-text-gray-800">
+              {record.variant?.product?.name}
             </p>
-            <p className="tw-text-[14px] tw-text-[#535353] tw-mb-0">
-              Size: {record.variant?.size?.name}
-            </p>
-          </>
+            <div className={styles.productVariants}>
+              <Tag color="blue" className={styles.variantTag}>
+                {record.variant?.color?.name}
+              </Tag>
+              <Tag color="green" className={styles.variantTag}>
+                Size: {record.variant?.size?.name}
+              </Tag>
+            </div>
+          </div>
         );
       },
     },
@@ -78,18 +94,28 @@ const OrderDetail = () => {
       title: "Đơn giá",
       key: "price",
       dataIndex: "price",
-      render: formatPrice,
+      align: "right",
+      render: (price) => (
+        <span className={styles.priceText}>{formatPrice(price)}</span>
+      ),
     },
     {
       title: "Số lượng",
       key: "quantity",
       dataIndex: "quantity",
+      align: "center",
+      render: (quantity) => (
+        <span className={styles.quantityBadge}>×{quantity}</span>
+      ),
     },
     {
       title: "Thành tiền",
       key: "total_price",
       dataIndex: "total_price",
-      render: formatPrice,
+      align: "right",
+      render: (totalPrice) => (
+        <span className={styles.totalPrice}>{formatPrice(totalPrice)}</span>
+      ),
     },
   ];
 
@@ -103,17 +129,31 @@ const OrderDetail = () => {
     switch (data.status) {
       case "Chờ xác nhận": {
         return (
-          <div className="tw-flex tw-gap-2">
+          <div className={styles.actionButtons}>
             <ConfirmPopup
               onConfirm={() => updateOrderStatus({ status: "Đơn hàng đã hủy" })}
             >
-              <Button danger>Huỷ ĐH</Button>
+              <Button
+                danger
+                size="large"
+                icon={<ClockCircleOutlined />}
+                className={styles.cancelButton}
+              >
+                Huỷ đơn hàng
+              </Button>
             </ConfirmPopup>
 
             <ConfirmPopup
               onConfirm={() => updateOrderStatus({ status: "Đã xác nhận" })}
             >
-              <Button type="primary">Xác nhận ĐH</Button>
+              <Button
+                type="primary"
+                size="large"
+                icon={<CheckCircleOutlined />}
+                className={styles.confirmButton}
+              >
+                Xác nhận đơn hàng
+              </Button>
             </ConfirmPopup>
           </div>
         );
@@ -126,7 +166,14 @@ const OrderDetail = () => {
               updateOrderStatus({ status: "Đang chuẩn bị hàng" })
             }
           >
-            <Button type="primary">Chuẩn bị hàng</Button>
+            <Button
+              type="primary"
+              size="large"
+              icon={<ShoppingCartOutlined />}
+              className={styles.prepareButton}
+            >
+              Chuẩn bị hàng
+            </Button>
           </ConfirmPopup>
         );
       }
@@ -136,7 +183,14 @@ const OrderDetail = () => {
           <ConfirmPopup
             onConfirm={() => updateOrderStatus({ status: "Đang giao hàng" })}
           >
-            <Button type="primary">Giao hàng</Button>
+            <Button
+              type="primary"
+              size="large"
+              icon={<HomeOutlined />}
+              className={styles.deliveryButton}
+            >
+              Giao hàng
+            </Button>
           </ConfirmPopup>
         );
       }
@@ -146,7 +200,14 @@ const OrderDetail = () => {
           <ConfirmPopup
             onConfirm={() => updateOrderStatus({ status: "Xác nhận đã giao" })}
           >
-            <Button type="primary">Xác nhận đã giao</Button>
+            <Button
+              type="primary"
+              size="large"
+              icon={<CheckCircleOutlined />}
+              className={styles.completeButton}
+            >
+              Xác nhận đã giao
+            </Button>
           </ConfirmPopup>
         );
       }
@@ -161,64 +222,179 @@ const OrderDetail = () => {
   return (
     <>
       <div className={styles.pageTitle}>
-        <p className={styles.title}>Chi tiết đơn hàng #{data?.code}</p>
+        <p className={styles.title}>📋 Chi tiết đơn hàng #{data?.code}</p>
 
         {renderActButton()}
       </div>
 
-      <Card>
-        <div className="tw-grid tw-grid-cols-12 tw-gap-3">
-          <div className="tw-col-span-6">
-            <p className="tw-text-base tw-leading-8 tw-mb-2">
-              Tên người nhận: {data?.fullname}
-            </p>
-            <p className="tw-text-base tw-leading-7 tw-mb-2">
-              Email: {data?.email}
-            </p>
-            <p className="tw-text-base tw-leading-7 tw-mb-2">
-              Số điện thoại: {data?.phone}
-            </p>
-            <p className="tw-text-base tw-leading-7 tw-mb-2">
-              Địa chỉ: {data?.address}
-            </p>
-          </div>
+      <div className={styles.customerInfoCard}>
+        <div className={styles.cardHeader}>
+          <h3 className={styles.cardTitle}>📞 Thông tin khách hàng</h3>
+        </div>
+        <div className={styles.cardContent}>
+          <div className="tw-grid tw-grid-cols-1 md:tw-grid-cols-2 tw-gap-6">
+            <div className={styles.infoSection}>
+              <div className={styles.infoItem}>
+                <UserOutlined className={styles.infoIcon} />
+                <div>
+                  <label className={styles.infoLabel}>Tên người nhận:</label>
+                  <span className={styles.infoValue}>{data?.fullname}</span>
+                </div>
+              </div>
 
-          <div className="tw-col-span-6">
-            <p className="tw-text-base tw-leading-8 tw-mb-2">
-              Phương thức thanh toán: {data?.payment}
-            </p>
-            <p className="tw-text-base tw-leading-7 tw-mb-2">
-              Trạng thái đơn hàng: {data?.status}
-            </p>
-            <p className="tw-text-base tw-leading-7 tw-mb-2">
-              Trạng thái thanh toán: {data?.payment_status}
-            </p>
+              <div className={styles.infoItem}>
+                <MailOutlined className={styles.infoIcon} />
+                <div>
+                  <label className={styles.infoLabel}>Email:</label>
+                  <span className={styles.infoValue}>{data?.email}</span>
+                </div>
+              </div>
+
+              <div className={styles.infoItem}>
+                <PhoneOutlined className={styles.infoIcon} />
+                <div>
+                  <label className={styles.infoLabel}>Số điện thoại:</label>
+                  <span className={styles.infoValue}>{data?.phone}</span>
+                </div>
+              </div>
+
+              <div className={styles.infoItem}>
+                <HomeOutlined className={styles.infoIcon} />
+                <div>
+                  <label className={styles.infoLabel}>Địa chỉ:</label>
+                  <span className={styles.infoValue}>{data?.address}</span>
+                </div>
+              </div>
+            </div>
+
+            <div className={styles.infoSection}>
+              <div className={styles.infoItem}>
+                <CreditCardOutlined className={styles.infoIcon} />
+                <div>
+                  <label className={styles.infoLabel}>
+                    Phương thức thanh toán:
+                  </label>
+                  <span className={styles.paymentTag}>{data?.payment}</span>
+                </div>
+              </div>
+
+              <div className={styles.infoItem}>
+                <ClockCircleOutlined className={styles.infoIcon} />
+                <div>
+                  <label className={styles.infoLabel}>
+                    Trạng thái đơn hàng:
+                  </label>
+                  <Tag
+                    color={
+                      data?.status === "Đơn hàng đã hủy"
+                        ? "red"
+                        : data?.status === "Đã giao hàng"
+                        ? "green"
+                        : data?.status === "Đang giao hàng"
+                        ? "blue"
+                        : data?.status === "Đã xác nhận"
+                        ? "orange"
+                        : "default"
+                    }
+                    className={styles.statusTag}
+                  >
+                    {data?.status}
+                  </Tag>
+                </div>
+              </div>
+
+              <div className={styles.infoItem}>
+                <CheckCircleOutlined className={styles.infoIcon} />
+                <div>
+                  <label className={styles.infoLabel}>
+                    Trạng thái thanh toán:
+                  </label>
+                  <Tag
+                    color={
+                      data?.payment_status === "Đã thanh toán"
+                        ? "green"
+                        : "orange"
+                    }
+                    className={styles.paymentStatusTag}
+                  >
+                    {data?.payment_status}
+                  </Tag>
+                </div>
+              </div>
+
+              <div className={styles.infoItem}>
+                <ClockCircleOutlined className={styles.infoIcon} />
+                <div>
+                  <label className={styles.infoLabel}>
+                    Thời gian đặt hàng:
+                  </label>
+                  <div className={styles.dateInfo}>
+                    <span className={styles.dateValue}>
+                      {dayjs(data?.created_at).format("DD/MM/YYYY HH:mm:ss")}
+                    </span>
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
-      </Card>
+      </div>
 
-      <h2 className="tw-font-semibold tw-text-2xl tw-mb-3 tw-mt-6">Sản phẩm</h2>
+      <div className={styles.productsSection}>
+        <h3 className={styles.sectionTitle}>🛍️ Danh sách sản phẩm</h3>
 
-      <Table
-        columns={columns}
-        dataSource={data?.order_details}
-        rowKey="id"
-        scroll={{ x: 900 }}
-        pagination={false}
-      />
+        <div className={styles.tableContainer}>
+          <Table
+            columns={columns}
+            dataSource={data?.order_details}
+            rowKey="id"
+            scroll={{ x: 900 }}
+            pagination={false}
+            className={styles.customTable}
+            size="large"
+          />
+        </div>
+      </div>
 
-      <div className="tw-text-center tw-mt-6">
-        <p className="tw-text-base">Tạm tính: {formatPrice(totalPrice)}</p>
+      <div className={styles.orderSummary}>
+        <div className={styles.summaryCard}>
+          <h3 className={styles.summaryTitle}>💰 Tổng kết đơn hàng</h3>
 
-        {data?.voucher_code && (
-          <p className="tw-text-base">
-            Giảm giá: {formatPrice(data?.discount)}
-          </p>
-        )}
+          <div className={styles.summaryContent}>
+            <div className={styles.summaryRow}>
+              <span className={styles.summaryLabel}>Tạm tính:</span>
+              <span className={styles.summaryValue}>
+                {formatPrice(totalPrice)}
+              </span>
+            </div>
 
-        <p className="tw-text-2xl tw-mt-4 tw-text-center tw-font-semibold">
-          Tổng tiền: {formatPrice(data?.total_price)}
-        </p>
+            {data?.voucher_code && (
+              <>
+                <div className={styles.summaryRow}>
+                  <span className={styles.summaryLabel}>Mã giảm giá:</span>
+                  <span className={styles.voucherCode}>
+                    {data?.voucher_code}
+                  </span>
+                </div>
+                <div className={styles.summaryRow}>
+                  <span className={styles.summaryLabel}>Giảm giá:</span>
+                  <span className={styles.discountValue}>
+                    -{formatPrice(data?.discount)}
+                  </span>
+                </div>
+              </>
+            )}
+
+            <div className={styles.summaryDivider}></div>
+
+            <div className={styles.summaryRowTotal}>
+              <span className={styles.totalLabel}>Tổng thanh toán:</span>
+              <span className={styles.totalValue}>
+                {formatPrice(data?.total_price)}
+              </span>
+            </div>
+          </div>
+        </div>
       </div>
     </>
   );

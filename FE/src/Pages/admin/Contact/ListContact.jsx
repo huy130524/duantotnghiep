@@ -1,6 +1,6 @@
-import styles from "./index.module.scss";
+import styles from "../Product/index.module.scss";
 
-import { Flex, Table, Popconfirm, message, Modal } from "antd";
+import { Button, Flex, Table, Popconfirm, message, Modal } from "antd";
 import { useQuery, useMutation } from "@tanstack/react-query";
 import { api } from "../../../api/api";
 import { DeleteOutlined, EyeOutlined } from "@ant-design/icons";
@@ -43,6 +43,8 @@ const ListContact = () => {
       title: "ID",
       key: "id",
       dataIndex: "id",
+      width: 70,
+      align: "center",
     },
     {
       title: "Người liên hệ",
@@ -50,9 +52,9 @@ const ListContact = () => {
       render: (_, record) => {
         return (
           <div>
-            <p className="tw-m-0">{record.fullname}</p>
-            <p className="tw-m-0">{record.email}</p>
-            <p className="tw-m-0">{record.phone}</p>
+            <p className="tw-m-0 tw-font-medium">{record.fullname}</p>
+            <p className="tw-m-0 tw-text-gray-500">{record.email}</p>
+            <p className="tw-m-0 tw-text-gray-500">{record.phone}</p>
           </div>
         );
       },
@@ -61,10 +63,10 @@ const ListContact = () => {
       title: "Nội dung",
       key: "contact",
       dataIndex: "contact",
-      width: "30%",
+      width: "40%",
       render: (_, record) => {
         return (
-          <div>
+          <div className="tw-bg-gray-50 tw-p-2 tw-rounded">
             <p className="tw-m-0 tw-line-clamp-3 tw-whitespace-pre-line">
               {record.contact}
             </p>
@@ -76,6 +78,7 @@ const ListContact = () => {
       title: "Ngày tạo",
       key: "createdAt",
       dataIndex: "created_at",
+      align: "center",
       render: (date) => {
         return dayjs(date).format("DD/MM/YYYY HH:mm");
       },
@@ -83,8 +86,10 @@ const ListContact = () => {
     {
       title: "Hành động",
       key: "actions",
+      width: 150,
+      align: "center",
       render: (_, record) => (
-        <Flex align="center" gap={12}>
+        <Flex align="center" justify="center" gap={12}>
           <Popconfirm
             title="Xoá liên hệ"
             description="Xác nhận xoá liên hệ này"
@@ -92,14 +97,25 @@ const ListContact = () => {
             okText="Xác nhận"
             onConfirm={() => handleDelete(record.id)}
           >
-            <DeleteOutlined
-              className={classNames(styles.icon, styles.deleteIcon)}
-            />
+            <Button
+              danger
+              size="small"
+              icon={<DeleteOutlined />}
+              className={classNames(styles.deleteButton)}
+            >
+              Xoá
+            </Button>
           </Popconfirm>
-          <EyeOutlined
-            className={classNames(styles.icon, styles.viewIcon)}
+
+          <Button
+            type="primary"
+            size="small"
+            icon={<EyeOutlined />}
+            className={styles.editButton}
             onClick={() => handleViewContact(record)}
-          />
+          >
+            Xem
+          </Button>
         </Flex>
       ),
     },
@@ -108,15 +124,25 @@ const ListContact = () => {
   return (
     <>
       <div className={styles.pageTitle}>
-        <p className={styles.title}>Danh sách liên hệ</p>
+        <p className={styles.title}>📬 Danh sách liên hệ</p>
       </div>
 
-      <Table
-        columns={columns}
-        dataSource={data}
-        pagination={{ hideOnSinglePage: true }}
-        rowKey="id"
-      />
+      <div className={styles.tableContainer}>
+        <Table
+          columns={columns}
+          dataSource={data}
+          pagination={{
+            hideOnSinglePage: true,
+            showSizeChanger: true,
+            showQuickJumper: true,
+            showTotal: (total, range) =>
+              `${range[0]}-${range[1]} của ${total} liên hệ`,
+          }}
+          rowKey="id"
+          className={styles.customTable}
+          size="large"
+        />
+      </div>
 
       <Modal
         title="Chi tiết liên hệ"

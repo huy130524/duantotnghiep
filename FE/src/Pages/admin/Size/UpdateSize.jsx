@@ -46,36 +46,48 @@ const UpdateSize = () => {
   return (
     <>
       <div className={styles.pageTitle}>
-        <p className={styles.title}>Cập nhật size</p>
+        <p className={styles.title}>📝 Cập nhật kích thước</p>
 
         <Link to="/admin/size">
-          <Button type="primary">Danh sách size</Button>
+          <Button type="primary" size="large" className={styles.addButton}>
+            📋 Danh sách kích thước
+          </Button>
         </Link>
       </div>
 
-      <Form layout="vertical" onFinish={onSubmit} form={form}>
-        <Form.Item
-          name="name"
-          label="Tên size"
-          rules={[
-            {
-              required: true,
-              message: "Vui lòng nhập tên size",
-            },
-          ]}
-        >
-          <Input placeholder="Nhập tên size" />
-        </Form.Item>
+      <div className={styles.formContainer}>
+        <Form layout="vertical" onFinish={onSubmit} form={form}>
+          <div className={styles.formSection}>
+            <h3 className={styles.sectionTitle}>Thông tin kích thước</h3>
 
-        <Button
-          type="primary"
-          htmlType="submit"
-          disabled={isPending}
-          loading={isPending}
-        >
-          Cập nhật size
-        </Button>
-      </Form>
+            <Form.Item
+              name="name"
+              label="Tên kích thước"
+              rules={[
+                {
+                  required: true,
+                  message: "Vui lòng nhập tên kích thước",
+                },
+              ]}
+            >
+              <Input placeholder="Nhập tên kích thước" size="large" />
+            </Form.Item>
+          </div>
+
+          <div style={{ textAlign: "center", marginTop: "32px" }}>
+            <Button
+              type="primary"
+              htmlType="submit"
+              disabled={isPending}
+              loading={isPending}
+              size="large"
+              className={styles.submitButton}
+            >
+              {isPending ? "Đang xử lý..." : "💾 Cập nhật kích thước"}
+            </Button>
+          </div>
+        </Form>
+      </div>
     </>
   );
 };

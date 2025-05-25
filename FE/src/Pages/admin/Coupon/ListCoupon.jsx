@@ -33,56 +33,81 @@ const ListCoupon = () => {
       title: "ID",
       key: "id",
       dataIndex: "id",
+      align: "center",
     },
     {
-      title: "Mã",
+      title: "Mã giảm giá",
       key: "code",
       dataIndex: "code",
+      ellipsis: true,
     },
     {
       title: "Giảm giá",
       key: "discount",
+      align: "center",
       render: (_, record) => {
-        return record.discount_type === "percentage"
-          ? `${parseFloat(record.discount)}%`
-          : formatPrice(record.discount);
+        const value =
+          record.discount_type === "percentage"
+            ? `${parseFloat(record.discount)}%`
+            : formatPrice(record.discount);
+        return <span className={styles.discountTag}>{value}</span>;
       },
     },
     {
       title: "Trạng thái",
       key: "active",
-      render: (_, record) =>
-        record.is_active ? "Đang hoạt động" : "Không hoạt động",
+      align: "center",
+      render: (_, record) => (
+        <span
+          className={classNames(styles.statusTag, {
+            [styles.active]: record.is_active,
+            [styles.inactive]: !record.is_active,
+          })}
+        >
+          {record.is_active ? "Đang hoạt động" : "Không hoạt động"}
+        </span>
+      ),
     },
     {
       title: "Số lượt sử dụng",
       key: "usage_limit",
       dataIndex: "usage_limit",
+      align: "center",
+      render: (value) => value?.toLocaleString() || 0,
     },
     {
-      title: "Giới hạn số lần SD",
+      title: "Giới hạn/người",
       key: "usage_limit_per_user",
       dataIndex: "usage_limit_per_user",
+      align: "center",
+      render: (value) => value?.toLocaleString() || 0,
     },
     {
-      title: "Số lượt đã SD",
+      title: "Đã sử dụng",
       key: "used_count",
       dataIndex: "used_count",
+      align: "center",
+      render: (value) => value?.toLocaleString() || 0,
     },
     {
       title: "Thời gian hiệu lực",
       key: "expired_at",
       render: (_, record) => {
-        return `${dayjs(record.start_date).format(
-          "DD/MM/YYYY HH:mm:ss"
-        )} - ${dayjs(record.end_date).format("DD/MM/YYYY HH:mm:ss")}`;
+        return (
+          <div style={{ fontSize: "12px", lineHeight: "1.4" }}>
+            <div>{dayjs(record.start_date).format("DD/MM/YYYY HH:mm")}</div>
+            <div style={{ color: "#8c8c8c" }}>đến</div>
+            <div>{dayjs(record.end_date).format("DD/MM/YYYY HH:mm")}</div>
+          </div>
+        );
       },
     },
     {
       title: "Hành động",
       key: "actions",
+      align: "center",
       render: (_, record) => (
-        <Flex align="center" gap={12}>
+        <Flex align="center" justify="center" gap={12}>
           <Popconfirm
             title="Xoá mã giảm giá"
             description="Xác nhận xoá mã giảm giá"
@@ -90,13 +115,25 @@ const ListCoupon = () => {
             okText="Xác nhận"
             onConfirm={() => removeCouponMutation.mutate(record.id)}
           >
-            <DeleteOutlined
-              className={classNames(styles.icon, styles.deleteIcon)}
-            />
+            <Button
+              danger
+              size="small"
+              icon={<DeleteOutlined />}
+              className={classNames(styles.deleteButton)}
+            >
+              Xoá
+            </Button>
           </Popconfirm>
 
           <Link to={`/admin/coupon/${record.id}/edit`}>
-            <EditOutlined className={styles.icon} />
+            <Button
+              type="primary"
+              size="small"
+              icon={<EditOutlined />}
+              className={styles.editButton}
+            >
+              Sửa
+            </Button>
           </Link>
         </Flex>
       ),
@@ -106,20 +143,32 @@ const ListCoupon = () => {
   return (
     <>
       <div className={styles.pageTitle}>
-        <p className={styles.title}>Danh sách coupon</p>
+        <p className={styles.title}>🎫 Danh sách mã giảm giá</p>
 
         <Link to="/admin/coupon/add">
-          <Button type="primary">Thêm coupon</Button>
+          <Button type="primary" size="large" className={styles.addButton}>
+            ➕ Thêm mã giảm giá
+          </Button>
         </Link>
       </div>
 
-      <Table
-        columns={columns}
-        dataSource={data?.data}
-        pagination={{ hideOnSinglePage: true }}
-        rowKey="id"
-        scroll={{ x: 1200 }}
-      />
+      <div className={styles.tableContainer}>
+        <Table
+          columns={columns}
+          dataSource={data?.data}
+          pagination={{
+            hideOnSinglePage: true,
+            showSizeChanger: true,
+            showQuickJumper: true,
+            showTotal: (total, range) =>
+              `${range[0]}-${range[1]} của ${total} mã giảm giá`,
+          }}
+          rowKey="id"
+          className={styles.customTable}
+          size="large"
+          scroll={{ x: 1200 }}
+        />
+      </div>
     </>
   );
 };

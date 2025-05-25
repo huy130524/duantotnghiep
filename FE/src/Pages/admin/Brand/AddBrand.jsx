@@ -35,46 +35,56 @@ const AddBrand = () => {
         <p className={styles.title}>Thêm thương hiệu</p>
 
         <Link to="/admin/brand">
-          <Button type="primary">Danh sách thương hiệu</Button>
+          <Button type="primary" size="large" className={styles.navButton}>
+            Danh sách thương hiệu
+          </Button>
         </Link>
       </div>
 
-      <Form layout="vertical" onFinish={onSubmit}>
-        <Form.Item
-          name="name"
-          label="Tên thương hiệu"
-          rules={[
-            {
-              required: true,
-              message: "Vui lòng nhập tên thương hiệu",
-            },
-          ]}
-        >
-          <Input placeholder="Nhập tên thương hiệu" />
-        </Form.Item>
+      <div className={styles.formContainer}>
+        <Form layout="vertical" onFinish={onSubmit}>
+          <div className={styles.formSection}>
+            <h3 className={styles.sectionTitle}>Thông tin thương hiệu</h3>
 
-        <Form.Item
-          name="logo"
-          label="Logo"
-          rules={[
-            {
-              required: true,
-              message: "Vui lòng chọn logo",
-            },
-          ]}
-        >
-          <FormItemImage />
-        </Form.Item>
+            <Form.Item
+              name="name"
+              label="Tên thương hiệu"
+              rules={[
+                {
+                  required: true,
+                  message: "Vui lòng nhập tên thương hiệu",
+                },
+              ]}
+            >
+              <Input placeholder="Nhập tên thương hiệu" size="large" />
+            </Form.Item>
 
-        <Button
-          type="primary"
-          htmlType="submit"
-          disabled={isPending}
-          loading={isPending}
-        >
-          Thêm thương hiệu
-        </Button>
-      </Form>
+            <Form.Item
+              name="logo"
+              label="Logo thương hiệu"
+              rules={[
+                {
+                  required: true,
+                  message: "Vui lòng chọn logo",
+                },
+              ]}
+            >
+              <FormItemImage />
+            </Form.Item>
+          </div>
+
+          <Button
+            type="primary"
+            htmlType="submit"
+            disabled={isPending}
+            loading={isPending}
+            className={styles.submitButton}
+            size="large"
+          >
+            Thêm thương hiệu
+          </Button>
+        </Form>
+      </div>
     </>
   );
 };
