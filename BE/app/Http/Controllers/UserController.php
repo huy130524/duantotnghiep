@@ -6,6 +6,7 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rule;
@@ -129,54 +130,102 @@ class UserController extends Controller
         return response()->json(User::all());
     }
 
-      public function store(Request $request)
-      {
-          $data = $request->validate([
-              'fullname' => 'required|string|max:255',
-              'email' => 'required|email|unique:users,email',
-              'password' => 'required|string|min:8',
-              'role' => 'required|in:admin,staff,user',
-              'phone' => 'nullable|string|max:15',
-              'avatar' => 'nullable|url',
-              'gender' => 'nullable|in:male,female,other',
-              'birthday' => 'nullable|date',
-          ]);
-          $data['password'] = Hash::make($data['password']);
-          $user = User::create($data);
-          return response()->json([
-              'message' => 'Tạo người dùng thành công',
-              'user' => $user
-          ], 201);
-      }
+      
+public function store(Request $request)
+{
+    try {
+        $data = $request->validate([
+            'fullname' => 'required|string|max:255',
+            'email' => 'required|email|unique:users,email',
+            'password' => 'required|string|min:8',
+            'role' => 'required|in:admin,staff,user',
+            'phone' => 'nullable|string|max:15',
+            'avatar' => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
+            'gender' => 'nullable|in:male,female,other',
+            'birthday' => 'nullable|date',
+        ]);
+
+        // Hash password
+        $data['password'] = Hash::make($data['password']);
+
+        // Handle avatar upload
+        if ($request->hasFile('avatar')) {
+            $path = $request->file('avatar')->store('avatars', 'public');
+            $data['avatar'] = $path;
+        }
+
+        $user = User::create($data);
+
+        return response()->json([
+            'message' => 'Tạo người dùng thành công',
+            'user' => $user
+        ], 201);
+    } catch (\Illuminate\Validation\ValidationException $e) {
+        Log::error('Validation error when creating user: ', $e->errors());
+        return response()->json(['errors' => $e->errors()], 422);
+    } catch (\Exception $e) {
+        Log::error('Unexpected error when creating user: '.$e->getMessage(), [
+            'trace' => $e->getTraceAsString(),
+            'input' => $request->all()
+        ]);
+        return response()->json(['message' => 'Đã có lỗi xảy ra. Vui lòng thử lại sau.'], 500);
+    }
+}
       public function show($id)
       {
           $user = User::findOrFail($id);
           return response()->json($user);
       }
   
-      public function update(Request $request, $id)
-      {
-          $user = User::findOrFail($id);
-  
-          $data = $request->validate([
-              'fullname' => 'nullable|string|max:255',
-              'email' => 'nullable|email|unique:users,email,' . $id,
-              'password' => 'nullable|string|min:8',
-              'role' => 'nullable|in:admin,staff,user',
-              'phone' => 'nullable|string|max:15',
-              'avatar' => 'nullable|url',
-              'gender' => 'nullable|in:male,female,other',
-              'birthday' => 'nullable|date',
-          ]);
-          if (isset($data['password'])) {
-              $data['password'] = Hash::make($data['password']);
-          }
-          $user->update($data);
-          return response()->json([
-            "message"=> "Cập nhật thành công !",
-            "user"=> $user,
+     public function update(Request $request, $id)
+{
+    try {
+        $user = User::findOrFail($id);
+
+        $data = $request->validate([
+            'fullname' => 'nullable|string|max:255',
+            'email' => 'nullable|email|unique:users,email,' . $id,
+            'password' => 'nullable|string|min:8',
+            'role' => 'nullable|in:admin,staff,user',
+            'phone' => 'nullable|string|max:15',
+            'avatar' => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
+            'gender' => 'nullable|in:male,female,other',
+            'birthday' => 'nullable|date',
         ]);
-      }
+
+        // Nếu có password mới thì hash, không thì giữ nguyên
+        if (!empty($data['password'])) {
+            $data['password'] = Hash::make($data['password']);
+        } else {
+            unset($data['password']);
+        }
+
+        // Xử lý upload avatar mới nếu có
+        if ($request->hasFile('avatar')) {
+            // (Bạn có thể thêm xóa avatar cũ ở đây nếu muốn)
+            $path = $request->file('avatar')->store('avatars', 'public');
+            $data['avatar'] = $path;
+        }
+
+        $user->update($data);
+
+        return response()->json([
+            "message" => "Cập nhật thành công!",
+            "user" => $user,
+        ], 200);
+
+    } catch (\Illuminate\Validation\ValidationException $e) {
+        Log::error('Validation error when updating user: ', $e->errors());
+        return response()->json(['errors' => $e->errors()], 422);
+
+    } catch (\Exception $e) {
+        Log::error('Unexpected error when updating user: '.$e->getMessage(), [
+            'trace' => $e->getTraceAsString(),
+            'input' => $request->all()
+        ]);
+        return response()->json(['message' => 'Đã có lỗi xảy ra. Vui lòng thử lại sau.'], 500);
+    }
+}
   
       public function delete($id)
       {
