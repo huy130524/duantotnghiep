@@ -350,8 +350,8 @@ class OrderController extends Controller
     {
         $vnp_Url = "https://sandbox.vnpayment.vn/paymentv2/vpcpay.html";
         $vnp_Returnurl = " http://localhost:5173/vnpay-return";
-        $vnp_TmnCode = "OXAW03IW";
-        $vnp_HashSecret = "0GXPKQFPJA8NE2VE2LO0WYO575TFRTAZ";
+        $vnp_TmnCode = "1YCXOQGD";
+        $vnp_HashSecret = "XJ5SMD73ZE16U9FZI1OQAFLCQX2DBXKZ";
        
         $vnp_TxnRef = $order->code;
         $vnp_OrderInfo = "Thanh toán hóa đơn";

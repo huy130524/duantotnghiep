@@ -115,7 +115,12 @@ class ProductController extends Controller
         'category_id' => 'required|exists:categories,id',
         'brand_id' => 'required|exists:brands,id',
         'variants' => 'nullable|array',
-        'variants.*.id' => 'nullable|exists:product_variants,id',
+        'variants.*.id' => ['nullable', 'integer', 'sometimes', function ($attribute, $value, $fail) {
+    if (!empty($value) && !ProductVariant::where('id', $value)->exists()) {
+        $fail("Biến thể với ID {$value} không tồn tại.");
+    }
+}],
+
         'variants.*.color_id' => 'required|exists:colors,id',
         'variants.*.size_id' => 'required|exists:sizes,id',
         'variants.*.price' => 'required|numeric|min:0',
