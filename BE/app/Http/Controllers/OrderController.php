@@ -6,6 +6,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
 use App\Jobs\AutoConfirmReceived;
+use App\Mail\OrderCreatedMail;
 use App\Models\Cart;
 use App\Models\Coupon;
 use App\Models\Order;
@@ -13,6 +14,7 @@ use App\Models\OrderDetail;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Str;
 
@@ -328,8 +330,8 @@ class OrderController extends Controller
                     'order_code' => $qrCodeData['order_code'],
                 ], 201);
             }
-   
-          Cart::where('user_id', $order->user_id)->forceDelete();
+            Mail::to($order->email)->send(new OrderCreatedMail($order));
+            Cart::where('user_id', $order->user_id)->forceDelete();
             DB::commit();
             return response()->json([
                 'message' => 'Đặt hàng thành công!',
@@ -418,7 +420,8 @@ class OrderController extends Controller
             $order->payment_status = 'Đã thanh toán';  
             $order->status = 'Đã xác nhận';  
             $order->save();
-          Cart::where('user_id', $order->user_id)->forceDelete();
+            Cart::where('user_id', $order->user_id)->forceDelete();
+            Mail::to($order->email)->send(new OrderCreatedMail($order));
             return response()->json([
                 'status' => true,
                 'message' => 'Thanh toán thành công!',
