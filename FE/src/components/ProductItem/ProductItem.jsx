@@ -5,8 +5,11 @@ import { useMutation } from "@tanstack/react-query";
 import { message } from "antd";
 import { client } from "../../main";
 import { api } from "../../api/api";
+import { useAuth } from "../../hooks/useAuth";
 
 const ProductItem = ({ data }) => {
+  const { isLogged } = useAuth();
+
   const addCartMutation = useMutation({
     mutationKey: ["ADD_CART"],
     mutationFn: (data) => api.post("/cart/add", data),
@@ -22,6 +25,11 @@ const ProductItem = ({ data }) => {
 
   const handleAddCart = (e) => {
     e.preventDefault();
+
+    if (!isLogged) {
+      message.info("Vui lòng đăng nhập để mua hàng");
+      return;
+    }
 
     addCartMutation.mutate({
       product_variant_id: data.product_variants[0].id,
