@@ -195,6 +195,25 @@ const ListUser = () => {
             </Popconfirm>
           )}
 
+          {record.status === "inactive" && (
+            <Popconfirm
+              title="Mở khóa tài khoản"
+              description="Xác nhận mở khóa tài khoản này?"
+              cancelText="Huỷ"
+              okText="Xác nhận"
+              onConfirm={() => changeStatusMutation.mutate(record.id)}
+            >
+              <Button
+                size="small"
+                icon={<UserOutlined />}
+                type="primary"
+                className={styles.activeButton}
+              >
+                Mở khóa
+              </Button>
+            </Popconfirm>
+          )}
+
           <Link to={`/admin/user/${record.id}/edit`}>
             <Button
               type="primary"
