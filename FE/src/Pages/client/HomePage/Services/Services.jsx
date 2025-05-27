@@ -10,12 +10,11 @@ const Services = () => {
                 <i className="flaticon-shipped" />
               </div>
               <div className="featured-title text-uppercase">
-                <h5>cach on delivery</h5>
+                <h5>Giao hàng </h5>
               </div>
               <div className="featured-desc">
                 <p>
-                  Maximus vestibulum Nam pulvinar vitae neque et porttitor
-                  Praesent sed nisi eleifend.
+                  Giao hàng nhanh chóng, an toàn và tiện lợi.
                 </p>
               </div>
             </div>
@@ -27,12 +26,13 @@ const Services = () => {
                 <i className="flaticon-free-delivery" />
               </div>
               <div className="featured-title text-uppercase">
-                <h5>free shipping</h5>
+                <h5> Giao hàng toàn quốc</h5>
               </div>
               <div className="featured-desc">
                 <p>
-                  Maximus vestibulum Nam pulvinar vitae neque et porttitor
-                  Praesent sed nisi eleifend.
+               Phục vụ mọi miền Tổ quốc – nhanh chóng và tận tâm.
+
+
                 </p>
               </div>
             </div>
@@ -44,12 +44,11 @@ const Services = () => {
                 <i className="flaticon-refresh-left-arrow" />
               </div>
               <div className="featured-title text-uppercase">
-                <h5>35 days return</h5>
+                <h5> Hoàn trả hàng </h5>
               </div>
               <div className="featured-desc">
                 <p>
-                  Maximus vestibulum Nam pulvinar vitae neque et porttitor
-                  Praesent sed nisi eleifend.
+                  Đổi trả dễ dàng trong vòng 15 ngày nếu không hài lòng.
                 </p>
               </div>
             </div>
