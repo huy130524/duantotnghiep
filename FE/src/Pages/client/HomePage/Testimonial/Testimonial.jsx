@@ -16,10 +16,9 @@ const Testimonial = () => {
                     {" "}
                     <i className="fas fa-quote-left" />
                     <p>
-                      Quae adipisci quam laudantium nulla modi, Consectetur
-                      adipisicing elit, Totam mollitia incidunt vero cupiditate
-                      obcaecati iusto tempora unde! Numquam officiis, adipisci
-                      quam laudantium nulla modi.
+                  Quae adipisci quam laudantium nulla modi, Consectetur adipisicing elit,
+                  Totam mollitia incidunt vero cupiditate obcaecati iusto tempora unde!
+                  Numquam officiis, adipisci quam laudantium nulla modi.
                     </p>
                   </div>
                   <div className="testimonial-caption">
@@ -32,14 +31,11 @@ const Testimonial = () => {
                     {" "}
                     <i className="fas fa-quote-left" />
                     <p>
-                      Aaudantium Quae adipisci quam nulla modi, Consectetur
-                      adipisicing elit, Totam mollitia incidunt vero cupiditate
-                      obcaecati iusto tempora unde! Numquam officiis, adipisci
-                      quam laudantium nulla modi.
+                      Shoes transform your body language and attitude. They lift you physically and emotionally.
                     </p>
                   </div>
                   <div className="testimonial-caption">
-                    <h6>John Doe</h6>
+                    <h6>Christian Louboutin</h6>
                     <label>- Manager</label>
                   </div>
                 </div>
@@ -48,14 +44,11 @@ const Testimonial = () => {
                     {" "}
                     <i className="fas fa-quote-left" />
                     <p>
-                      Numquam adipisci quam laudantium nulla modi, Consectetur
-                      adipisicing elit, Totam mollitia incidunt vero cupiditate
-                      obcaecati iusto tempora unde! officiis, adipisci quam
-                      laudantium nulla modi.
+                     I still have my feet on the ground, I just wear better shoes
                     </p>
                   </div>
                   <div className="testimonial-caption">
-                    <h6>Jamy Lynn</h6>
+                    <h6>Oprah Winfrey</h6>
                     <label>- Advisor</label>
                   </div>
                 </div>
@@ -64,14 +57,11 @@ const Testimonial = () => {
                     {" "}
                     <i className="fas fa-quote-left" />
                     <p>
-                      Consectetur buae adipisci quam laudantium nulla modi,
-                      adipisicing elit, Totam mollitia incidunt vero cupiditate
-                      obcaecati iusto tempora unde! Numquam officiis, adipisci
-                      quam laudantium nulla modi.
+                      Good shoes take you good places.
                     </p>
                   </div>
                   <div className="testimonial-caption">
-                    <h6>John Methew</h6>
+                    <h6>Seo Min Hyun</h6>
                     <label>- Manager</label>
                   </div>
                 </div>
@@ -115,9 +105,9 @@ const Testimonial = () => {
                     role="tab"
                     aria-selected="false"
                   >
-                    <img
+                    <img style={{ height: "80px" }}
                       className="img-center"
-                      src="images/thumbnail/01.png"
+                      src="images/thumbnail/03.jpg"
                       alt=""
                     />
                   </a>
@@ -129,9 +119,9 @@ const Testimonial = () => {
                     role="tab"
                     aria-selected="false"
                   >
-                    <img
+                    <img style={{ height: "80px" }}
                       className="img-center"
-                      src="images/thumbnail/02.png"
+                      src="images/thumbnail/04.jpg"
                       alt=""
                     />
                   </a>

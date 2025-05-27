@@ -9,7 +9,7 @@ const BestSummerCollection = () => {
         <div className="row">
           <div className="col-lg-6 col-md-12 ml-auto">
             <h2 className="large-font text-white">
-              2020 <br /> Best Summer Collection
+              2025 <br /> Best Summer Collection
             </h2>
             <a className="btn btn-theme btn-iconic animated5" href="#">
               <span>
