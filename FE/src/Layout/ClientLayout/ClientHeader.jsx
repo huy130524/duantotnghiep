@@ -52,7 +52,7 @@ const ClientHeader = () => {
       },
     ];
 
-    if (profile?.role === "admin") {
+    if (profile?.role === "admin" || profile?.role === "staff") {
       items.push({
         key: "admin",
         label: "Truy cập trang quản trị",
