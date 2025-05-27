@@ -5,169 +5,85 @@ const ClientFooter = () => {
         <div className="container">
           <div className="row">
             <div className="col-lg-3 col-md-6 col-sm-6 footer-list">
-              <h5>Information</h5>
+              <h5>Thông Tin </h5>
               <ul className="list-unstyled">
                 <li>
-                  <a href="product.html">Top Sellers</a>
+                  <a href="product.html">Sản phẩm bán chạy</a>
                 </li>
                 <li>
-                  <a href="product.html">New Product</a>
+                  <a href="product.html">Sản phẩm mới</a>
                 </li>
                 <li>
-                  <a href="#">Delivery information</a>
+                  <a href="#">Thông tin giao hàng</a>
                 </li>
                 <li>
-                  <a href="terms-and-conditions.html">Terms &amp; Conditions</a>
+                  <a href="terms-and-conditions.html">Điều khoản</a>
                 </li>
                 <li>
-                  <a href="#">Special</a>
+                  <a href="#">Ưu đãi đặc biệt</a>
                 </li>
                 <li>
-                  <a href="#">Help Center</a>
+                  <a href="#">Trung tâm trợ giúp</a>
                 </li>
               </ul>
             </div>
             <div className="col-lg-3 col-md-6 col-sm-6 xs-mt-5 footer-list">
-              <h5>Customer Service</h5>
+              <h5> Dịch vụ </h5>
               <ul className="list-unstyled">
                 <li>
-                  <a href="order-tracking.html">Order Tracking</a>
+                  <a href="order-tracking.html">Theo dõi đơn hàng</a>
                 </li>
                 <li>
-                  <a href="contact-1.html">Help &amp; Contact</a>
+                  <a href="contact-1.html">Chính sách khách hàng</a>
                 </li>
                 <li>
-                  <a href="product.html">Career</a>
+                  <a href="product.html">Chính sách bảo hành</a>
                 </li>
                 <li>
-                  <a href="return-policy.html">Returns Policy</a>
+                  <a href="return-policy.html">Chính sách vận chuyển</a>
                 </li>
                 <li>
-                  <a href="#">Product Support</a>
-                </li>
-                <li>
-                  <a href="#">Legal Notice</a>
+                  <a href="#">Chính sách bảo mật</a>
                 </li>
               </ul>
             </div>
             <div className="col-lg-3 col-md-6 col-sm-6 md-mt-5 footer-list">
-              <h5>My Account</h5>
+              <h5>Về Beesneaker </h5>
               <ul className="list-unstyled">
                 <li>
-                  <a href="#">My Account</a>
+                  <a href="#">Giới thiệu Beesneaker</a>
                 </li>
                 <li>
-                  <a href="#">Personal Information</a>
+                  <a href="#">Tuyển dụng </a>
                 </li>
                 <li>
-                  <a href="#">Order History</a>
+                  <a href="#">Danh sách cửa hàng </a>
                 </li>
-                <li>
-                  <a href="#">Address</a>
-                </li>
-                <li>
-                  <a href="product-wishlist.html">Wish List</a>
-                </li>
-                <li>
-                  <a href="#">Newsletter</a>
-                </li>
+           
               </ul>
             </div>
             <div className="col-lg-3 col-md-6 col-sm-6 md-mt-5">
-              <h5>Get In Touch</h5>
+              <h5> Liên hệ với Beesneaker </h5>
               <ul className="media-icon list-unstyled">
                 <li className="mb-4">
-                  <p className="mb-0">423B, Road Wordwide Country, USA</p>
+                  <p className="mb-0"> 32 ,Trinh Văn Bô, Nam Từ Liêm, Hà Nội </p>
                 </li>
                 <li className="mb-4">
-                  <a href="mailto:themeht23@gmail.com">themeht23@gmail.com</a>
+                  <a href="mailto:themeht23@gmail.com">Gmail: contact@beesneaker.com</a>
                 </li>
                 <li className="mb-4">
-                  <a href="tel:+912345678900">+91-234-567-8900</a>
+                  <a href="tel:+912345678900"> Điện thoại: 036789999 </a>
                 </li>
                 <li>
-                  <p className="mb-0">Working Hours: 9:00am - 8:00pm</p>
+                  <p className="mb-0">Giờ làm việc : 8h -21h </p>
                 </li>
               </ul>
             </div>
           </div>
-          <div className="row client-logo mt-10">
-            <div className="col-md-12">
-              <div
-                className="owl-carousel no-pb"
-                data-dots="false"
-                data-items={5}
-                data-md-items={4}
-                data-sm-items={3}
-                data-margin={30}
-                data-autoplay="true"
-              >
-                <div className="item">
-                  <img
-                    className="img-center"
-                    src="images/client/01.png"
-                    alt=""
-                  />
-                </div>
-                <div className="item">
-                  <img
-                    className="img-center"
-                    src="images/client/01.png"
-                    alt=""
-                  />
-                </div>
-                <div className="item">
-                  <img
-                    className="img-center"
-                    src="images/client/01.png"
-                    alt=""
-                  />
-                </div>
-                <div className="item">
-                  <img
-                    className="img-center"
-                    src="images/client/01.png"
-                    alt=""
-                  />
-                </div>
-                <div className="item">
-                  <img
-                    className="img-center"
-                    src="images/client/01.png"
-                    alt=""
-                  />
-                </div>
-                <div className="item">
-                  <img
-                    className="img-center"
-                    src="images/client/01.png"
-                    alt=""
-                  />
-                </div>
-              </div>
-            </div>
-          </div>
+
         </div>
       </div>
-      <div className="secondary-footer text-center">
-        <div className="container">
-          <div className="copyright">
-            <div className="row">
-              <div className="col-md-12">
-                {" "}
-                <span className="text-white">
-                  Copyright 2018 Oveltyshop Theme by{" "}
-                  <a target="_blank" href="www.themeht.html">
-                    {" "}
-                    ThemeHt{" "}
-                  </a>{" "}
-                  | All Rights Reserved
-                </span>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
+
     </footer>
   );
 };
