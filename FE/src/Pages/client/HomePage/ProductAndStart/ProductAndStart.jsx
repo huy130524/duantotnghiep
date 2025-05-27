@@ -8,7 +8,7 @@ const ProductAndStart = () => {
               <img src="images/product-add/05.jpg" alt="" />
               <div className="product-add-hover center px-3">
                 <h2 className="text-white large-font">
-                  New Women's <br /> Collection 2018
+                  New Women's <br /> Collection 2025 
                 </h2>
                 <a className="btn btn-theme btn-iconic mt-2" href="#">
                   <span>
@@ -23,7 +23,7 @@ const ProductAndStart = () => {
               <img src="images/product-add/07.jpg" alt="" />
               <div className="product-add-hover center px-3">
                 <h2 className="text-white large-font">
-                  New Men's <br /> Collection 2018
+                  New Men's <br /> Collection 2025 
                 </h2>
                 <a className="btn btn-theme btn-iconic mt-2" href="#">
                   <span>
