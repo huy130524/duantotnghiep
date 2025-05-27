@@ -1,18 +1,11 @@
 import { Carousel } from "antd";
 import { LeftOutlined, RightOutlined } from "@ant-design/icons";
 import { useRef } from "react";
-import { useQuery } from "@tanstack/react-query";
-import { api } from "../../../../api/api";
 import { getImageUrl } from "../../../../utils/image";
 import { Link } from "react-router-dom";
 
-const Banner = () => {
+const Banner = ({ data = [] }) => {
   const carouselRef = useRef(null);
-
-  const { data } = useQuery({
-    queryKey: ["BANNER"],
-    queryFn: () => api.get("/banner/home"),
-  });
 
   return (
     <section>
