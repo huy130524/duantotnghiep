@@ -54,6 +54,13 @@ class UserController extends Controller
         }
 
         $user = Auth::user();
+
+        // Kiểm tra trạng thái tài khoản
+        if ($user->status !== 'active') {
+            Auth::logout(); // Đảm bảo đăng xuất nếu đã đăng nhập tạm thời
+            return response()->json(['status' => 0, 'message' => 'Tài khoản của bạn chưa được kích hoạt!'], 403);
+        }
+
         $token = $user->createToken('auth_token')->plainTextToken;
 
         return response()->json([
@@ -63,6 +70,7 @@ class UserController extends Controller
             'token' => $token
         ], 200);
     }
+
     public function logout(Request $request)
     {
         $request->user()->tokens()->delete();
