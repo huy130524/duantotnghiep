@@ -15,7 +15,7 @@ const AdminRoute = ({ children }) => {
     return <Spin />;
   }
 
-  if (profile?.role !== "admin") {
+  if (profile?.role !== "admin" && profile?.role !== "staff") {
     return <Navigate to="/" replace />;
   }
 
