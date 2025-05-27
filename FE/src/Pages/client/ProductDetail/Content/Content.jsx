@@ -5,8 +5,11 @@ import { formatPrice } from "../../../../utils/formatPrice";
 import { api } from "../../../../api/api";
 import { useMutation } from "@tanstack/react-query";
 import { client } from "../../../../main";
+import { useAuth } from "../../../../hooks/useAuth";
 
 const Content = ({ data }) => {
+  const { isLogged } = useAuth();
+
   const [size, setSize] = useState();
   const [color, setColor] = useState();
   const [quantity, setQuantity] = useState(1);
@@ -131,13 +134,18 @@ const Content = ({ data }) => {
   };
 
   const handleAddCart = () => {
+    if (!isLogged) {
+      message.info("Vui lòng đăng nhập để mua hàng");
+      return;
+    }
+
     if (!selectedVariant) {
-      message.error("Variant not found");
+      message.error("Không tìm thấy biến thể sản phẩm");
       return;
     }
 
     if (selectedVariant.quantity < quantity) {
-      message.error("Not enough quantity available");
+      message.error("Số lượng sản phẩm không đủ");
       return;
     }
 
