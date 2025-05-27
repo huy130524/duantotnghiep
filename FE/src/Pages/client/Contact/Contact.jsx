@@ -244,10 +244,8 @@ const Contact = () => {
               </div>
               <div className="col-lg-4 col-md-12 order-lg-1">
                 <div className="map h-100 iframe-h-m">
-                  <iframe
-                    src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3151.840108181602!2d144.95373631539215!3d-37.8172139797516!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x6ad65d4c2b349649%3A0xb6899234e561db11!2sEnvato!5e0!3m2!1sen!2sin!4v1497005461921"
-                    allowFullScreen=""
-                  />
+                 <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3724.210135168819!2d105.74836551492992!3d21.02283539348679!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3135ab3b6d52f3c3%3A0x41b8eae9d4cbd83f!2zVHLhu4tuaCBWxINuIELhuqEsIFBoxrDhu51uZyBDYW5oLCBOYW0gVMawIExpw6ptLCBIw6AgTuG7mWksIFZpZXRuYW0!5e0!3m2!1svi!2s!4v1716793249075!5m2!1svi!2s"></iframe>
+
                 </div>
               </div>
             </div>
