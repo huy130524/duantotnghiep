@@ -11,7 +11,7 @@ const Banner = () => {
 
   const { data } = useQuery({
     queryKey: ["BANNER"],
-    queryFn: () => api.get("/banners"),
+    queryFn: () => api.get("/banner/home"),
   });
 
   return (

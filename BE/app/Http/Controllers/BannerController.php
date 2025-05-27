@@ -15,7 +15,11 @@ class BannerController extends Controller
         $banners = Banner::orderBy('created_at', 'desc')->get();
         return response()->json($banners);
     }
-
+    public function home()
+    {
+        $banners = Banner::where('is_active', 1)->orderBy('created_at', 'desc')->get();
+        return response()->json($banners);
+    }
     public function store(Request $request)
     {
         $validator = Validator::make($request->all(), [

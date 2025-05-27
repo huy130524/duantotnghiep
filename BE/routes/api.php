@@ -27,7 +27,7 @@ use Illuminate\Support\Facades\Route;
 
 
 // Product
-
+Route::get('/banner/home', [BannerController::class, 'home']);
 Route::get('/categories/{id}/products', [ProductController::class, 'getProductsByCategory']);
 
 Route::get('/products/size/{size_id}', [ProductController::class, 'filterBySize']);
