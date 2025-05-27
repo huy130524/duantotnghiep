@@ -6,7 +6,7 @@ const Sidebar = ({ activeCategory, onCategoryChange }) => {
   const { data } = useQuery({
     queryKey: ["CATEGORIES"],
     queryFn: async () => {
-      const r = await api.get("/categories");
+      const r = await api.get("/categories/home");
       return r;
     },
   });
