@@ -9,6 +9,15 @@ use Illuminate\Support\Facades\Storage;
 
 class CategoryController extends Controller
 {
+    public function home()
+    {
+        $categories = Category::all()->map(function ($category) {
+            $category->image = $category->image ? asset('storage/' . $category->image) : null;
+            return $category;
+        });
+
+        return response()->json($categories);
+    }
     public function index()
     {
         $categories = Category::all()->map(function ($category) {
