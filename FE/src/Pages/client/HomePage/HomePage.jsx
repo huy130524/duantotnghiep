@@ -19,7 +19,7 @@ const HomePage = () => {
   return (
     <>
       <div className="page-content">
-        <Banner />
+        <Banner data={data?.banners} />
 
         <CategoryList data={data?.categories} />
 
