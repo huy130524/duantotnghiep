@@ -20,6 +20,8 @@ const Tabs = ({ description, comments = [] }) => {
                   >
                     Description
                   </a>
+
+{/* 
                   <a
                     className="nav-item nav-link"
                     id="nav-tab2"
@@ -29,7 +31,9 @@ const Tabs = ({ description, comments = [] }) => {
                     aria-selected="false"
                   >
                     Additional information
-                  </a>
+                  </a> */}
+
+
                   <a
                     className="nav-item nav-link"
                     id="nav-tab3"
@@ -54,6 +58,8 @@ const Tabs = ({ description, comments = [] }) => {
                   </h5>
                   <p className="lead mb-0">{description}</p>
                 </div>
+
+                {/* 
                 <div role="tabpanel" className="tab-pane fade" id="tab3-2">
                   <h5 className="mb-3">
                     Additional <span className="text-theme">information</span>
@@ -90,7 +96,8 @@ const Tabs = ({ description, comments = [] }) => {
                       </tr>
                     </tbody>
                   </table>
-                </div>
+                </div> */}
+
                 <div role="tabpanel" className="tab-pane fade" id="tab3-3">
                   <Reviews comments={comments} />
                 </div>

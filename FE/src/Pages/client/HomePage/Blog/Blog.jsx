@@ -22,7 +22,7 @@ const Blog = () => {
           <div className="col-lg-8 col-md-12 ml-auto mr-auto">
             <div className="section-title">
               <h2 className="title">
-                Latest Fashion <span>Blog</span>
+               Bài viết của  <span>Beesneaker </span>
               </h2>
             </div>
           </div>

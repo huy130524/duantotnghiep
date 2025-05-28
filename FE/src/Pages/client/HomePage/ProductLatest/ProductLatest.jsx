@@ -8,7 +8,7 @@ const ProductLatest = ({ data = [] }) => {
           <div className="col-lg-8 col-md-12 ml-auto mr-auto">
             <div className="section-title">
               <h2 className="title">
-                New <span>Arrivals</span>
+                Sản Phẩm <span>Mới </span>
               </h2>
             </div>
           </div>

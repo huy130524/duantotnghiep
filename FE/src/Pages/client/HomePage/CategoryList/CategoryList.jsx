@@ -8,7 +8,7 @@ const CategoryList = ({ data = [] }) => {
         <div className="row">
           <div className="col-lg-8 col-md-10 mr-auto">
             <div className="section-title">
-              <h2 className="title">Categories</h2>
+              <h2 className="title">Danh Mục Sản Phẩm </h2>
             </div>
           </div>
         </div>
