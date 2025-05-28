@@ -9,7 +9,7 @@ const PageTitle = ({ keyword, category }) => {
             <h1 className="mb-3">
               {keyword ? (
                 <>
-                  Search result for &quot;
+                  Tìm kiếm  &quot;
                   <span className="text-theme">{keyword}</span>&quot;
                 </>
               ) : category ? (
