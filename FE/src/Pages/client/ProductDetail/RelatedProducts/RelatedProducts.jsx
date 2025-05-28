@@ -9,7 +9,7 @@ const RelatedProducts = ({ data = [] }) => {
           <div className="col-lg-8 col-md-10 mr-auto">
             <div className="section-title">
               <h2 className="title">
-                Related <span>Products</span>
+                Sản phẩm  <span> liên quan </span>
               </h2>
             </div>
           </div>

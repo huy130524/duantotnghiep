@@ -18,7 +18,7 @@ const Tabs = ({ description, comments = [] }) => {
                     role="tab"
                     aria-selected="true"
                   >
-                    Description
+                   Thông tin sản phẩm 
                   </a>
 
 {/* 
@@ -42,7 +42,7 @@ const Tabs = ({ description, comments = [] }) => {
                     role="tab"
                     aria-selected="false"
                   >
-                    Reviews {comments.length > 0 && `(${comments.length})`}
+                    Bình luận  {comments.length > 0 && `(${comments.length})`}
                   </a>
                 </div>
               </nav>
