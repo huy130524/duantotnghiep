@@ -126,7 +126,7 @@ const OrderHistoryDetail = () => {
 
             {data?.confirmed_delivered_at && (
               <div className="tw-flex tw-items-center tw-mb-3 tw-gap-x-3">
-                <p className="tw-w-1/3 tw-mb-0">Thời gian nhận hàng:</p>
+                <p className="tw-w-1/3 tw-mb-0">Thời gian giao hàng:</p>
                 <p className="tw-flex-1 tw-mb-0">
                   {dayjs(data.confirmed_delivered_at).format(
                     "DD/MM/YYYY HH:mm:ss"
