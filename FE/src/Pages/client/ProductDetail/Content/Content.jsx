@@ -70,8 +70,11 @@ const Content = ({ data }) => {
 
       client.invalidateQueries(["CART"]);
     },
-    onError: () => {
-      message.error("Failed to add to cart");
+    onError: (error) => {
+      message.error(
+        error?.response?.data?.message || "Lỗi khi thêm vào giỏ hàng"
+      );
+      console.error("Error adding to cart:", error);
     },
   });
 
